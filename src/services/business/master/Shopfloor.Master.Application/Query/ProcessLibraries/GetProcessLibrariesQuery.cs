@@ -1,0 +1,50 @@
+﻿using AutoMapper;
+using MediatR;
+using Shopfloor.Core.Behaviours;
+using Shopfloor.Core.Models.Responses;
+using Shopfloor.Master.Application.Models.ProcessLibraries;
+using Shopfloor.Master.Application.Parameters.ProcessLibraries;
+using Shopfloor.Master.Domain.Interfaces;
+
+namespace Shopfloor.Master.Application.Query.ProcessLibraries
+{
+    public class GetProcessLibrariesQuery : IRequest<PagedResponse<IReadOnlyList<ProcessLibraryModel>>>, ICacheableMediatrQuery
+    {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string OrderBy { get; set; }
+        public string SearchTerm { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? CreatedUserId { get; set; }
+        public Guid? ModifiedUserId { get; set; }
+        public bool? IsActive { get; set; }
+        public bool BypassCache { get; set; }
+        public string CacheKey => $"ProcessLibraries";
+        public TimeSpan? SlidingExpiration { get; set; }
+    }
+    public class GetProcessLibrarysQueryHandler : IRequestHandler<GetProcessLibrariesQuery, PagedResponse<IReadOnlyList<ProcessLibraryModel>>>
+    {
+        private readonly IMapper _mapper;
+        private readonly IProcessLibraryRepository _repository;
+        public GetProcessLibrarysQueryHandler(IMapper mapper,
+            IProcessLibraryRepository repository)
+        {
+            _mapper = mapper;
+            _repository = repository;
+        }
+
+        public async Task<PagedResponse<IReadOnlyList<ProcessLibraryModel>>> Handle(GetProcessLibrariesQuery request, CancellationToken cancellationToken)
+        {
+            var validFilter = _mapper.Map<ProcessLibraryParameter>(request);
+            validFilter.SetSearchProps(new string[]
+            {
+                nameof(ProcessLibraryParameter.Code), 
+                nameof(ProcessLibraryParameter.Name)
+            }.ToList());
+            return await _repository.GetModelPagedReponseAsync<ProcessLibraryParameter, ProcessLibraryModel>(validFilter);
+        }
+    }
+}

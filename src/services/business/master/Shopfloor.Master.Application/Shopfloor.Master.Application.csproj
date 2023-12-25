@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Models\Wfxs\ArticleSyncConfigModel.cs" />
+		<Compile Remove="Models\Wfxs\WfxArticleDataResponse.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\shareds\Shopfloor.Cache\Shopfloor.Cache.csproj" />
+		<ProjectReference Include="..\..\..\..\shareds\Shopfloor.EventBus\Shopfloor.EventBus.csproj" />
+		<ProjectReference Include="..\Shopfloor.Master.Domain\Shopfloor.Master.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

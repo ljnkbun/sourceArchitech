@@ -1,0 +1,51 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:15510",
+      "sslPort": 44368
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5264",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=TCIED;User Id=sa;Password=1;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "RedisSettings_Uri",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "RedisSettings_Password"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7173;http://localhost:5264",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=HighCTCatalog;User Id=sa;Password=1;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "RedisSettings_Uri",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "RedisSettings_Password"
+      }
+    }
+  }
+}

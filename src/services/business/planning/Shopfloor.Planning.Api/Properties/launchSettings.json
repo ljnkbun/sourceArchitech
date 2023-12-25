@@ -1,0 +1,61 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=TCPlanning;User Id=sa;Password=1;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "RedisSettings_Uri",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "RedisSettings_Password"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:9000"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=HighCTCatalog;User Id=sa;Password=1;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "RedisSettings_Uri",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "RedisSettings_Password"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:9443;http://localhost:9000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:48648",
+      "sslPort": 44323
+    }
+  }
+}
