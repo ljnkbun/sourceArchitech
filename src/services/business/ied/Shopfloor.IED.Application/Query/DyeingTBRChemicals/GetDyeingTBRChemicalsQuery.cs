@@ -14,6 +14,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRChemicals
         public int? ChemicalId { get; set; }
         public string ChemicalCode { get; set; }
         public string ChemicalName { get; set; }
+        public string ChemicalSubCategory { get; set; }
         public string Unit { get; set; }
 
         #region Base Properties

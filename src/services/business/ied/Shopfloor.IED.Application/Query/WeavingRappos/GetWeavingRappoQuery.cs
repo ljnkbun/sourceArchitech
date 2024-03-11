@@ -19,8 +19,8 @@ namespace Shopfloor.IED.Application.Query.WeavingRappos
         }
         public async Task<Response<WeavingRappo>> Handle(GetWeavingRappoQuery query, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"WeavingRappo Not Found (Id:{query.Id}).");
+            var entity = await _repository.GetWeavingRappoByIdAsync(query.Id);
+            if (entity == null) return new($"WeavingRappo Not Found (Id:{query.Id}).");
             return new Response<WeavingRappo>(entity);
         }
     }

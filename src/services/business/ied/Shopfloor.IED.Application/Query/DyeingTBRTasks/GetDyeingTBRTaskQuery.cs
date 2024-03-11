@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRTasks
         public async Task<Response<Domain.Entities.DyeingTBRTask>> Handle(GetDyeingTBRTaskQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRTask Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DyeingTBRTask Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DyeingTBRTask>(entity);
         }
     }

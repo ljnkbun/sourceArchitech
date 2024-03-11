@@ -43,7 +43,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
         }
 
         public async Task<bool> UpdateDynamicColumnAsync(DynamicColumn datalUpdate
-            , BaseListCreateDeleteEntity<DynamicColumnContent> dataDynamicColumnContent)
+            , BaseUpdateEntity<DynamicColumnContent> dataDynamicColumnContent)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
@@ -67,7 +67,11 @@ namespace Shopfloor.Material.Infrastructure.Repositories
 
         public async Task<bool> IsUniqueAsync(string code, string category, int? id = null)
         {
-            return !(await _dbContext.Set<DynamicColumn>().AnyAsync(x => x.Code == code && x.CategoryCode == category || (x.Id == id && x.Code == code && x.CategoryCode == category)));
+            return await _dbContext.Set<DynamicColumn>().AllAsync(x =>
+                x.Code != code ||
+                (x.Code == code && x.CategoryCode != category) ||
+                (x.Code == code && x.CategoryCode == category && x.Id == id)
+            );
         }
 
         public async Task<List<DynamicColumn>> GetDynamicColumnByCodesAsync(string[] codes, string type)

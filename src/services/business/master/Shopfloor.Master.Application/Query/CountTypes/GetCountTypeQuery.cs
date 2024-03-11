@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.CountTypes
         public async Task<Response<CountType>> Handle(GetCountTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"CountType Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"CountType Not Found (Id:{query.Id}).");
             return new Response<CountType>(entity);
         }
     }

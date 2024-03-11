@@ -1,22 +1,24 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.RequestArticleOutputs;
 using Shopfloor.IED.Application.Parameters.RequestArticleOutputs;
+using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.RequestArticleOutputs
 {
-    public class GetRequestArticleOutputsQuery : IRequest<PagedResponse<IReadOnlyList<RequestArticleOutputModel>>>, ICacheableMediatrQuery
+    public class GetRequestArticleOutputsQuery : IRequest<PagedResponse<IReadOnlyList<RequestArticleOutputModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int? RequestDivisionProcessId { get; set; }
-        public int? ArticleId { get; set; }
+        public int? WFXArticleId { get; set; }
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
         public string Color { get; set; }
+        public string BaseColorList { get; set; }
+        public Status? Status { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -24,9 +26,6 @@ namespace Shopfloor.IED.Application.Query.RequestArticleOutputs
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"RequestArticleOutputs";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetRequestArticleOutputsQueryHandler : IRequestHandler<GetRequestArticleOutputsQuery, PagedResponse<IReadOnlyList<RequestArticleOutputModel>>>
     {

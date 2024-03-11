@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.Zones
         public async Task<Response<Zone>> Handle(GetZoneQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Zone Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Zone Not Found (Id:{query.Id}).");
             return new Response<Zone>(entity);
         }
     }

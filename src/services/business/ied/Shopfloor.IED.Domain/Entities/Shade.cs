@@ -2,7 +2,7 @@
 
 namespace Shopfloor.IED.Domain.Entities
 {
-    public class Shade : BaseMasterEntity
+    public class Shade : BaseNameEntity
     {
     }
 }

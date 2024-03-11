@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.DyeingTBRecipes;
 using Shopfloor.IED.Application.Parameters.DyeingTBRecipes;
@@ -9,7 +8,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DyeingTBRecipes
 {
-    public class GetDyeingTBRecipesQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRecipeModel>>>, ICacheableMediatrQuery
+    public class GetDyeingTBRecipesQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRecipeModel>>>
     {
         public int? DyeingTBMaterialColorId { get; set; }
 
@@ -19,9 +18,11 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRecipes
 
         public string TemplateName { get; set; }
 
+        public string TBRecipeName { get; set; }
+
         public string TCFNo { get; set; }
 
-        public int? ApproveVersionId { get; set; }
+        public int? ApproveVersionIndex { get; set; }
 
         public DateTime? ApproveDate { get; set; }
 
@@ -54,9 +55,6 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRecipes
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"DyeingTBRecipes";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

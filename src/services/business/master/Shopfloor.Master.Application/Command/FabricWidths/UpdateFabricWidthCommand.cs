@@ -25,7 +25,7 @@ namespace Shopfloor.Master.Application.Command.FabricWidths
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"FabricWidth Not Found.");
+            if (entity == null) return new($"FabricWidth Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

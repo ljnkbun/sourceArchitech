@@ -40,6 +40,7 @@ namespace Shopfloor.Master.Infrastructure.Contexts
             return base.SaveChangesAsync(cancellationToken);
         }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<ProductGroupUOM> ProductGroupUOMs { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
         public virtual DbSet<MaterialType> MaterialTypes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
@@ -84,23 +85,30 @@ namespace Shopfloor.Master.Infrastructure.Contexts
         public virtual DbSet<SubCategoryGroup> SubCategoryGroups { get; set; }
         public virtual DbSet<AccountGroup> AccountGroups { get; set; }
         public virtual DbSet<GroupName> GroupNames { get; set; }
-        public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<Gauge> Gauges { get; set; }
         public virtual DbSet<MachineType> MachineTypes { get; set; }
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleBaseColor> ArticleBaseColors { get; set; }
         public virtual DbSet<ArticleBaseSize> ArticleBaseSizes { get; set; }
         public virtual DbSet<ArticleFlexField> ArticleFlexFields { get; set; }
-        public virtual DbSet<ProcessLibrary> ProcessLibraries { get; set; }
+        public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<OperationLibrary> OperationLibraries { get; set; }
         public virtual DbSet<SubOperationLibrary> SubOperationLibraries { get; set; }
         public virtual DbSet<Factory> Factorys { get; set; }
         public virtual DbSet<CategoryMapMaterialType> CategoryMapMaterialTypes { get; set; }
         public virtual DbSet<MaterialTypeMapProductGroup> MaterialTypeMapProductGroups { get; set; }
-        //public virtual DbSet<ArticleSyncConfig> ArticleSyncConfigs { get; set; }
-
+        public virtual DbSet<Machine> Machines { get; set; }
+        public virtual DbSet<Line> Lines { get; set; }
+        public virtual DbSet<Holiday> Holidaies { get; set; }
+        public virtual DbSet<Buyer> Buyers { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Calendar> Calendars { get; set; }
+        public virtual DbSet<CalendarDetail> CalendarDetails { get; set; }
+        public virtual DbSet<PlanningGroup> PlanningGroups { get; set; }
+        public virtual DbSet<PlanningGroupFactory> PlanningGroupFactorys { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ProductGroupUOMConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductGroupConfiguration());
             modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
@@ -146,19 +154,29 @@ namespace Shopfloor.Master.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration(new SubCategoryGroupConfiguration());
             modelBuilder.ApplyConfiguration(new AccountGroupConfiguration());
             modelBuilder.ApplyConfiguration(new GroupNameConfiguration());
-            modelBuilder.ApplyConfiguration(new ProcessConfiguration());
             modelBuilder.ApplyConfiguration(new GaugeConfiguration());
             modelBuilder.ApplyConfiguration(new MachineTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleBaseColorConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleBaseSizeConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleFlexFieldConfiguration());
-            modelBuilder.ApplyConfiguration(new ProcessLibraryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProcessConfiguration());
             modelBuilder.ApplyConfiguration(new OperationLibraryConfiguration());
             modelBuilder.ApplyConfiguration(new SubOperationLibraryConfiguration());
             modelBuilder.ApplyConfiguration(new FactoryConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryMapMaterialTypeConfiguration());
             modelBuilder.ApplyConfiguration(new MaterialTypeMapProductGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new MachineConfiguration());
+            modelBuilder.ApplyConfiguration(new LineConfiguration());
+            modelBuilder.ApplyConfiguration(new HolidayConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierConfiguration());
+           
+            modelBuilder.ApplyConfiguration(new CalendarConfiguration());
+            modelBuilder.ApplyConfiguration(new CalendarDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new PlanningGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new PlanningGroupFactoryConfiguration());
+
         }
     }
 }

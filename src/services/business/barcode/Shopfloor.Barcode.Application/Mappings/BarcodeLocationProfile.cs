@@ -13,6 +13,7 @@ namespace Shopfloor.Barcode.Application.BarcodeLocations
         {
             CreateMap<BarcodeLocation, BarcodeLocationModel>().ReverseMap();
             CreateMap<CreateBarcodeLocationCommand, BarcodeLocation>();
+            CreateMap<UpdateBarcodeLocationCommand, BarcodeLocation>();
             CreateMap<GetBarcodeLocationsQuery, BarcodeLocationParameter>();
         }
     }

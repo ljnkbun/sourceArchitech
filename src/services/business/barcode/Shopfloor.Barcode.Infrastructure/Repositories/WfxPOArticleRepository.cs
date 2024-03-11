@@ -27,11 +27,11 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             var query = _wfxPOArticles.Filter(parameter);
             if (fromDate.HasValue)
             {
-                query = query.Where(x => x.OrderCreationDate.HasValue && x.OrderCreationDate.Value.Date >= fromDate.Value.Date);
+                query = query.Where(x => x.POCreationDate.HasValue && x.POCreationDate.Value.Date >= fromDate.Value.Date);
             }
             if (toDate.HasValue)
             {
-                query = query.Where(x => x.OrderCreationDate.HasValue && x.OrderCreationDate.Value.Date <= toDate.Value.Date);
+                query = query.Where(x => x.POCreationDate.HasValue && x.POCreationDate.Value.Date <= toDate.Value.Date);
             }
 
             response.TotalCount = await query.CountAsync();
@@ -46,7 +46,7 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
 
         public async Task<bool> Existed()
         {
-            return await _wfxPOArticles.AnyAsync();
+            return await _wfxPOArticles.AnyAsync(x => x.PONo != null && x.POCreationDate != null);
         }
 
         public async Task SaveWfxPOArticleSync(List<WfxPOArticle> entites)
@@ -54,19 +54,18 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             var trans = await _dbContext.Database.BeginTransactionAsync();
             try
             {
-                var groupArticleCode = entites.GroupBy(x => x.ArticleCode).Select(x => x.Key);
+                var groupBy = entites.GroupBy(x => new { x.ArticleCode, x.OrderRefNum, x.PONo }).Select(x => x.Key);
 
-                var delEntities = new List<WfxPOArticle>();
+                var adds = new List<WfxPOArticle>();
+                var deletes = new List<WfxPOArticle>();
 
-                foreach (var articleCode in groupArticleCode)
+                foreach (var entry in groupBy)
                 {
-                    var lstDelByArticleCode = await _wfxPOArticles.Where(x => x.ArticleCode == articleCode).ToListAsync();
-                    delEntities.AddRange(lstDelByArticleCode);
+                    var anyHistory = await _wfxPOArticles.AnyAsync(x => x.ArticleCode == entry.ArticleCode && x.OrderRefNum == entry.OrderRefNum && x.PONo == entry.PONo);
+                    if (!anyHistory)
+                        adds.AddRange(entites.Where(x => x.ArticleCode == entry.ArticleCode && x.OrderRefNum == entry.OrderRefNum && x.PONo == entry.PONo));
                 }
-
-                _wfxPOArticles.RemoveRange(delEntities);
-                await _wfxPOArticles.AddRangeAsync(entites);
-
+                await _wfxPOArticles.AddRangeAsync(adds);
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             }
@@ -79,7 +78,17 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
 
         public async Task<DateTime> GetLastDate()
         {
-            return await _wfxPOArticles.MaxAsync(x => x.OrderCreationDate) ?? DateTime.Now;
+            return await _wfxPOArticles.MaxAsync(x => x.POCreationDate) ?? DateTime.Now;
+        }
+
+        public async Task<ICollection<WfxPOArticle>> GetByArticleCodeOrderRefAsync(string articleCode, string orderRefNum)
+        {
+            return await _wfxPOArticles.Where(x => x.ArticleCode == articleCode && x.OrderRefNum == orderRefNum).ToListAsync();
+        }
+
+        public async Task<ICollection<WfxPOArticle>> GetByOrderRefsAsync(string[] orderRefNums)
+        {
+            return await _wfxPOArticles.Where(x => orderRefNums.Contains(x.OrderRefNum)).ToListAsync();
         }
     }
 }

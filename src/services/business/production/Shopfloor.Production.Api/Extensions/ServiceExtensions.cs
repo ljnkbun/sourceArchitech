@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Shopfloor.EventBus.Extensions;
 using Shopfloor.EventBus.Models.Requests;
+using Shopfloor.EventBus.Models.Requests.Barcodes;
 using System.Security.Authentication;
 
 namespace Shopfloor.Production.Api.Extensions
@@ -13,6 +14,8 @@ namespace Shopfloor.Production.Api.Extensions
             {
                 #region AddRequestClient
                 x.AddRequestClient<GetCategoryByIdRequest>();
+                x.AddRequestClient<CreateArticleBarcodeRequest>();
+                x.AddRequestClient<GetArticleBarcodeByBarcodesRequest>();
                 #endregion
 
                 #region UsingRabbitMq

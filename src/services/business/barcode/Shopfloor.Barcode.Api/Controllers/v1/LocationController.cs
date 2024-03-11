@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shopfloor.Barcode.Application.Command.Locations;
 using Shopfloor.Barcode.Application.Parameters.Locations;
+using Shopfloor.Barcode.Application.Query.ImportDetails;
 using Shopfloor.Barcode.Application.Query.Locations;
 
 namespace Shopfloor.Barcode.Api.Controllers.v1
@@ -20,6 +21,7 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
+                OrderBy = filter.OrderBy,
                 Code = filter.Code,
                 Name = filter.Name,
                 ParentLocationId = filter.ParentLocationId,
@@ -39,7 +41,7 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         }
 
         // GET api/v1/<controller>/5
-        [HttpGet("GetByBarcode/{barcode}")]
+        [HttpGet("GetByBarcode")]
         public async Task<IActionResult> GetByBarcode(string barcode)
         {
             return Ok(await Mediator.Send(new GetLocationByBarcodeQuery { Barcode = barcode }));
@@ -65,6 +67,12 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteLocationCommand { Id = id }));
+        }
+
+        [HttpPost("Print")]
+        public async Task<IActionResult> Print(PrintLocationsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
         }
     }
 }

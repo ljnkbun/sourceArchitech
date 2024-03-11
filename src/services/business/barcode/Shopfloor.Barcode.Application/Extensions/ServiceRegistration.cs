@@ -21,6 +21,8 @@ namespace Shopfloor.Barcode.Application.Extensions
         public static void AddJob(this IServiceCollection services)
         {
             services.AddHostedService<WfxPOArticleDataSyncJob>();
+            services.AddHostedService<WfxGDIDataSyncJob>();
+            services.AddHostedService<WfxGDNDataSyncJob>();
         }
     }
 }

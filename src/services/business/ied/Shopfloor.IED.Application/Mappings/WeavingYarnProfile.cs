@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.WeavingYarns
         {
             CreateMap<WeavingYarn, WeavingYarnModel>().ReverseMap();
             CreateMap<CreateWeavingYarnCommand, WeavingYarn>();
+            CreateMap<UpdateCreateWeavingYarnModel, WeavingYarn>();
             CreateMap<GetWeavingYarnsQuery, WeavingYarnParameter>();
         }
     }

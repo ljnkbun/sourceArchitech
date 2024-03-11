@@ -12,8 +12,8 @@ namespace Shopfloor.Master.Application.Mappings
         public OperationLibraryProfile()
         {
             CreateMap<OperationLibrary, OperationLibraryModel>()
-                .ForMember(dest => dest.ProcessLibraryName, opts => opts.MapFrom(src => src.ProcessLibrary.Name))
-                .ForMember(dest => dest.ProcessLibraryCode, opts => opts.MapFrom(src => src.ProcessLibrary.Code))
+                .ForMember(dest => dest.ProcessName, opts => opts.MapFrom(src => src.Process.Name))
+                .ForMember(dest => dest.ProcessCode, opts => opts.MapFrom(src => src.Process.Code))
                 .ReverseMap();
             CreateMap<CreateOperationLibraryCommand, OperationLibrary>();
             CreateMap<GetOperationLibrariesQuery, OperationLibraryParameter>();

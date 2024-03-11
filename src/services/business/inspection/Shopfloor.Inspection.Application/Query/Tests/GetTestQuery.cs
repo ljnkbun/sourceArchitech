@@ -1,0 +1,27 @@
+using MediatR;
+using Shopfloor.Inspection.Domain.Entities;
+using Shopfloor.Inspection.Domain.Interfaces;
+using Shopfloor.Core.Exceptions;
+using Shopfloor.Core.Models.Responses;
+
+namespace Shopfloor.Inspection.Application.Query.Tests
+{
+    public class GetTestQuery : IRequest<Response<Test>>
+    {
+        public int Id { get; set; }
+    }
+    public class GetTestQueryHandler : IRequestHandler<GetTestQuery, Response<Test>>
+    {
+        private readonly ITestRepository _repository;
+        public GetTestQueryHandler(ITestRepository repository)
+        {
+            _repository = repository;
+        }
+        public async Task<Response<Test>> Handle(GetTestQuery query, CancellationToken cancellationToken)
+        {
+            var entity = await _repository.GetByIdAsync(query.Id);
+            if (entity == null) return new($"Tests Not Found (Id:{query.Id}).");
+            return new Response<Test>(entity);
+        }
+    }
+}

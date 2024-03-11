@@ -1,9 +1,13 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Shopfloor.Barcode.Domain.Constants;
+using NPOI.SS.Formula.Functions;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Barcode.Infrastructure.Contexts;
+using Shopfloor.Core.Extensions.Objects;
+using Shopfloor.Core.Models.Parameters;
+using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
 
 namespace Shopfloor.Barcode.Infrastructure.Repositories
@@ -13,14 +17,13 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
         private readonly DbSet<ImportArticle> _importArticles;
         private readonly DbSet<ImportDetail> _importDetails;
         private readonly DbSet<ArticleBarcode> _articleBarcodes;
-        private readonly DbSet<Import> _imports;
         public ImportArticleRepository(BarcodeContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            _imports = _dbContext.Set<Import>();
             _importArticles = _dbContext.Set<ImportArticle>();
             _importDetails = _dbContext.Set<ImportDetail>();
             _articleBarcodes = _dbContext.Set<ArticleBarcode>();
         }
+
         public async Task<ImportArticle> GetImportArticleByIdAsync(int id)
         {
             return await _importArticles
@@ -33,7 +36,7 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             return await _importArticles
                 .Include(x => x.ImportDetails)
                 .ThenInclude(x => x.ArticleBarcode)
-                .Where(x => ids.Any(y=>y==x.Id)).ToListAsync();
+                .Where(x => ids.Any(y => y == x.Id)).ToListAsync();
         }
         public async Task UpdateImportArticleAsync(ImportArticle entity, IEnumerable<ImportDetail> addedDetails, IEnumerable<ImportDetail> modifiedDetails, IEnumerable<ImportDetail> deletedDetails)
         {
@@ -43,14 +46,14 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
 
                 var articleBarcodes = deletedDetails.Select(y => y.ArticleBarcode);
                 _importDetails.RemoveRange(deletedDetails);
-                _articleBarcodes.RemoveRange(articleBarcodes); 
+                _articleBarcodes.RemoveRange(articleBarcodes);
                 _importDetails.UpdateRange(modifiedDetails);
                 _importDetails.AddRange(addedDetails);
                 _importArticles.Update(entity);
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             }
-            catch (Exception )
+            catch (Exception)
             {
                 await trans.RollbackAsync();
                 throw;
@@ -66,17 +69,19 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             }
-            catch (Exception )
+            catch (Exception)
             {
                 await trans.RollbackAsync();
                 throw;
             }
         }
-        public async Task<ImportType?> GetImportTypeByIdImportId(int id)
+
+        public async Task<List<ImportArticle>> GetImportArticleByImportIds(int[] ids)
         {
-            return await _imports.Where(x => x.Id == id).Select(x => x.Type).FirstOrDefaultAsync();
-                
+            return await _importArticles.Where(x => ids.Contains(x.ImportId)).ToListAsync();
+
         }
+
         public async Task AddImportArticleHasBarCodeAsync(ImportArticle entity, IEnumerable<ArticleBarcode> modifiedArticleBarcodes)
         {
             var trans = await _dbContext.Database.BeginTransactionAsync();
@@ -92,6 +97,23 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
                 await trans.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<ICollection<ImportArticle>> GetByIdsAsync(int[] ids)
+        {
+            return await _importArticles.Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<Response<IReadOnlyList<TModel>>> GetImportSyncAsync<TParam, TModel>(List<TParam> parameter)
+            where TParam : RequestParameter
+            where TModel : class
+        {
+            var response = new Response<IReadOnlyList<TModel>>();
+            var query = _dbContext.Set<ImportArticle>().Filters(parameter);
+            response.Data = await query.AsNoTracking()
+                    .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+            return response;
         }
     }
 }

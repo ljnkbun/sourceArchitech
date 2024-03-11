@@ -20,7 +20,6 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
-                Code = filter.Code,
                 Name = filter.Name,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,

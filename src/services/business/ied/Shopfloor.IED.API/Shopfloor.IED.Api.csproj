@@ -24,4 +24,13 @@
 		<ProjectReference Include="..\Shopfloor.IED.Infrastructure\Shopfloor.IED.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="TemplateWFX\SewingTemplate.xlsx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TemplateWFX\TemplateBeakerTest.xls">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

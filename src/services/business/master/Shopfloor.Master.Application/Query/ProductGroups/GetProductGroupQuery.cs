@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.ProductGroups
         public async Task<Response<ProductGroup>> Handle(GetProductGroupQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"ProductGroup Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"ProductGroup Not Found (Id:{query.Id}).");
             return new Response<ProductGroup>(entity);
         }
     }

@@ -10,7 +10,6 @@ namespace Shopfloor.Master.Domain.Entities
             CategoryMapMaterialTypes = new HashSet<CategoryMapMaterialType>();
         }
 
-        public virtual int CategoryId { get; set; }
         public virtual ICollection<MaterialTypeMapProductGroup> MaterialTypeMapProductGroups { get; set; }
         public virtual ICollection<CategoryMapMaterialType> CategoryMapMaterialTypes { get; set; }
     }

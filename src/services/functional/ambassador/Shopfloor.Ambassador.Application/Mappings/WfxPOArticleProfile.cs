@@ -10,7 +10,8 @@ namespace Shopfloor.Ambassador.Application.Mappings
     {
         public WfxPOArticleProfile()
         {
-            CreateMap<WfxPOArticleData, WfxPOArticleDto>().ReverseMap();
+            CreateMap<WfxPOArticleData, WfxPOArticleDto>()
+                .ReverseMap();
             CreateMap<GetWfxPOArticleQuery, WfxPOArticleParameter>().ReverseMap();
         }
     }

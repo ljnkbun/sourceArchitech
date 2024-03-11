@@ -25,9 +25,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ProcessCode = filter.ProcessCode,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

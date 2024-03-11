@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Themes
         public async Task<Response<Theme>> Handle(GetThemeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Theme Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"Theme Not Found (Id: {query.Id}).");
             return new Response<Theme>(entity);
         }
     }

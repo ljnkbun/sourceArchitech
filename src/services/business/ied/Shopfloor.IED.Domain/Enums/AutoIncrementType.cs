@@ -2,8 +2,10 @@
 
 public enum AutoIncrementType : byte
 {
-    Request = 0,
-    RTB = 1,
-    RC = 2,
-    RCP = 3,
+    IER = 0,
+    RCR = 1,
+    RCRP = 2,
+    Macro = 3,
+    Operation = 4,
+    Feature = 5
 }

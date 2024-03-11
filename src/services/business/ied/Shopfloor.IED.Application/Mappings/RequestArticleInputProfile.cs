@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.RequestArticleInputs
         {
             CreateMap<RequestArticleInput, RequestArticleInputModel>().ReverseMap();
             CreateMap<CreateRequestArticleInputCommand, RequestArticleInput>();
+            CreateMap<UpdateRequestArticleInputCommand, RequestArticleInput>();
             CreateMap<GetRequestArticleInputsQuery, RequestArticleInputParameter>();
         }
     }

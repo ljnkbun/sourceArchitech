@@ -20,16 +20,22 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
-                RequestDivisionId = filter.RequestDivisionId,
+                RequestArticleOutputId = filter.RequestArticleOutputId,
+                WFXArticleId = filter.WFXArticleId,
                 RequestNo = filter.RequestNo,
+                RequestTypeId = filter.RequestTypeId,
+                ArticleCode = filter.ArticleCode,
+                ArticleName = filter.ArticleName,
+                ProductGroup = filter.ProductGroup,
+                SubCategory = filter.SubCategory,
+                Buyer = filter.Buyer,
                 Comment = filter.Comment,
                 Status = filter.Status,
+                RejectReason = filter.RejectReason,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 
@@ -38,6 +44,13 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetWeavingIEDQuery { Id = id }));
+        }  
+        
+        // GET api/v1/<controller>/5
+        [HttpGet("report/{id}")]
+        public async Task<IActionResult> GetReport(int id)
+        {
+            return Ok(await Mediator.Send(new GetWeavingIEDReportsQuery { Id = id }));
         }
 
         // POST api/v1/<controller>

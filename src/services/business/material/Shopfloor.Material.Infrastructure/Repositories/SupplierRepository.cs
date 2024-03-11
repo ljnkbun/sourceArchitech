@@ -44,16 +44,24 @@ namespace Shopfloor.Material.Infrastructure.Repositories
             return response;
         }
 
-        public async Task<bool> UpdateSupplierAsync(Supplier datalUpdate, BaseListCreateDeleteEntity<SupplierProductCategory> dataSupplierProductCategory)
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _dbContext.Set<BuyerFile>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> UpdateSupplierAsync(Supplier datalUpdate, BaseUpdateEntity<SupplierProductCategory> dataSupplierProductCategory)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    _dbContext.Update(datalUpdate);
                     _dbContext.Set<SupplierProductCategory>().RemoveRange(dataSupplierProductCategory.LstDataDelete);
+
                     await _dbContext.Set<SupplierProductCategory>().AddRangeAsync(dataSupplierProductCategory.LstDataAdd);
+
+                    _dbContext.Update(datalUpdate);
+                    _dbContext.Set<SupplierProductCategory>().UpdateRange(dataSupplierProductCategory.LstDataUpdate);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }

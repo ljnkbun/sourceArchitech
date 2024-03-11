@@ -12,9 +12,10 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.Unit).HasColumnType("varchar(50)");
             builder.Property(e => e.ChemicalName).HasMaxLength(500);
-            builder.Property(e => e.ChemicalCode).HasColumnType("varchar(20)");
+            builder.Property(e => e.ChemicalCode).HasColumnType("varchar(100)");
+            builder.Property(e => e.ChemicalSubCategory).HasMaxLength(200);
             builder.HasOne(s => s.DyeingTBRTask)
-                .WithMany(g => g.DyeingTBTaskChemicals)
+                .WithMany(g => g.DyeingTBRChemicals)
                 .HasForeignKey(s => s.DyeingTBRTaskId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

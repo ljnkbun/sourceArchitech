@@ -8,5 +8,6 @@ namespace Shopfloor.Barcode.Domain.Interfaces
         Task<bool> IsUniqueBarcodeAsync(string barcode, int? id = null);
         Task<Location> GetByBarcodeAsync(string barcode);
         Task<Dictionary<string, int>> GetByCodesAsync(string[] codes);
+        Task<IEnumerable<Location>> GetByIdsAsync(int[] ids);
     }
 }

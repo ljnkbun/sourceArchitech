@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.Mappings
         {
             CreateMap<DyeingTBMaterialColor, DyeingTBMaterialColorModel>().ReverseMap();
             CreateMap<CreateDyeingTBMaterialColorCommand, DyeingTBMaterialColor>();
+            CreateMap<UpdateDyeingTBMaterialColorCommand, DyeingTBMaterialColor>();
             CreateMap<GetDyeingTBMaterialColorsQuery, DyeingTBMaterialColorParameter>();
             CreateMap<GetDyeingTBMaterialColorSearchesQuery, DyeingTBMaterialColorSearchParameter>();
         }

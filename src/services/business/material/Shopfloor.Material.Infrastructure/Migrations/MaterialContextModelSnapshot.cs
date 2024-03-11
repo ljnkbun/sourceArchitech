@@ -88,22 +88,24 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Address")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Address2")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Address3")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ApproveName")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("ApproveName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ApproveUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("BankAccountNumber")
                         .HasMaxLength(100)
@@ -114,23 +116,28 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("BillAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("BuyerType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("BuyerTypeName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("City")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContactEmail")
                         .HasMaxLength(250)
@@ -153,7 +160,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CountryOfFinalDestination")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -183,16 +191,20 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Department")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("FinalDestination")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("GroupNameCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -254,7 +266,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("PortofDischarge")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ReasonReject")
                         .HasColumnType("nvarchar(max)");
@@ -263,10 +276,12 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("SegmentOther")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ShipAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ShipmentTerms")
                         .HasMaxLength(250)
@@ -284,7 +299,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("tinyint");
 
                     b.Property<string>("SwiftCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("TIN")
                         .HasMaxLength(100)
@@ -308,7 +324,63 @@ namespace Shopfloor.Material.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.ToTable("Buyer", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.BuyerFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileId")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.ToTable("BuyerFile", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.BuyerProductCategory", b =>
@@ -323,10 +395,12 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CategoryCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -573,7 +647,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ArticleCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ArticleDesc")
                         .HasMaxLength(500)
@@ -715,6 +790,9 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("HSCode")
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("HSNCode")
                         .HasColumnType("varchar(200)");
 
@@ -730,10 +808,12 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasDefaultValueSql("((1))");
 
                     b.Property<string>("MaterialTypeCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("MaterialTypeName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("MaximumQty")
                         .HasColumnType("decimal(28,8)");
@@ -988,6 +1068,59 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     b.ToTable("MaterialRequestDynamicColumn", (string)null);
                 });
 
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.MaterialRequestFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileId")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("MaterialRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialRequestId");
+
+                    b.ToTable("MaterialRequestFile", (string)null);
+                });
+
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.PriceList", b =>
                 {
                     b.Property<int>("Id")
@@ -1062,7 +1195,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ArticleCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ArticleName")
                         .HasMaxLength(500)
@@ -1238,7 +1372,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ApproveName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<Guid?>("ApproveUserId")
                         .HasColumnType("uniqueidentifier");
@@ -1399,7 +1534,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("SegmentOther")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ShipAddress")
                         .HasMaxLength(500)
@@ -1449,6 +1585,59 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Supplier", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.SupplierFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileId")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("SupplierFile", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.SupplierProductCategory", b =>
@@ -1550,7 +1739,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("MoqRoundingTypeId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("MoqSurChargeValue")
                         .HasMaxLength(500)
@@ -1565,13 +1755,25 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SupplierId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MaterialRequestId");
 
                     b.ToTable("SupplierWisePurchaseOption", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.BuyerFile", b =>
+                {
+                    b.HasOne("Shopfloor.Material.Domain.Entities.Buyer", "Buyer")
+                        .WithMany("BuyerFiles")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
                 });
 
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.BuyerProductCategory", b =>
@@ -1637,6 +1839,17 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     b.Navigation("MaterialRequest");
                 });
 
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.MaterialRequestFile", b =>
+                {
+                    b.HasOne("Shopfloor.Material.Domain.Entities.MaterialRequest", "MaterialRequest")
+                        .WithMany("MaterialRequestFiles")
+                        .HasForeignKey("MaterialRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MaterialRequest");
+                });
+
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.PriceListDetail", b =>
                 {
                     b.HasOne("Shopfloor.Material.Domain.Entities.PriceList", "PriceList")
@@ -1670,6 +1883,17 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     b.Navigation("PriceListDetail");
                 });
 
+            modelBuilder.Entity("Shopfloor.Material.Domain.Entities.SupplierFile", b =>
+                {
+                    b.HasOne("Shopfloor.Material.Domain.Entities.Supplier", "Supplier")
+                        .WithMany("SupplierFiles")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.SupplierProductCategory", b =>
                 {
                     b.HasOne("Shopfloor.Material.Domain.Entities.Supplier", "Supplier")
@@ -1694,6 +1918,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.Buyer", b =>
                 {
+                    b.Navigation("BuyerFiles");
+
                     b.Navigation("ProductCategories");
                 });
 
@@ -1709,6 +1935,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
                     b.Navigation("DynamicColumns");
 
                     b.Navigation("FabricCompositions");
+
+                    b.Navigation("MaterialRequestFiles");
 
                     b.Navigation("MoqmsqRoudingOptionItems");
 
@@ -1729,6 +1957,8 @@ namespace Shopfloor.Material.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.Material.Domain.Entities.Supplier", b =>
                 {
+                    b.Navigation("SupplierFiles");
+
                     b.Navigation("SupplierProductCategories");
                 });
 #pragma warning restore 612, 618

@@ -23,22 +23,19 @@ namespace Shopfloor.Barcode.Application.Definitions
         public static Dictionary<string, string> ImportDetails =>
           new()
           {
-                { "A", nameof(UploadExcelImportDetailModel.ArticleName) },
-                { "B", nameof(UploadExcelImportDetailModel.ArticleCode) },
-                { "C", nameof(UploadExcelImportDetailModel.Quantity) },
-                { "D", nameof(UploadExcelImportDetailModel.UOM) },
-                { "E", nameof(UploadExcelImportDetailModel.Unit) },
-                { "F", nameof(UploadExcelImportDetailModel.BarCode) },
-                { "G", nameof(UploadExcelImportDetailModel.Status) },
+                { "A", nameof(UploadExcelImportDetailModel.PONo) },
+                { "B", nameof(UploadExcelImportDetailModel.ArticleName) },
+                { "C", nameof(UploadExcelImportDetailModel.ArticleCode) },
+                { "D", nameof(UploadExcelImportDetailModel.Unit) },
+                { "E", nameof(UploadExcelImportDetailModel.QuantityYard) },
+                { "F", nameof(UploadExcelImportDetailModel.QuantityMeter) },
+                { "G", nameof(UploadExcelImportDetailModel.Quantity) },
                 { "H", nameof(UploadExcelImportDetailModel.Shade) },
-                { "I", nameof(UploadExcelImportDetailModel.PONo) },
+                { "I", nameof(UploadExcelImportDetailModel.Grade) },
                 { "J", nameof(UploadExcelImportDetailModel.OC) },
-                { "K", nameof(UploadExcelImportDetailModel.Color) },
-                { "L", nameof(UploadExcelImportDetailModel.Size) },
-                { "M", nameof(UploadExcelImportDetailModel.Location) },
-                { "N", nameof(UploadExcelImportDetailModel.NumberOfCone) },
-                { "O", nameof(UploadExcelImportDetailModel.WeightPerCone) },
-                { "P", nameof(UploadExcelImportDetailModel.Note) },
+                { "K", nameof(UploadExcelImportDetailModel.Size) },
+                { "L", nameof(UploadExcelImportDetailModel.Color) },
+                { "M", nameof(UploadExcelImportDetailModel.Note) }
           };
     }
 }

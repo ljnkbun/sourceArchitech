@@ -28,7 +28,7 @@ namespace Shopfloor.Barcode.Application.Command.ImportDetails
             List<ImportDetail> importTransferToSiteDetails = new List<ImportDetail>();
             foreach (var newDetail in command.updateImportDetailCommands)
             {
-                var detail = oldDetails.FirstOrDefault(x => x.Id == newDetail.Id);
+                var detail = oldDetails.Find(x => x.Id == newDetail.Id);
                 if (detail != null)
                 {
                     _mapper.Map<UpdateImportDetailCommand, ImportDetail>(newDetail, detail);

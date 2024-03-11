@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Certificates
         public async Task<Response<int>> Handle(DeleteCertificateCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Certificate Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Certificate Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

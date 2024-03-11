@@ -9,13 +9,15 @@ namespace Shopfloor.IED.Application.Parameters.DyeingTBRecipes
 
         public string TBRecipeNo { get; set; }
 
+        public string TBRecipeName { get; set; }
+
         public int? TemplateId { get; set; }
 
         public string TemplateName { get; set; }
 
         public string TCFNo { get; set; }
 
-        public int? ApproveVersionId { get; set; }
+        public int? ApproveVersionIndex { get; set; }
 
         public DateTime? ApproveDate { get; set; }
 

@@ -16,8 +16,6 @@ namespace Shopfloor.IED.Application.Validations.RequestDivisionProcesses
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
-
-            RuleFor(p => p.Status).IsInEnum();
         }
     }
 }

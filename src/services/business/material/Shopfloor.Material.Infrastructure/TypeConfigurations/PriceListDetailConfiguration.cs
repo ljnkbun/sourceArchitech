@@ -13,6 +13,7 @@ namespace Shopfloor.Material.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.MaterialCode).HasMaxLength(200);
             builder.Property(e => e.Uom).HasMaxLength(200);
+            builder.Property(e => e.ArticleCode).HasMaxLength(200);
             builder.Property(e => e.ArticleName).HasMaxLength(500);
             builder.Property(e => e.DeliveryTerm).HasMaxLength(200);
             builder.Property(e => e.Price).HasColumnType("decimal(28,8)");

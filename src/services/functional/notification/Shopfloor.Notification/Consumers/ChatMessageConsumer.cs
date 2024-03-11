@@ -13,8 +13,14 @@ namespace Shopfloor.Notification.Consumers
             IConfiguration configuration)
         {
             _logger = logger;
+
+            var domainUrl = configuration["DomainUrl"];
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+            {
+                domainUrl = Environment.GetEnvironmentVariable("DomainUrl");
+            }
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{configuration["DomainUrl"]}/chathub")
+                .WithUrl($"{domainUrl}/chathub")
                 .Build();
         }
         public async Task Consume(ConsumeContext<ChatMessage> context)

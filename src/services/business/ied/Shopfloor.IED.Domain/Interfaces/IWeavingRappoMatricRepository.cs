@@ -5,5 +5,6 @@ namespace Shopfloor.IED.Domain.Interfaces
 {
     public interface IWeavingRappoMatricRepository : IGenericRepositoryAsync<WeavingRappoMatric>
     {
+        Task<List<WeavingRappoMatric>> GetListAsync(int weavingRappoId);
     }
 }

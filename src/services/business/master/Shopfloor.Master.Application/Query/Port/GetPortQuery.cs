@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Ports
         public async Task<Response<Port>> Handle(GetPortQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Port Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Port Not Found (Id:{query.Id}).");
             return new Response<Port>(entity);
         }
     }

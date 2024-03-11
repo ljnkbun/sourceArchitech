@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Grades
         public async Task<Response<int>> Handle(DeleteGradeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Grade Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Grade Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

@@ -56,7 +56,7 @@ namespace Shopfloor.Material.Application.Command.PriceLists
         {
             var entity = await _repositoryPriceList.GetByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"PriceList Not Found.");
+                return new($"PriceList Not Found.");
             var ignores = new string[]
             {
                 nameof(PriceList.Status),
@@ -72,7 +72,7 @@ namespace Shopfloor.Material.Application.Command.PriceLists
 
             var insertEntitiesPriceListDetails = _mapper.Map<List<PriceListDetail>>(command.PriceListDetails);
 
-            await _repositoryPriceList.UpdatePriceListAsync(entity, new BaseListCreateDeleteEntity<PriceListDetail>
+            await _repositoryPriceList.UpdatePriceListAsync(entity, new BaseUpdateEntity<PriceListDetail>
             {
                 LstDataAdd = insertEntitiesPriceListDetails,
                 LstDataDelete = deleteEntitiesPriceListDetails

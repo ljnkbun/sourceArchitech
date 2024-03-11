@@ -7,13 +7,15 @@ namespace Shopfloor.IED.Application.Parameters.DyeingTBRequests
     {
         public string RequestNo { get; set; }
 
-        public int? RequestType { get; set; }
+        public int? RecipeCategoryId { get; set; }
 
         public DateTime? RequestDate { get; set; }
 
         public string StyleRef { get; set; }
 
         public string Remark { get; set; }
+
+        public int? DyeingIEDId { get; set; }
 
         public string Buyer { get; set; }
 

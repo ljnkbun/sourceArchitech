@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBMaterialColors
         public async Task<Response<int>> Handle(DeleteDyeingTBMaterialColorCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"DyeingTBMaterialColor Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"DyeingTBMaterialColor Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

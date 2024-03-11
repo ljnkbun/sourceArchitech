@@ -10,13 +10,15 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRequests
 {
     public class CreateDyeingTBRequestCommand : IRequest<Response<int>>
     {
-        public int RequestType { get; set; }
+        public int RecipeCategoryId { get; set; }
 
         public DateTime RequestDate { get; set; }
 
         public string StyleRef { get; set; }
 
         public string Remark { get; set; }
+
+        public int? DyeingIEDId { get; set; }
 
         public string Buyer { get; set; }
 
@@ -26,9 +28,9 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRequests
 
         public TBRequestStatus Status { get; set; }
 
-        public virtual ICollection<CreateDyeingTBMaterialCommand> DyeingTBMaterials { get; set; }
+        public ICollection<CreateDyeingTBMaterialCommand> DyeingTBMaterials { get; set; }
 
-        public virtual ICollection<CreateDyeingTBRequestFileCommand> DyeingTBRequestFiles { get; set; }
+        public ICollection<CreateDyeingTBRequestFileCommand> DyeingTBRequestFiles { get; set; }
     }
 
     public class CreateDyeingTBRequestCommandHandler : IRequestHandler<CreateDyeingTBRequestCommand, Response<int>>

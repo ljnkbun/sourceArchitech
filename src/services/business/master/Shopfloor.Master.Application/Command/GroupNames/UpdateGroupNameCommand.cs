@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.GroupNames
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"GroupName Not Found.");
+            if (entity == null) return new($"GroupName Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

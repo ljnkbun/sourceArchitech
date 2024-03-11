@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.ColorDefinitions
         public async Task<Response<ColorDefinition>> Handle(GetColorDefinitionQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"ColorDefinition Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"ColorDefinition Not Found (Id:{query.Id}).");
             return new Response<ColorDefinition>(entity);
         }
     }

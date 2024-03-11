@@ -15,6 +15,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.Property(e => e.MachineCode).HasColumnType("varchar(50)");
             builder.Property(e => e.MachineName).HasMaxLength(200);
             builder.Property(e => e.Temperature).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.Ratio).HasDefaultValue(0).HasColumnType("decimal(28,8)");
             builder.HasOne(s => s.DyeingTBRecipe)
                 .WithMany(g => g.DyeingTBRTasks)
                 .HasForeignKey(s => s.DyeingTBRecipeId)

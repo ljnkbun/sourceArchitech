@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.RecipeUnits
         public async Task<Response<int>> Handle(DeleteRecipeUnitCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Recipe Unit Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Recipe Unit Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

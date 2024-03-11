@@ -2,6 +2,14 @@
 {
     public static class RequestQueueName
     {
+        // Buyer
+        public const string GetBuyerByIdRequest = "GetBuyerByIdRequest";
+        public const string GetBuyersRequest = "GetBuyersRequest";
+
+        // Supplier
+        public const string GetSupplierByIdRequest = "GetSupplierByIdRequest";
+        public const string GetSuppliersRequest = "GetSuppliersRequest";
+
         // Category
         public const string GetCategoryByIdRequest = "GetCategoryByIdRequest";
         public const string GetCategoriesRequest = "GetCategoriesRequest";
@@ -169,14 +177,10 @@
         // AccountGroup
         public const string GetAccountGroupByIdRequest = "GetAccountGroupByIdRequest";
         public const string GetAccountGroupsRequest = "GetAccountGroupsRequest";
-        
+
         // GroupName
         public const string GetGroupNameByIdRequest = "GetGroupNameByIdRequest";
         public const string GetGroupNamesRequest = "GetGroupNamesRequest";
-
-        // Process
-        public const string GetProcessByIdRequest = "GetProcessByIdRequest";
-        public const string GetProcessesRequest = "GetProcessesRequest";
 
         // Gauge
         public const string GetGaugeByIdRequest = "GetGaugeByIdRequest";
@@ -192,11 +196,13 @@
 
         // Article
         public const string GetArticleByIdRequest = "GetArticleByIdRequest";
+        public const string GetArticlesByIdsRequest = "GetArticlesByIdsRequest";
         public const string GetArticlesRequest = "GetArticlesRequest";
+        public const string GetArticlessRequest = "GetArticlessRequest";
 
-        // ProcessLibrary
-        public const string GetProcessLibraryByIdRequest = "GetProcessLibraryByIdRequest";
-        public const string GetProcessLibrariesRequest = "GetProcessLibrariesRequest";
+        // Process
+        public const string GetProcessByIdRequest = "GetProcessByIdRequest";
+        public const string GetProcessesRequest = "GetProcessesRequest";
 
         // OperationLibrary
         public const string GetOperationLibraryByIdRequest = "GetOperationLibraryByIdRequest";
@@ -211,5 +217,95 @@
         public const string GetWfxMasterDataRequest = "GetWfxMasterDataRequest";
 
         public const string GetWfxPOArticleRequest = "GetWfxPOArticleRequest";
+        public const string GetWfxGDIRequest = "GetWfxGDIRequest";
+        public const string GetWfxGDNRequest = "GetWfxGDNRequest";
+        public const string GetWfxPorRequest = "GetWfxPorRequest";
+        public const string GetWfxWebSharedRequest = "GetWfxWebSharedRequest";
+        public const string GetWFXOperationLibraryRequest = "GetWFXOperationLibraryRequest";
+
+        //Barcode
+        public const string GetWfxImportSyncRequest = "GetWfxImportSyncRequest";
+        public const string GetWfxExportSyncRequest = "GetWfxExportSyncRequest";
+
+        //EfficiencyProfile
+        public const string GetProfileEfficiencyRequest = "GetProfileEfficiencyRequest";
+        public const string GetProfileEfficienciesRequest = "GetProfileEfficienciesRequest";
+
+        //Machine
+        public const string GetMachineByIdRequest = "GetMachineByIdRequest";
+        public const string GetMachinesRequest = "GetMachinesRequest";
+
+        //Line
+        public const string GetLineByIdRequest = "GetLineByIdRequest";
+        public const string GetLinesRequest = "GetLinesRequest";
+
+        // QCDefectType
+        public const string GetQCDefectTypeByIdRequest = "GetQCDefectTypeByIdRequest";
+        public const string GetQCDefectTypesRequest = "GetQCDefectTypesRequest";
+
+
+        // ProblemTimeline
+        public const string GetProblemTimelineByIdRequest = "GetProblemTimelineByIdRequest";
+        public const string GetProblemTimelinesRequest = "GetProblemTimelinesRequest";
+
+        // ProblemCorrectiveAction
+        public const string GetProblemCorrectiveActionByIdRequest = "GetProblemCorrectiveActionByIdRequest";
+        public const string GetProblemCorrectiveActionsRequest = "GetProblemCorrectiveActionsRequest";
+
+        // ProblemRootCause
+        public const string GetProblemRootCauseByIdRequest = "GetProblemRootCauseByIdRequest";
+        public const string GetProblemRootCausesRequest = "GetProblemRootCausesRequest";
+
+        // Barcode
+        public const string CreateArticleBarcodeRequest = "CreateArticleBarcodeRequest";
+        public const string GetArticleBarcodeByBarcodesRequest = "GetArticleBarcodeByBarcodesRequest";
+
+        // QCDefect
+        public const string GetQCDefectByIdRequest = "GetQCDefectByIdRequest";
+        public const string GetQCDefectsRequest = "GetQCDefectsRequest";
+        public const string GetQCDefectByIdsRequest = "GetQCDefectByIdsRequest";
+
+        // QCDefinitionDefect
+        public const string GetQCDefinitionDefectByIdRequest = "GetQCDefinitionDefectByIdRequest";
+        public const string GetQCDefinitionDefectsRequest = "GetQCDefinitionDefectsRequest";
+
+        // QCDefinition
+        public const string GetQCDefinitionByIdRequest = "GetQCDefinitionByIdRequest";
+        public const string GetQCDefinitionsRequest = "GetQCDefinitionsRequest";
+        public const string GetQCDefinitionByCodeRequest = "GetQCDefinitionByCodeRequest";
+
+        // PlanningGroup
+        public const string GetPlanningGroupByIdRequest = "GetPlanningGroupByIdRequest";
+        public const string GetPlanningGroupsRequest = "GetPlanningGroupsRequest";
+
+        // PlanningGroupFactory
+        public const string GetPlanningGroupFactoryByIdRequest = "GetPlanningGroupFactoryByIdRequest";
+        public const string GetPlanningGroupFactoriesRequest = "GetPlanningGroupFactoriesRequest";
+        public const string GetPlanningGroupFactoryByIdsRequest = "GetPlanningGroupFactoryByIdsRequest";
+
+        // Calendar
+        public const string GetCalendarByIdRequest = "GetCalendarByIdRequest";
+        public const string GetCalendarByIdsRequest = "GetCalendarByIdsRequest";
+        public const string GetCalendarsRequest = "GetCalendarsRequest";
+
+        // Holiday
+        public const string GetHolidayByIdRequest = "GetHolidayByIdRequest";
+        public const string GetHolidaysRequest = "GetHolidaysRequest";
+
+        // FPPO
+        public const string GetFPPOByIdRequest = "GetFPPOByIdRequest";
+        public const string GetFPPOsRequest = "GetFPPOsRequest";
+
+        // Factory
+        public const string GetFactoryByIdRequest = "GetFactoryByIdRequest";
+        public const string GetFactoriesRequest = "GetFactoriesRequest";
+
+        // DynamicColumn
+        public const string GetDynamicColumnByIdRequest = "GetDynamicColumnByIdRequest";
+        public const string GetDynamicColumnsRequest = "GetDynamicColumnsRequest";
+
+        // DataCalculate
+        public const string GetDataCalculatesRequest = "GetDataCalculatesRequest";
+        public const string GetDataCalculateRequest = "GetDataCalculateRequest";
     }
 }

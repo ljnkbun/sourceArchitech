@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.Property(e => e.ArticleCode).IsRequired().HasMaxLength(200);
             builder.Property(e => e.ArticleName).IsRequired().HasMaxLength(500);
             builder.Property(e => e.Color).IsRequired().HasMaxLength(200);
+            builder.Property(e => e.BaseColorList).IsRequired().HasMaxLength(2000);
 
             builder.HasOne(e => e.RequestDivisionProcess)
                 .WithMany(e => e.RequestArticleOutputs)

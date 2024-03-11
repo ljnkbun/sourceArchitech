@@ -1,4 +1,5 @@
-﻿using Shopfloor.Core.Models.Parameters;
+﻿using Shopfloor.Core.Models.Entities;
+using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
@@ -12,6 +13,9 @@ namespace Shopfloor.IED.Domain.Interfaces
         Task<bool> IsUniqueAsync(string code, int? id = null);
 
         Task<DyeingTBRTask> GetWithIncludeByIdAsync(int id);
+
+        Task<bool> UpdateDyeingTBRTaskAsync(DyeingTBRTask dataDyeingTBRTaskUpdate,
+            BaseUpdateEntity<DyeingTBRChemical> dataDyeingTBRChemical, BaseUpdateEntity<DyeingTBRChemicalValue> dataDyeingTBRChemicalValue);
 
         Task<PagedResponse<IReadOnlyList<TModel>>> GetTaskPagedResponseAsync<TParam, TModel>(TParam parameter) where TParam : RequestParameter where TModel : class;
     }

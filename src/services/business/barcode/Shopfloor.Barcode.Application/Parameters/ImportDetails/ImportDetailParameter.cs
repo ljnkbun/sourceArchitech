@@ -15,7 +15,7 @@ namespace Shopfloor.Barcode.Application.Parameters.ImportDetails
         public string OC { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
-        public int? NumberOfCone { get; set; }
+        public decimal? NumberOfCone { get; set; }
         public decimal? WeightPerCone { get; set; }
         public string Note { get; set; }
         public string Location { get; set; }

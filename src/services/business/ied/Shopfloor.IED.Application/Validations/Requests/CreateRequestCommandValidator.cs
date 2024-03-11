@@ -1,20 +1,26 @@
 ﻿using FluentValidation;
 using Shopfloor.IED.Application.Command.Requests;
-using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Validations.Requests
 {
     public class CreateRequestCommandValidator : AbstractValidator<CreateRequestCommand>
     {
-        private readonly IRequestRepository _requestRepository;
-        public CreateRequestCommandValidator(IRequestRepository RequestRepository)
+        public CreateRequestCommandValidator()
         {
-            _requestRepository = RequestRepository;
-
             RuleFor(p => p.RequestTypeId)
                .NotEmpty().WithMessage("{PropertyName} is required.")
                .NotNull();
 
+            RuleFor(p => p.RequestDivisions)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
+
+            RuleForEach(x => x.RequestDivisions).ChildRules(child =>
+            {
+                child.RuleFor(p => p.RequestDivisionProcesses)
+                    .NotEmpty().WithMessage("{PropertyName} is required.")
+                    .NotNull();
+            });
         }
     }
 }

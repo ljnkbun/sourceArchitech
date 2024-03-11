@@ -11,8 +11,9 @@ namespace Shopfloor.Barcode.Domain.Interfaces
         Task<ImportDetail> GetImportDetailByIdAsync(int id);
         Task DeleteImportTransferToSiteDetaisAsync(List<ImportDetail> importTransferToSiteDetails);
 
-        Task<List<TModel>> PrintImportDetail<TModel>(int[] ids);
-        Task<ICollection<ArticleBarcode>> GenBarCode(string UOM, ICollection<ImportDetail> details);
+        Task<List<TModel>> PrintImportDetail<TModel>(int[] ids, CategoryType categoryType);
+        Task GenBarCode(string UOM, ICollection<ImportArticle> articles);
+        Task GenBarCode(string UOM, ICollection<ImportDetail> details);
         Task<ImportType?> GetImportTypeByIdImportArticleId(int id);
         Task AddImportDetailHasBarCodeAsync(ImportDetail entity, ArticleBarcode modifiedArticleBarcode);
     }

@@ -33,8 +33,6 @@ namespace Shopfloor.Barcode.Infrastructure.Extensions
             services.AddTransient<IArticleBarcodeRepository, ArticleBarcodeRepository>();
             services.AddTransient<IArticleBarcodeHistoryRepository, ArticleBarcodeHistoryRepository>();
             services.AddTransient<IBarcodeLocationRepository, BarcodeLocationRepository>();
-            services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<IImportTransferToSiteSyncRepository, ImportTransferToSiteSyncRepository>();
             services.AddTransient<IImportRepository, ImportRepository>();
             services.AddTransient<IImportArticleRepository, ImportArticleRepository>();
             services.AddTransient<IImportDetailRepository, ImportDetailRepository>();
@@ -43,14 +41,17 @@ namespace Shopfloor.Barcode.Infrastructure.Extensions
             services.AddTransient<IExportArticleRepository, ExportArticleRepository>();
             services.AddTransient<IExportDetailRepository, ExportDetailRepository>();
             services.AddTransient<IWfxPOArticleRepository, WfxPOArticleRepository>();
+            services.AddTransient<IWfxPOArticleHistoryRepository, WfxPOArticleHistoryRepository>();
+            services.AddTransient<IWfxGDIRepository, WfxGDIRepository>();
+            services.AddTransient<IWfxGDIHistoryRepository, WfxGDIHistoryRepository>();
+            services.AddTransient<IWfxGDNRepository, WfxGDNRepository>();
+            services.AddTransient<IWfxGDNHistoryRepository, WfxGDNHistoryRepository>();
 
             services.AddTransient<IWfxPOArticleServices, WfxPOArticleServices>();
-            //services.AddHttpClient<IWfxPOArticleServices, WfxPOArticleServices>((x) =>
-            //{
-            //    string apiUrl = configuration["WfxApiPOArticleSettings:Uri"];
-            //    x.BaseAddress = new Uri(apiUrl);
-            //});
-
+            services.AddTransient<IWfxGDIServices, WfxGDIServices>();
+            services.AddTransient<IWfxGDNServices, WfxGDNServices>();
+            services.AddTransient<IAppVersionRepository, AppVersionRepository>();
+            ;
         }
     }
 }

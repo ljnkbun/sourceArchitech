@@ -2,6 +2,8 @@
 {
     public class MaterialImportExcelModel
     {
+        public string HSCode { get; set; }
+
         public string ProductCatCode { get; set; }
 
         public string ProductCatName { get; set; }

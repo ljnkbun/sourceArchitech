@@ -19,6 +19,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ChemicalCode = filter.ChemicalCode,
                 Unit = filter.Unit,
                 ChemicalName = filter.ChemicalName,
+                ChemicalSubCategory = filter.ChemicalSubCategory,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
                 CreatedDate = filter.CreatedDate,

@@ -58,17 +58,20 @@ namespace Shopfloor.Material.Infrastructure.Contexts
         public virtual DbSet<DynamicColumn> DynamicColumns { get; set; }
         public virtual DbSet<DynamicColumnContent> DynamicColumnContents { get; set; }
         public virtual DbSet<MaterialRequestDynamicColumn> MaterialRequestDynamicColumns { get; set; }
+        public virtual DbSet<MaterialRequestFile> MaterialRequestFiles { get; set; }
+        public virtual DbSet<SupplierFile> SupplierFiles { get; set; }
+        public virtual DbSet<BuyerFile> BuyerFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AutoIncrementMappingConfiguration());
+            modelBuilder.ApplyConfiguration(new AutoIncrementConfiguration());
             modelBuilder.ApplyConfiguration(new MaterialRequestConfiguration());
             modelBuilder.ApplyConfiguration(new FabricCompositionConfiguration());
             modelBuilder.ApplyConfiguration(new MOQMSQRoudingOptionItemConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierConfiguration());
             modelBuilder.ApplyConfiguration(new SupplierWisePurchaseOptionConfiguration());
             modelBuilder.ApplyConfiguration(new BuyerConfiguration());
-            modelBuilder.ApplyConfiguration(new BuyerProductCategoryMappingConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerProductCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new PriceListDetailColorConfiguration());
             modelBuilder.ApplyConfiguration(new PriceListDetailSizeConfiguration());
             modelBuilder.ApplyConfiguration(new PriceListDetailConfiguration());
@@ -77,6 +80,9 @@ namespace Shopfloor.Material.Infrastructure.Contexts
             modelBuilder.ApplyConfiguration(new DynamicColumnConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicColumnContentConfiguration());
             modelBuilder.ApplyConfiguration(new MaterialRequestDynamicColumnConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialRequestFileConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerFileConfiguration());
+            modelBuilder.ApplyConfiguration(new SupplierFileConfiguration());
         }
     }
 }

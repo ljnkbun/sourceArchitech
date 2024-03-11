@@ -11,11 +11,10 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         {
             base.Configure(builder);
             builder.Property(e => e.Deleted).HasDefaultValueSql("((0))");
-            builder.HasOne(e => e.WeavingArticle)
-                .WithMany(e => e.WeavingRappos)
-                .HasForeignKey(e => e.WeavingArticleId)
+            builder.HasOne(e => e.WeavingIED)
+                .WithOne(e => e.WeavingRappo)
+                .HasForeignKey<WeavingRappo>(e => e.WeavingIEDId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
         }
     }
 }

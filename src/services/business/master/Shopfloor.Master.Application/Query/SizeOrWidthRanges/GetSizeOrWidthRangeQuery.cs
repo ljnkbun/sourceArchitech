@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.SizeOrWidthRanges
         public async Task<Response<SizeOrWidthRange>> Handle(GetSizeOrWidthRangeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SizeOrWidthRange Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"SizeOrWidthRange Not Found (Id: {query.Id}).");
             return new Response<SizeOrWidthRange>(entity);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Shopfloor.Core.Models.Parameters;
+﻿using Shopfloor.Core.Models.Entities;
+using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
@@ -13,4 +14,7 @@ public interface IDyeingTBMaterialRepository : IGenericRepositoryAsync<DyeingTBM
 
     Task<PagedResponse<IReadOnlyList<TModel>>> GetMaterialPagedResponseAsync<TParam, TModel>(TParam parameter)
         where TParam : RequestParameter where TModel : class;
+
+    Task<bool> UpdateDyeingTBMaterialAsync(DyeingTBMaterial dataDyeingTBRequestUpdate,
+        BaseUpdateEntity<DyeingTBMaterialColor> dataDyeingTBMaterialColor);
 }

@@ -8,7 +8,6 @@ namespace Shopfloor.IED.Application.Command.WeavingBorderStyles
 {
     public class CreateWeavingBorderStyleCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
     }
     public class CreateWeavingBorderStyleCommandHandler : IRequestHandler<CreateWeavingBorderStyleCommand, Response<int>>

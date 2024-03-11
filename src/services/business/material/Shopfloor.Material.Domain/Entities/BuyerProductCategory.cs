@@ -10,6 +10,6 @@ namespace Shopfloor.Material.Domain.Entities
 
         public string CategoryName { get; set; }
 
-        public Buyer Buyer { get; set; }
+        public virtual  Buyer Buyer { get; set; }
     }
 }

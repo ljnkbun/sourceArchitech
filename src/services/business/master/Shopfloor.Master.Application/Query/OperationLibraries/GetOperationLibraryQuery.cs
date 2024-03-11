@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.OperationLibraries
         public async Task<Response<OperationLibrary>> Handle(GetOperationLibraryQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"OperationLibrary Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"OperationLibrary Not Found (Id:{query.Id}).");
             return new Response<OperationLibrary>(entity);
         }
     }

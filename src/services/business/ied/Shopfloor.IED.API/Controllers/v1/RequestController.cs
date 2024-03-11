@@ -24,13 +24,12 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 Description = filter.Description,
                 Status = filter.Status,
                 StatusComment = filter.StatusComment,
+                ExpectedQty = filter.ExpectedQty,
                 RequestTypeId = filter.RequestTypeId,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 
@@ -40,12 +39,23 @@ namespace Shopfloor.IED.Api.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetRequestQuery { Id = id }));
         }
-
+        [HttpGet("GetFullRouting/{id}")]
+        public async Task<IActionResult> GetFullRouting(int id)
+        {
+            return Ok(await Mediator.Send(new GetFullRoutingRequestQuery { Id = id }));
+        }
         // POST api/v1/<controller>
         [HttpPost]
         public async Task<IActionResult> Post(CreateRequestCommand command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        // POST api/v1/<controller>/Submit/1
+        [HttpPut("Submit/{id}")]
+        public async Task<IActionResult> Submit(int id)
+        {
+            return Ok(await Mediator.Send(new SubmitRequestCommand { Id = id }));
         }
 
         // PUT api/v1/<controller>/5
@@ -61,28 +71,6 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteRequestCommand { Id = id }));
-        }
-
-        // PUT api/v1/<controller>/UpdateStatus/5
-        [HttpPut("UpdateStatus/{id}")]
-        public async Task<IActionResult> UpdateStatus(int id, UpdateRequestStatusCommand command)
-        {
-            if (id != command.Id) return BadRequest();
-            return Ok(await Mediator.Send(command));
-        }
-
-        // PUT api/v1/<controller>/Approve
-        [HttpPut("Approve")]
-        public async Task<IActionResult> Approve(ApproveRequestCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpPut("Reject/{id}")]
-        public async Task<IActionResult> Reject(int id, RejectRequestCommand command)
-        {
-            if (id != command.Id) return BadRequest();
-            return Ok(await Mediator.Send(command));
         }
     }
 }

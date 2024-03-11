@@ -11,9 +11,17 @@ namespace Shopfloor.IED.Application.SewingTaskLibs
     {
         public SewingTaskLibProfile()
         {
-            CreateMap<SewingTaskLib, SewingTaskLibModel>().ReverseMap();
             CreateMap<CreateSewingTaskLibCommand, SewingTaskLib>();
             CreateMap<GetSewingTaskLibsQuery, SewingTaskLibParameter>();
+            CreateMap<SewingTaskLib, SewingTaskLibModel>()
+                .ForMember(dest => dest.BundleQuality,
+                    otp => otp.MapFrom(x => (decimal?)x.SewingBundle.Quantity))
+                .ForMember(dest => dest.PersonalAllowance,
+                    otp => otp.MapFrom(x => (decimal?)x.SewingMachineEfficiencyProfile.SewingEfficiencyProfile.PersonalAllowance))
+                .ForMember(dest => dest.MachineDelay,
+                    otp => otp.MapFrom(x => (decimal?)x.SewingMachineEfficiencyProfile.SewingEfficiencyProfile.MachineDelay))
+                .ForMember(dest => dest.Contingency,
+                    otp => otp.MapFrom(x => (decimal?)x.SewingMachineEfficiencyProfile.SewingEfficiencyProfile.Contingency));
         }
     }
 }

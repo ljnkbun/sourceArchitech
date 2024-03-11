@@ -6,6 +6,6 @@ namespace Shopfloor.Master.Application.Parameters.OperationLibraries
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int? ProcessLibraryId { get; set; }
+        public int? ProcessId { get; set; }
     }
 }

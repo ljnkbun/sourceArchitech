@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Wfxs\WFXOperationLibraryResponse.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\shareds\Shopfloor.Cache\Shopfloor.Cache.csproj" />
     <ProjectReference Include="..\..\..\..\shareds\Shopfloor.EventBus\Shopfloor.EventBus.csproj" />
     <ProjectReference Include="..\Shopfloor.Ambassador.Domain\Shopfloor.Ambassador.Domain.csproj" />

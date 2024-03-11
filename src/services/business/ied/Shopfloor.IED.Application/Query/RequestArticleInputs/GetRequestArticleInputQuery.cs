@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.RequestArticleInputs
         public async Task<Response<RequestArticleInput>> Handle(GetRequestArticleInputQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"RequestArticleInput Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"RequestArticleInput Not Found (Id:{query.Id}).");
             return new Response<RequestArticleInput>(entity);
         }
     }

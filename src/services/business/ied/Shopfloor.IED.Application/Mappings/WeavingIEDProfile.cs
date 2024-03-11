@@ -11,9 +11,18 @@ namespace Shopfloor.IED.Application.WeavingIEDs
     {
         public WeavingIEDProfile()
         {
-            CreateMap<WeavingIED, WeavingIEDModel>().ReverseMap();
             CreateMap<CreateWeavingIEDCommand, WeavingIED>();
             CreateMap<GetWeavingIEDsQuery, WeavingIEDParameter>();
+            CreateMap<WeavingIED, WeavingIEDModel>()
+                .ForMember(dest => dest.RequestType,
+                    otp => otp.MapFrom(x =>
+                        x.RequestArticleOutput.RequestDivisionProcess.RequestDivision.Request.RequestType.Name))
+				.ForMember(dest => dest.ExpectedDate,
+					otp => otp.MapFrom(x =>
+						x.RequestArticleOutput.RequestDivisionProcess.RequestDivision.ExpectedDate))
+                .ForMember(dest => dest.ExpectedQty,
+                    otp => otp.MapFrom(x =>
+                        x.RequestArticleOutput.RequestDivisionProcess.RequestDivision.Request.ExpectedQty));
         }
     }
 }

@@ -5,6 +5,12 @@ namespace Shopfloor.Material.Domain.Entities
 {
     public class Buyer : BaseMasterEntity
     {
+        public Buyer()
+        {
+            ProductCategories = new HashSet<BuyerProductCategory>();
+            BuyerFiles = new HashSet<BuyerFile>();
+        }
+
         #region Properties
 
         public string RequestNo { get; set; }
@@ -133,7 +139,9 @@ namespace Shopfloor.Material.Domain.Entities
 
         #region List
 
-        public ICollection<BuyerProductCategory> ProductCategories { get; set; }
+        public virtual ICollection<BuyerProductCategory> ProductCategories { get; set; }
+
+        public virtual ICollection<BuyerFile> BuyerFiles { get; set; }
 
         #endregion List
     }

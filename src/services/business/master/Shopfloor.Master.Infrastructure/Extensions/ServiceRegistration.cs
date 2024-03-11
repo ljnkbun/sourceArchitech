@@ -1,12 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shopfloor.Core.Helpers;
-using Shopfloor.Master.Application.Services.Wfxs;
 using Shopfloor.Master.Domain.Interfaces;
 using Shopfloor.Master.Infrastructure.Contexts;
 using Shopfloor.Master.Infrastructure.Repositories;
-using Shopfloor.Master.Infrastructure.Services.Wfxs;
 
 namespace Shopfloor.Master.Infrastructure.Extensions
 {
@@ -76,29 +73,29 @@ namespace Shopfloor.Master.Infrastructure.Extensions
             services.AddTransient<ISubCategoryGroupRepository, SubCategoryGroupRepository>();
             services.AddTransient<IAccountGroupRepository, AccountGroupRepository>();
             services.AddTransient<IGroupNameRepository, GroupNameRepository>();
-            services.AddTransient<IProcessRepository, ProcessRepository>();
             services.AddTransient<IGaugeRepository, GaugeRepository>();
             services.AddTransient<IMachineTypeRepository, MachineTypeRepository>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<IArticleBaseColorRepository, ArticleBaseColorRepository>();
             services.AddTransient<IArticleBaseSizeRepository, ArticleBaseSizeRepository>();
             services.AddTransient<IArticleFlexFieldRepository, ArticleFlexFieldRepository>();
-            services.AddTransient<IProcessLibraryRepository, ProcessLibraryRepository>();
+            services.AddTransient<IProcessRepository, ProcessRepository>();
             services.AddTransient<IOperationLibraryRepository, OperationLibraryRepository>();
             services.AddTransient<ISubOperationLibraryRepository, SubOperationLibraryRepository>();
             services.AddTransient<IFactoryRepository, FactoryRepository>();
             services.AddTransient<ICategoryMapMaterialTypeRepository, CategoryMapMaterialTypeRepository>();
             services.AddTransient<IMaterialTypeMapProductGroupRepository, MaterialTypeMapProductGroupRepository>();
+            services.AddTransient<IMachineRepository, MachineRepository>();
+            services.AddTransient<ILineRepository, LineRepository>();
+            services.AddTransient<IHolidayRepository, HolidayRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IBuyerRepository, BuyerRepository>();
+            services.AddTransient<ICalendarRepository, CalendarRepository>();
+            services.AddTransient<ICalendarDetailRepository, CalendarDetailRepository>();
+            services.AddTransient<IPlanningGroupRepository, PlanningGroupRepository>();
+            services.AddTransient<IPlanningGroupFactoryRepository, PlanningGroupFactoryRepository>();
+            services.AddTransient<IProductGroupUOMRepository, ProductGroupUOMRepository>();
 
-            services.AddTransient<IRestClientHelper, RestClientHelper>();
-            services.AddTransient<IWfxMasterDataService, WfxMasterDataService>();
-            services.AddHttpClient<IWfxMasterDataService, WfxMasterDataService>((x) =>
-            {
-                string apiUrl = configuration["WfxApiSettings:Uri"];
-                x.BaseAddress = new Uri(apiUrl);
-            });
-
-            services.AddTransient<IWfxArticleRequestService, WfxArticleRequestService>();
         }
     }
 }

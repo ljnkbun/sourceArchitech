@@ -1,0 +1,34 @@
+﻿using FluentValidation;
+using Shopfloor.IED.Application.Command.KnittingRoutings;
+
+namespace Shopfloor.IED.Application.Validations.KnittingRoutings
+{
+    public class CreateKnittingRoutingsCommandValidator : AbstractValidator<CreateKnittingRoutingsCommand>
+    {
+        public CreateKnittingRoutingsCommandValidator()
+        {
+            RuleForEach(x => x.KnittingRoutingModels).ChildRules(child =>
+            {
+                child.RuleFor(p => p.KnittingProcess)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull()
+                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+
+                child.RuleFor(p => p.KnittingOperation)
+                    .NotEmpty().WithMessage("{PropertyName} is required.")
+                    .NotNull()
+                    .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+
+                child.RuleFor(p => p.KnittingOperationCode)
+                    .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+
+                child.RuleFor(p => p.MachineTypeName)
+                    .NotEmpty().WithMessage("{PropertyName} is required.")
+                    .NotNull()
+                    .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+
+                child.RuleFor(p => p).Must(p => p.LineNumber >= 1).WithMessage("LineNumber must greater than or equal 1.");
+            });
+        }
+    }
+}

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ExportArticles
@@ -20,7 +19,8 @@ namespace Shopfloor.Barcode.Application.Command.ExportArticles
 
         public async Task<Response<int>> Handle(DeleteExportArticleCommand command, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(command.Id) ?? throw new ApiException($"ExportArticleEntity Not Found (Id:{command.Id}).");
+            var entity = await _repository.GetByIdAsync(command.Id);
+            if (entity == null) return new($"ExportArticleEntity Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

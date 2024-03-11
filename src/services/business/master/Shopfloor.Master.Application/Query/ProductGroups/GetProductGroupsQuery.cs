@@ -14,10 +14,7 @@ namespace Shopfloor.Master.Application.Query.ProductGroups
         public int PageSize { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int? MaterialTypeId { get; set; }
         public int? CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string CategoryCode { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -47,10 +44,9 @@ namespace Shopfloor.Master.Application.Query.ProductGroups
             {
                 nameof(ProductGroupParameter.Code),
                 nameof(ProductGroupParameter.Name),
-                nameof(ProductGroupParameter.MaterialTypeId),
                 nameof(ProductGroupParameter.CategoryId)
             }.ToList());
-            return await _repository.GetModelPagedReponseAsync<ProductGroupParameter, ProductGroupModel>(validFilter);
+            return await _repository.GetProductGroupPagedResponseAsync<ProductGroupParameter, ProductGroupModel>(validFilter);
         }
     }
 }

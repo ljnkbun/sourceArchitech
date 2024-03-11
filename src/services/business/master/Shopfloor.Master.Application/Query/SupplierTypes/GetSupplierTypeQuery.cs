@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.SupplierTypes
         public async Task<Response<SupplierType>> Handle(GetSupplierTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SupplierType Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"SupplierType Not Found (Id:{query.Id}).");
             return new Response<SupplierType>(entity);
         }
     }

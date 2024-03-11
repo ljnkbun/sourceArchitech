@@ -5,6 +5,7 @@ using Shopfloor.Barcode.Application.Parameters.Imports;
 using Shopfloor.Barcode.Application.Query.Imports;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
+using System.Collections.Generic;
 
 namespace Shopfloor.Barcode.Application.Mappings
 {
@@ -12,11 +13,17 @@ namespace Shopfloor.Barcode.Application.Mappings
     {
         public ImportProfile()
         {
-           
-            CreateMap<Import, ImportModel>().ReverseMap();
+
+            CreateMap<Import, ImportModel>()
+                .ForMember(x => x.ImportArticleModels, d => d.MapFrom(o => o.ImportArticles))
+                .ForMember(x => x.PONo, d => d.MapFrom(o => string.Join(", ", o.ImportArticles.Select(x => x.PONo).Distinct())))
+                .ForMember(x => x.ArticleCode, d => d.MapFrom(o => string.Join(", ", o.ImportArticles.Select(x => x.ArticleCode).Distinct())))
+                .ForMember(x => x.ArticleName, d => d.MapFrom(o => string.Join(", ", o.ImportArticles.Select(x => x.ArticleName).Distinct())))
+                .ForMember(x => x.Supplier, d => d.MapFrom(o => string.Join(", ", o.ImportArticles.Select(x => x.SupplierName).Distinct())))
+                .ReverseMap();
             CreateMap<GetImportsQuery, ImportParameter>();
-            CreateMap<CreateImportCommand, Import>().ForMember(x => x.Status, opt => opt.MapFrom(src=> ImportStatus.Processing));
+            CreateMap<CreateImportCommand, Import>().ForMember(x => x.Status, opt => opt.MapFrom(src => ImportStatus.Processing));
         }
     }
-   
+
 }

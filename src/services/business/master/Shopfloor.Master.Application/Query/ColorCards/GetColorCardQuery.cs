@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.ColorCards
         public async Task<Response<ColorCard>> Handle(GetColorCardQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"ColorCard Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"ColorCard Not Found (Id: {query.Id}).");
             return new Response<ColorCard>(entity);
         }
     }

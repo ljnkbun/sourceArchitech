@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
+using Shopfloor.Core.Definations;
 using Shopfloor.Core.Models.Responses;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.DyeingTBRequestFiles
@@ -36,7 +35,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRequestFiles
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"DyeingTBRequestFile Not Found.");
+            if (entity == null) return new($"DyeingTBRequestFile Not Found.");
 
             entity.FileId = command.FileId;
             entity.Description = command.Description;

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\shareds\Shopfloor.Core\Shopfloor.Core.csproj" />
+    <ProjectReference Include="..\..\master\Shopfloor.Master.Domain\Shopfloor.Master.Domain.csproj" />
   </ItemGroup>
 
 </Project>

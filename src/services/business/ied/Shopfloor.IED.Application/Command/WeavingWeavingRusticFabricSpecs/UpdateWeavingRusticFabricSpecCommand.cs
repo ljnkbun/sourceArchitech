@@ -9,22 +9,22 @@ namespace Shopfloor.IED.Application.Command.WeavingRusticFabricSpecs
     {
         public int Id { get; set; }
         public int LineNumber { get; set; }
-        public string BackgroundType { get; set; }
-        public decimal BackgroundLoomFrame { get; set; }
-        public string BorderType { get; set; }
-        public decimal BorderLoomFrame { get; set; }
+        public string ContentWeaveStyle { get; set; }
+        public decimal HarnessFrameCWS { get; set; }
+        public string MarginWeaveStyle { get; set; }
+        public decimal HarnessFrameMWS { get; set; }
         public decimal WeightGM { get; set; }
         public decimal WeightGM2 { get; set; }
-        public decimal VerticalShrinkage { get; set; }
-        public decimal HorizontalShrinkage { get; set; }
+        public decimal WarpShrinkage { get; set; }
+        public decimal WeftShrinkage { get; set; }
         public string MachineType { get; set; }
         public decimal RPM { get; set; }
-        public decimal CombNum { get; set; }
-        public decimal CombSize { get; set; }
-        public decimal VerticalDensity { get; set; }
-        public decimal HorizontalDensity { get; set; }
-        public decimal RusticSize { get; set; }
-        public decimal HorizontalDensitySetting { get; set; }
+        public decimal ReedCount { get; set; }
+        public decimal ReedWidth { get; set; }
+        public decimal WarpDensity { get; set; }
+        public decimal WeftDensity { get; set; }
+        public decimal GreigeWidth { get; set; }
+        public decimal SettingWeftDensity { get; set; }
         public bool IsActive { set; get; }
     }
     public class UpdateWeavingRusticFabricSpecCommandHandler : IRequestHandler<UpdateWeavingRusticFabricSpecCommand, Response<int>>
@@ -38,26 +38,25 @@ namespace Shopfloor.IED.Application.Command.WeavingRusticFabricSpecs
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"WeavingRusticFabricSpec Not Found.");
+            if (entity == null) return new($"WeavingRusticFabricSpec Not Found.");
 
             entity.LineNumber = command.LineNumber;
-            entity.BackgroundType = command.BackgroundType;
-
-            entity.BackgroundLoomFrame = command.BackgroundLoomFrame;
-            entity.BorderType = command.BorderType;
-            entity.BorderLoomFrame = command.BorderLoomFrame;
+            entity.ContentWeaveStyle = command.ContentWeaveStyle;
+            entity.HarnessFrameCWS = command.HarnessFrameCWS;
+            entity.MarginWeaveStyle = command.MarginWeaveStyle;
+            entity.HarnessFrameMWS = command.HarnessFrameMWS;
             entity.WeightGM = command.WeightGM;
             entity.WeightGM2 = command.WeightGM2;
-            entity.VerticalShrinkage = command.VerticalShrinkage;
-            entity.HorizontalShrinkage = command.HorizontalShrinkage;
+            entity.WarpShrinkage = command.WarpShrinkage;
+            entity.WeftShrinkage = command.WeftShrinkage;
             entity.MachineType = command.MachineType;
             entity.RPM = command.RPM;
-            entity.CombNum = command.CombNum;
-            entity.CombSize = command.CombSize;
-            entity.VerticalDensity = command.VerticalDensity;
-            entity.HorizontalDensity = command.HorizontalDensity;
-            entity.RusticSize = command.RusticSize;
-            entity.HorizontalDensitySetting = command.HorizontalDensitySetting;
+            entity.ReedCount = command.ReedCount;
+            entity.ReedWidth = command.ReedWidth;
+            entity.WarpDensity = command.WarpDensity;
+            entity.WeftDensity = command.WeftDensity;
+            entity.GreigeWidth = command.GreigeWidth;
+            entity.SettingWeftDensity = command.SettingWeftDensity;
             entity.IsActive = command.IsActive;
 
             await _repository.UpdateAsync(entity);

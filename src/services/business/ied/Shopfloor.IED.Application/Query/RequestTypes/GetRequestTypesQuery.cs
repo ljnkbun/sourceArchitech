@@ -12,7 +12,6 @@ namespace Shopfloor.IED.Application.Query.RequestTypes
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string Code { get; set; }
         public string Name { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }

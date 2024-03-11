@@ -39,7 +39,8 @@ namespace Shopfloor.Barcode.Infrastructure.Services.Wfxs
                     rs = await _requestClientService.GetResponseAsync<GetWfxPOArticleRequest, GetWfxPOArticleResponse>(new GetWfxPOArticleRequest
                     {
                         SearchDics = new Dictionary<string, string> {
-                        { "OrderType", "PO" }
+                        { "PoCreatedDateFrom", DateTime.Now.AddYears(-2).ToString("yyyy/MM/dd") },
+                        { "PoCreatedDateTo", DateTime.Now.ToString("yyyy/MM/dd")  }
                     }
                     });
                 }
@@ -50,9 +51,8 @@ namespace Shopfloor.Barcode.Infrastructure.Services.Wfxs
                     rs = await _requestClientService.GetResponseAsync<GetWfxPOArticleRequest, GetWfxPOArticleResponse>(new GetWfxPOArticleRequest
                     {
                         SearchDics = new Dictionary<string, string> {
-                        { "OrderType", "PO" },
-                        { "FromOrderDate", lastDate.ToString("yyyy/MM/dd") },
-                        { "ToOrderDate", DateTime.Now.ToString("yyyy/MM/dd")  }
+                        { "PoCreatedDateFrom", lastDate.ToString("yyyy/MM/dd") },
+                        { "PoCreatedDateTo", DateTime.Now.ToString("yyyy/MM/dd")  }
                     }
                     });
                 }

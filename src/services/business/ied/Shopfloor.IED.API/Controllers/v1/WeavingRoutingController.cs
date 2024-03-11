@@ -22,14 +22,11 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedUserId = filter.ModifiedUserId,
                 WeavingIEDId = filter.WeavingIEDId,
                 LineNumber = filter.LineNumber,
+                WeavingProcessCode = filter.WeavingProcessCode,
                 WeavingProcess = filter.WeavingProcess,
-                WeavingOperation = filter.WeavingOperation,
-                MachineType = filter.MachineType,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 
@@ -47,11 +44,28 @@ namespace Shopfloor.IED.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
-        // PUT api/v1/<controller>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, UpdateWeavingRoutingCommand command)
+        // POST api/v1/<controller>/1
+        [HttpPost("{weavingIEDId}")]
+        public async Task<IActionResult> Post(int weavingIEDId, CreateWeavingRoutingsCommand command)
         {
-            if (id != command.Id) return BadRequest();
+            if (weavingIEDId != command.WeavingIEDId)
+                return BadRequest();
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>
+        [HttpPut()]
+        public async Task<IActionResult> Put(UpdateWeavingRoutingCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/1
+        [HttpPut("{weavingIEDId}")]
+        public async Task<IActionResult> Put(int weavingIEDId, UpdateWeavingRoutingsCommand command)
+        {
+            if (weavingIEDId != command.WeavingIEDId)
+                return BadRequest();
             return Ok(await Mediator.Send(command));
         }
 

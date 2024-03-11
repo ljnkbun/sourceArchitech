@@ -8,7 +8,7 @@ namespace Shopfloor.IED.Application.Command.RequestArticleInputs
     public class UpdateRequestArticleInputCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
-        public int ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
         public bool IsActive { set; get; }
@@ -24,9 +24,9 @@ namespace Shopfloor.IED.Application.Command.RequestArticleInputs
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"RequestArticleInput Not Found.");
+            if (entity == null) return new($"RequestArticleInput Not Found.");
 
-            entity.ArticleId = command.ArticleId;
+            entity.WFXArticleId = command.WFXArticleId;
             entity.ArticleCode = command.ArticleCode;  
             entity.ArticleName = command.ArticleName;
             entity.IsActive = command.IsActive;

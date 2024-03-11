@@ -17,9 +17,10 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 RequestNo = filter.RequestNo,
                 RequestDate = filter.RequestDate,
                 BuyerRef = filter.BuyerRef,
-                RequestType = filter.RequestType,
+                RecipeCategoryId = filter.RecipeCategoryId,
                 StyleRef = filter.StyleRef,
                 Remark = filter.Remark,
+                DyeingIEDId = filter.DyeingIEDId,
                 ExpiredDate = filter.ExpiredDate,
                 Buyer = filter.Buyer,
                 Status = filter.Status,
@@ -30,10 +31,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 

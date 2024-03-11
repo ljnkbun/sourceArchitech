@@ -29,12 +29,11 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ManualTMU = filter.ManualTMU,
                 NoneMachineTime = filter.NoneMachineTime,
                 TotalBasicMinutes = filter.TotalBasicMinutes,
+                SewingComponentGroupId = filter.SewingComponentGroupId,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

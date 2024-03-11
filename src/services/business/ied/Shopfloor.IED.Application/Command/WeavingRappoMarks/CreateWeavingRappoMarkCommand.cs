@@ -11,6 +11,7 @@ namespace Shopfloor.IED.Application.Command.WeavingRappoMarks
         public int WeavingRappoId { get; set; }
         public int ColumnNo { get; set; }
         public int PatternIndex { get; set; }
+        public bool Type { get; set; }
     }
     public class CreateWeavingRappoMarkCommandHandler : IRequestHandler<CreateWeavingRappoMarkCommand, Response<int>>
     {

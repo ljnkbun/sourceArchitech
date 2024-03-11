@@ -1,6 +1,5 @@
 using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Query.ImportArticles
@@ -20,9 +19,9 @@ namespace Shopfloor.Barcode.Application.Query.ImportArticles
 
         public async Task<Response<Domain.Entities.ImportArticle>> Handle(GetImportArticleQuery query, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(query.Id);
+            var entity = await _repository.GetImportArticleByIdAsync(query.Id);
             return entity == null
-                ? throw new ApiException($"ImportArticle Not Found (Id:{query.Id}).")
+                ? new($"ImportArticle Not Found (Id:{query.Id}).")
                 : new Response<Domain.Entities.ImportArticle>(entity);
         }
     }

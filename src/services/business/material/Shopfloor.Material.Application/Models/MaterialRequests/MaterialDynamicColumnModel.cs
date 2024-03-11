@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shopfloor.Core.Models.Entities;
 
 namespace Shopfloor.Material.Application.Models.MaterialRequests
 {
-    public class MaterialDynamicColumnModel
+    public class MaterialDynamicColumnModel : BaseModel
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Code { get; set; }

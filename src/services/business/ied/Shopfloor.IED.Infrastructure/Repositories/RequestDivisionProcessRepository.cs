@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using Serilog;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
+using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 using Shopfloor.IED.Infrastructure.Contexts;
 

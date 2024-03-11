@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.Parameters.SewingMacroLibs
         public decimal? MachineTMU { get; set; }
         public decimal? TotalBasicMinutes { get; set; }
         public decimal? NoneMachineTime { get; set; }
+        public int? SewingComponentGroupId { get; set; }
         public bool? Deleted { get; set; }
     }
 }

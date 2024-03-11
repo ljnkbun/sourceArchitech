@@ -10,7 +10,6 @@ using Shopfloor.Material.Domain.Entities;
 using Shopfloor.Material.Domain.Enums;
 using Shopfloor.Material.Domain.Interfaces;
 using Shopfloor.Material.Infrastructure.Contexts;
-using System.Linq.Expressions;
 
 namespace Shopfloor.Material.Infrastructure.Repositories
 {
@@ -18,23 +17,28 @@ namespace Shopfloor.Material.Infrastructure.Repositories
     {
         private readonly DbSet<Buyer> _buyerSet;
         private readonly DbSet<AutoIncrement> _autoIncrementSet;
+
         public BuyerRepository(MaterialContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _buyerSet = _dbContext.Set<Buyer>();
             _autoIncrementSet = _dbContext.Set<AutoIncrement>();
         }
+
         public async Task<Buyer> GetBuyerByIdAsync(int id)
         {
             return await _buyerSet.Include(x => x.ProductCategories).FirstOrDefaultAsync(x => x.Id == id);
         }
+
         public async Task<List<Buyer>> GetBuyerByIdsAsync(int[] ids)
         {
             return await _buyerSet.Include(x => x.ProductCategories).Where(x => ids.Contains(x.Id)).ToListAsync();
         }
+
         public async Task<Buyer> GetBuyerByCodeAsync(string buyerCode)
         {
             return await _buyerSet.Where(x => x.Code == buyerCode).FirstOrDefaultAsync();
         }
+
         public async Task<PagedResponse<IReadOnlyList<TModel>>> GetListAsync<TParam, TModel>(TParam parameter, DateTime? fromDate, DateTime? toDate) where TParam : RequestParameter where TModel : class
         {
             var response = new PagedResponse<IReadOnlyList<TModel>>(parameter.PageNumber, parameter.PageSize);
@@ -58,7 +62,13 @@ namespace Shopfloor.Material.Infrastructure.Repositories
                     .ToListAsync();
             return response;
         }
-        public async Task<bool> UpdateBuyerAsync(Buyer buyer, List<BuyerProductCategory> categoryMappings, List<BuyerProductCategory> deleteCategoryMappings)
+
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _dbContext.Set<BuyerFile>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> UpdateBuyerAsync(Buyer buyer, List<BuyerProductCategory> insertCategoryMappings, List<BuyerProductCategory> deleteCategoryMappings)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
@@ -68,8 +78,8 @@ namespace Shopfloor.Material.Infrastructure.Repositories
                     _buyerSet.Update(buyer);
                     if (deleteCategoryMappings is { Count: > 0 })
                         _dbContext.Set<BuyerProductCategory>().RemoveRange(deleteCategoryMappings);
-                    if (categoryMappings is { Count: > 0 })
-                        await _dbContext.Set<BuyerProductCategory>().AddRangeAsync(categoryMappings);
+                    if (insertCategoryMappings is { Count: > 0 })
+                        await _dbContext.Set<BuyerProductCategory>().AddRangeAsync(insertCategoryMappings);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
@@ -81,6 +91,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
             }
             return result;
         }
+
         public async Task<Buyer> AddBuyerAsync(Buyer entity)
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
@@ -99,6 +110,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
             }
             return entity;
         }
+
         public async Task<bool> AddBuyerRangeAsync(List<Buyer> entities)
         {
             bool result = true;
@@ -120,6 +132,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
 
             return result;
         }
+
         private async Task<string> GetNewRequestNoAsync()
         {
             var autoIncrement = await _autoIncrementSet.FirstOrDefaultAsync(x => x.Type == AutoIncrementType.Buyer);
@@ -142,6 +155,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
             _autoIncrementSet.Update(autoIncrement);
             return requestNo;
         }
+
         private async Task GetNewRequestNoAsync(List<Buyer> entities)
         {
             var autoIncrement = await _autoIncrementSet.FirstOrDefaultAsync(x => x.Type == AutoIncrementType.Buyer);

@@ -22,8 +22,32 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 CurrentLocationId = filter.CurrentLocationId,
+                Site = filter.Site,
+                Category = filter.Category,
+                SubCategory = filter.SubCategory,
+                GroupCode = filter.GroupCode,
                 Barcode = filter.Barcode,
-                ParentId = filter.ParentId,
+                Barcodes = filter.Barcodes,
+                ArticleName = filter.ArticleName,
+                ArticleCode = filter.ArticleCode,
+                ArticleCodes = filter.ArticleCodes,
+                PONo = filter.PONo,
+                GDINum = filter.GDINum,
+                OrderRefNum = filter.OrderRefNum,
+                FPPOOCNUm = filter.FPPOOCNUm,
+                SupplierName = filter.SupplierName,
+                Quantity = filter.Quantity,
+                RemainQuantity = filter.RemainQuantity,
+                ArticleUOM = filter.ArticleUOM,
+                BarcodeUOM = filter.BarcodeUOM,
+                Shade = filter.Shade,
+                OC = filter.OC,
+                Color = filter.Color,
+                Size = filter.Size,
+                NumberOfCone = filter.NumberOfCone,
+                WeightPerCone = filter.WeightPerCone,
+                Location = filter.Location,
+                OrderBy = filter.OrderBy,
                 IsActive = filter.IsActive,
                 BypassCache = filter.BypassCache,
                 SlidingExpiration = filter.SlidingExpiration
@@ -38,7 +62,7 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         }
 
         // GET api/v1/<controller>/5
-        [HttpGet("GetByBarcode/{barcode}")]
+        [HttpGet("GetByBarcode")]
         public async Task<IActionResult> GetByBarcode(string barcode)
         {
             return Ok(await Mediator.Send(new GetArticleBarcodeByBarcodeQuery { Barcode = barcode }));
@@ -72,6 +96,12 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
+        [HttpPost("locations")]
+        public async Task<IActionResult> UpdateArticleBarcodesLocation(UpdateArticleBarcodesLocationCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         [HttpPost("split")]
         public async Task<IActionResult> Split(SplitArticleBarcodeCommand command)
         {
@@ -83,6 +113,18 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         public async Task<IActionResult> Merge(MergeArticleBarcodeCommand command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        [HttpPost("scan")]
+        public async Task<IActionResult> Scan(ScanArticleBarcodeQuery command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpGet("GetMergeSplitByIds")]
+        public async Task<IActionResult> GetMergeSplitByIds(string ids)
+        {
+            return Ok(await Mediator.Send(new GetMergeSplitByIdsQuery { Ids = ids }));
         }
     }
 }

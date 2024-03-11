@@ -11,21 +11,16 @@ namespace Shopfloor.IED.Application.Validations.RequestTypes
         {
             _requestTypeRepository = requestTypeRepository;
 
-            RuleFor(p => p.Code)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
-                .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.")
-                .MustAsync(IsUniqueAsync).WithMessage("{PropertyName} must unique.");
-
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
+                .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.")
+                .MustAsync(IsUniqueAsync).WithMessage("{PropertyName} must unique.");
         }
 
-        private async Task<bool> IsUniqueAsync(string code, CancellationToken token)
+        private async Task<bool> IsUniqueAsync(string name, CancellationToken token)
         {
-            return await _requestTypeRepository.IsUniqueAsync(code);
+            return await _requestTypeRepository.IsNameUniqueAsync(name);
         }
     }
 }

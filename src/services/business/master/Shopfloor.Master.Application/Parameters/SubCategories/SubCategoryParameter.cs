@@ -12,5 +12,6 @@ namespace Shopfloor.Master.Application.Parameters.SubCategories
         public bool? ByPassPriceList { get; set; }
         public bool? DefaultInactiveIndent { get; set; }
         public int? ProductGroupId { get; set; }
+        public string ProductGroupName { get; set; }
     }
 }

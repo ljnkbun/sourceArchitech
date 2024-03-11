@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Divisions
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Division Not Found.");
+            if (entity == null) return new($"Division Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

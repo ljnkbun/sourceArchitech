@@ -4,6 +4,7 @@ namespace Shopfloor.IED.Application.Parameters.DyeingTBRTasks
 {
     public class DyeingTBRTaskParameter : RequestParameter
     {
+        public int? LineNumber { get; set; }
         public int? DyeingTBRecipeId { get; set; }
         public int? DyeingProcessId { get; set; }
         public string DyeingProcessName { get; set; }
@@ -12,6 +13,7 @@ namespace Shopfloor.IED.Application.Parameters.DyeingTBRTasks
         public string MachineCode { get; set; }
         public string MachineName { get; set; }
         public decimal? Temperature { get; set; }
+        public decimal? Ratio { get; set; }
         public int? Minute { get; set; }
     }
 }

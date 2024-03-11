@@ -35,7 +35,7 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                 ModifiedUserId = context.Message.ModifiedUserId,
                 Code = context.Message.Code,
                 Name = context.Message.Name,
-                ProcessLibraryId = context.Message.ProcessLibraryId,
+                ProcessId = context.Message.ProcessId,
                 IsActive = context.Message.IsActive,
                 BypassCache = context.Message.BypassCache,
                 SlidingExpiration = context.Message.SlidingExpiration
@@ -48,7 +48,7 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                     Id = x.Id,
                     Code = x.Code,
                     Name = x.Name,
-                    ProcessLibraryId = x.ProcessLibraryId,
+                    ProcessId = x.ProcessId,
                     IsActive = x.IsActive
                 }).ToList()
             };

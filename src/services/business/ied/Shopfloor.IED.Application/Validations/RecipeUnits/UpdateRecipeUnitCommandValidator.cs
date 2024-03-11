@@ -11,21 +11,17 @@ namespace Shopfloor.IED.Application.Validations.RecipeUnits
         public UpdateRecipeUnitCommandValidator(IRecipeUnitRepository recipeUnitRepository)
         {
             _recipeUnitRepository = recipeUnitRepository;
-            RuleFor(p => p.Code)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
-                .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p).MustAsync(IsUniqueAsync).WithMessage("Code must unique.");
+            RuleFor(p => p).MustAsync(IsUniqueAsync).WithMessage("Name must unique.");
         }
         private async Task<bool> IsUniqueAsync(UpdateRecipeUnitCommand command, CancellationToken token)
         {
-            return await _recipeUnitRepository.IsUniqueAsync(command.Code, command.Id);
+            return await _recipeUnitRepository.IsNameUniqueAsync(command.Name, command.Id);
         }
     }
 }

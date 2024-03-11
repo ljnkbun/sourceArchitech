@@ -10,7 +10,7 @@ namespace Shopfloor.Master.Application.Command.SubCategories
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int SubCategoryGroupId { get; set; }
+        public int? SubCategoryGroupId { get; set; }
         public string ExciseTarrifNo { get; set; }
         public bool PackagingUnit { get; set; }
         public bool ByPassPriceList { get; set; }
@@ -29,7 +29,7 @@ namespace Shopfloor.Master.Application.Command.SubCategories
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"SubCategory Not Found.");
+            if (entity == null) return new($"SubCategory Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

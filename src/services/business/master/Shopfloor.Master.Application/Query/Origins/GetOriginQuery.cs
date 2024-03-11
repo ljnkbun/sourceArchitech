@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Origins
         public async Task<Response<Origin>> Handle(GetOriginQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Origin Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Origin Not Found (Id:{query.Id}).");
             return new Response<Origin>(entity);
         }
     }

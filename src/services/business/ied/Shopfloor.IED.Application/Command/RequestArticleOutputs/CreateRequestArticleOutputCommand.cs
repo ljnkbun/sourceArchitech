@@ -3,6 +3,7 @@ using MediatR;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Command.RequestArticleInputs;
 using Shopfloor.IED.Domain.Entities;
+using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.RequestArticleOutputs
@@ -10,10 +11,11 @@ namespace Shopfloor.IED.Application.Command.RequestArticleOutputs
     public class CreateRequestArticleOutputCommand : IRequest<Response<int>>
     {
         public int RequestDivisionProcessId { get; set; }
-        public int ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
         public string Color { get; set; }
+        public string BaseColorList { get; set; }
         public ICollection<CreateRequestArticleInputCommand> RequestArticleInputs { get; set; }
     }
     public class CreateRequestArticleOutputCommandHandler : IRequestHandler<CreateRequestArticleOutputCommand, Response<int>>
@@ -30,6 +32,7 @@ namespace Shopfloor.IED.Application.Command.RequestArticleOutputs
         public async Task<Response<int>> Handle(CreateRequestArticleOutputCommand RequestArticleOutput, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<RequestArticleOutput>(RequestArticleOutput);
+            entity.Status = Status.New;
             await _repository.AddAsync(entity);
             return new Response<int>(entity.Id);
         }

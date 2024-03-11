@@ -3,7 +3,7 @@ using Shopfloor.IED.Domain.Entities;
 
 namespace Shopfloor.IED.Domain.Interfaces
 {
-    public interface ILightRepository : IMasterRepositoryAsync<Light>
+    public interface ILightRepository : INameRepositoryAsync<Light>
     {
     }
 }

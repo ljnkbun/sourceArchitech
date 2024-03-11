@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Articles
         public async Task<Response<Article>> Handle(GetArticleQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetArticleByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Article Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Article Not Found (Id:{query.Id}).");
             return new Response<Article>(entity);
         }
     }

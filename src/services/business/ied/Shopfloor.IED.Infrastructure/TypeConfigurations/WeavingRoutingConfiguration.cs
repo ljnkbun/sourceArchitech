@@ -11,12 +11,10 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         {
             base.Configure(builder);
             builder.Property(e => e.WeavingProcess).IsRequired().HasMaxLength(100);
-            builder.Property(e => e.WeavingOperation).IsRequired().HasMaxLength(100);
-            builder.Property(e => e.MachineType).IsRequired().HasMaxLength(100);
-            builder.Property(e => e.Deleted).HasDefaultValueSql("((0))");
-            builder.HasOne(e => e.WeavingArticle)
+            builder.Property(e => e.WeavingProcessCode).HasColumnType("varchar(100)");
+            builder.HasOne(e => e.WeavingIED)
                 .WithMany(e => e.WeavingRoutings)
-                .HasForeignKey(e => e.WeavingArticleId)
+                .HasForeignKey(e => e.WeavingIEDId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

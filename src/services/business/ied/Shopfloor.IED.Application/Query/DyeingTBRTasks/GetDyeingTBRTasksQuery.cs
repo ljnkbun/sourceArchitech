@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.DyeingTBRTasks;
 using Shopfloor.IED.Application.Parameters.DyeingTBRTasks;
@@ -8,8 +7,9 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DyeingTBRTasks
 {
-    public class GetDyeingTBRTasksQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRTaskModel>>>, ICacheableMediatrQuery
+    public class GetDyeingTBRTasksQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRTaskModel>>>
     {
+        public int? LineNumber { get; set; }
         public int? DyeingTBRecipeId { get; set; }
         public int? DyeingProcessId { get; set; }
         public string DyeingProcessName { get; set; }
@@ -19,6 +19,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRTasks
         public string MachineName { get; set; }
         public decimal? Temperature { get; set; }
         public int? Minute { get; set; }
+        public decimal? Ratio { get; set; }
 
         #region Base Properties
 
@@ -31,9 +32,6 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRTasks
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"DyeingTBRTasks";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

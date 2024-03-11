@@ -10,5 +10,5 @@ public class DynamicColumnContent : BaseEntity
 
     public string Content { get; set; }
 
-    public DynamicColumn DynamicColumn { get; set; }
+    public virtual  DynamicColumn DynamicColumn { get; set; }
 }

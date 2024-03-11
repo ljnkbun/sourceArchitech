@@ -14,8 +14,8 @@ namespace Shopfloor.Material.Domain.Interfaces
             where TParam : RequestParameter;
 
         Task<bool> UpdatePriceListDetailAsync(PriceListDetail dataUpdate
-            , BaseListCreateDeleteEntity<PriceListDetailColor> dataPriceListDetailColor
-            , BaseListCreateDeleteEntity<PriceListDetailSize> dataPriceListDetailSize);
+            , BaseUpdateEntity<PriceListDetailColor> dataPriceListDetailColor
+            , BaseUpdateEntity<PriceListDetailSize> dataPriceListDetailSize);
 
         Task<List<PriceListDetail>> GetPriceListDetailByIdsAsync(int[] ids);
 

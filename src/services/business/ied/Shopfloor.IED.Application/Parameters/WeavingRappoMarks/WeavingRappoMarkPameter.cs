@@ -7,5 +7,6 @@ namespace Shopfloor.IED.Application.Parameters.WeavingRappoMarks
         public int? WeavingRappoId { get; set; }
         public int? ColumnNo { get; set; }
         public int? PatternIndex { get; set; }
+        public bool? Type { get; set; }
     }
 }

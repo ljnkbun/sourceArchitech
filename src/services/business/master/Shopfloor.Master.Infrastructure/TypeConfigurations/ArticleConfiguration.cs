@@ -43,6 +43,8 @@ namespace Shopfloor.Master.Infrastructure.TypeConfigurations
             builder.Property(e => e.MYear).HasMaxLength(500);
             builder.Property(e => e.PackingTypeName).HasMaxLength(500);
             builder.Property(e => e.StockTypeName).HasMaxLength(500);
+            builder.Property(e => e.Gender).HasMaxLength(100);
+            builder.Property(e => e.PerSizeCons).HasMaxLength(500);
             builder.Property(e => e.ReOrderLevel).HasColumnType("decimal(28,8)");
             builder.Property(e => e.MinimumQty).HasColumnType("decimal(28,8)");
             builder.Property(e => e.MaximumQty).HasColumnType("decimal(28,8)");
@@ -52,6 +54,8 @@ namespace Shopfloor.Master.Infrastructure.TypeConfigurations
             builder.Property(e => e.SellingPrice).HasColumnType("decimal(28,8)");
             builder.Property(e => e.MinimumOrderQty).HasColumnType("decimal(28,8)");
             builder.Property(e => e.RequirementMultiple).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.ServiceCode).HasMaxLength(200);
+            builder.Property(e => e.ServiceName).HasMaxLength(500);
         }
     }
 }

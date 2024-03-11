@@ -23,11 +23,10 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 WeavingRappoId = filter.WeavingRappoId,
                 ColumnNo = filter.ColumnNo,
                 PatternIndex = filter.PatternIndex,
+                Type = filter.Type,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

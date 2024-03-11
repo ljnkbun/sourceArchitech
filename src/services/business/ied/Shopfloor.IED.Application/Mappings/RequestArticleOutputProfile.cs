@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.RequestArticleOutputs
         {
             CreateMap<RequestArticleOutput, RequestArticleOutputModel>().ReverseMap();
             CreateMap<CreateRequestArticleOutputCommand, RequestArticleOutput>();
+            CreateMap<UpdateRequestArticleOutputCommand, RequestArticleOutput>();
             CreateMap<GetRequestArticleOutputsQuery, RequestArticleOutputParameter>();
         }
     }

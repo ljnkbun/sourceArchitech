@@ -16,11 +16,12 @@ namespace Shopfloor.IED.Application.Validations.DyeingTBRChemicals
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
 
             RuleFor(p => p.ChemicalCode)
-                .MaximumLength(20).WithMessage("{PropertyName} must not exceed 20 characters.");
+                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
             RuleFor(p => p.ChemicalName)
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
-
+            RuleFor(p => p.ChemicalSubCategory)
+                .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.");
             RuleFor(p => p.DyeingTBRTaskId)
                 .MustAsync(IsExistAsync)
                 .WithMessage("{PropertyName} not found.");

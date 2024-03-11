@@ -8,18 +8,19 @@ namespace Shopfloor.Barcode.Application.Validations.ImportDetails
     {
         public CreateImportDetailCommandValidator()
         {
-            RuleFor(r => r.Color).NotEmpty().WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.Size).NotEmpty().WithMessage("{PropertyName}  is required.");
+            RuleFor(r => r.Color)
+                   .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+            RuleFor(r => r.Size)
+                   .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
             RuleFor(r => r.ArticleName).NotEmpty().WithMessage("{PropertyName}  is required.");
             RuleFor(r => r.ArticleCode).NotEmpty().WithMessage("{PropertyName}  is required.");
+            RuleFor(x => x.UOM).NotEmpty().WithMessage("{PropertyName} is required.");
             RuleFor(r => r.AriticleBarcodeId).NotEmpty().WithMessage("{PropertyName}  is required.").When(y => y.Type == ImportType.ImportTransferToSite);
-            RuleFor(r => r.UOM).NotEmpty().WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.Shade).NotEmpty().WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.Note).NotEmpty().WithMessage("{PropertyName}  is required.");
+            RuleFor(r => r.Shade)
+                   .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+            RuleFor(r => r.Note).MaximumLength(1000).WithMessage("{PropertyName} must not exceed 1000 characters.");
             RuleFor(r => r.Quantity).NotNull().GreaterThan(0).WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.NumberOfCone).NotNull().GreaterThan(0).WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.WeightPerCone).NotNull().GreaterThan(0).WithMessage("{PropertyName}  is required.");
-            RuleFor(r => r.Unit).NotEmpty().WithMessage("{PropertyName}  is required.");
+
         }
     }
 

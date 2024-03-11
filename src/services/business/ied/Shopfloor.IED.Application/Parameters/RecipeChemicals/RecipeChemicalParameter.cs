@@ -10,6 +10,8 @@ namespace Shopfloor.IED.Application.Parameters.RecipeChemicals
 
         public string ChemicalName { get; set; }
 
+        public string ChemicalSubcategory { get; set; }
+
         public string Unit { get; set; }
 
         public decimal? Value { get; set; }

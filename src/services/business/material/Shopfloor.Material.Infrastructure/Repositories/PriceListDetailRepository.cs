@@ -44,8 +44,8 @@ namespace Shopfloor.Material.Infrastructure.Repositories
         }
 
         public async Task<bool> UpdatePriceListDetailAsync(PriceListDetail dataUpdate
-            , BaseListCreateDeleteEntity<PriceListDetailColor> dataPriceListDetailColor
-            , BaseListCreateDeleteEntity<PriceListDetailSize> dataPriceListDetailSize)
+            , BaseUpdateEntity<PriceListDetailColor> dataPriceListDetailColor
+            , BaseUpdateEntity<PriceListDetailSize> dataPriceListDetailSize)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())

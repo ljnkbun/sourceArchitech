@@ -8,7 +8,10 @@ namespace Shopfloor.Core.Extensions.Objects
     {
         public static T Clone<T>(this T obj)
         {
-            var serialized = JsonConvert.SerializeObject(obj);
+            var serialized = JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            });
             return JsonConvert.DeserializeObject<T>(serialized);
         }
         public static bool IsNullOrEmpty(this ICollection coll)

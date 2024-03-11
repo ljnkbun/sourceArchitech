@@ -14,6 +14,10 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
                 .NotNull()
                 .IsInEnum().WithMessage("Value is not part of the enum.");
 
+            RuleFor(p => p.LocationId)
+               .NotEmpty().WithMessage("{PropertyName} is required.")
+               .NotNull();
+
             RuleFor(p => p.UOM)
                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
@@ -23,7 +27,7 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
             RuleFor(p => p.OC)
               .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.LotNo)
+            RuleFor(p => p.Location)
               .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
             RuleFor(p => p.Note)

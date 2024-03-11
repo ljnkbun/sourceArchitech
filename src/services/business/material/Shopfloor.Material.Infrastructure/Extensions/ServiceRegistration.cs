@@ -43,6 +43,9 @@ namespace Shopfloor.Material.Infrastructure.Extensions
             services.AddTransient<IDynamicColumnRepository, DynamicColumnRepository>();
             services.AddTransient<IDynamicColumnContentRepository, DynamicColumnContentRepository>();
             services.AddTransient<IMaterialRequestDynamicColumnRepository, MaterialRequestDynamicColumnRepository>();
+            services.AddTransient<IMaterialRequestFileRepository, MaterialRequestFileRepository>();
+            services.AddTransient<IBuyerFileRepository, BuyerFileRepository>();
+            services.AddTransient<ISupplierFileRepository, SupplierFileRepository>();
         }
     }
 }

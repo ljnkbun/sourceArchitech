@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.SizeOrWidthRanges
         public async Task<Response<int>> Handle(DeleteSizeOrWidthRangeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"SizeOrWidthRange Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"SizeOrWidthRange Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

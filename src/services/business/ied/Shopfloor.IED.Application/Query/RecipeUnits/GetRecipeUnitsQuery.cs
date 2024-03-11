@@ -12,7 +12,6 @@ namespace Shopfloor.IED.Application.Query.RecipeUnits
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string Code { get; set; }
         public string Name { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
@@ -25,10 +24,12 @@ namespace Shopfloor.IED.Application.Query.RecipeUnits
         public string CacheKey => $"RecipeUnits";
         public TimeSpan? SlidingExpiration { get; set; }
     }
+
     public class GetRecipeUnitsQueryHandler : IRequestHandler<GetRecipeUnitsQuery, PagedResponse<IReadOnlyList<RecipeUnitModel>>>
     {
         private readonly IMapper _mapper;
         private readonly IRecipeUnitRepository _repository;
+
         public GetRecipeUnitsQueryHandler(IMapper mapper,
             IRecipeUnitRepository repository)
         {

@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.SupplierTypes
         public async Task<Response<int>> Handle(DeleteSupplierTypeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"SupplierType Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"SupplierType Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

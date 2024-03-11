@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.CompanyCurrencies
         public async Task<Response<CompanyCurrency>> Handle(GetCompanyCurrencyQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"CompanyCurrency Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"CompanyCurrency Not Found (Id:{query.Id}).");
             return new Response<CompanyCurrency>(entity);
         }
     }

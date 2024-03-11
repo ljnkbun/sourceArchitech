@@ -1,30 +1,28 @@
-﻿using MediatR;
-using Shopfloor.Barcode.Domain.Entities;
+using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Query.WfxPOArticles
 {
-    public class GetWfxPOArticleQuery : IRequest<Response<WfxPOArticle>>
+    public class GetWfxPOArticleQuery : IRequest<Response<Domain.Entities.WfxPOArticle>>
     {
         public int Id { get; set; }
     }
-    public class GetWfxPOArticleEntityQueryHandler : IRequestHandler<GetWfxPOArticleQuery, Response<WfxPOArticle>>
+    public class GetWfxPOArticleQueryHandler : IRequestHandler<GetWfxPOArticleQuery, Response<Domain.Entities.WfxPOArticle>>
     {
         private readonly IWfxPOArticleRepository _repository;
-        public GetWfxPOArticleEntityQueryHandler(
+        public GetWfxPOArticleQueryHandler(
             IWfxPOArticleRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<Response<WfxPOArticle>> Handle(GetWfxPOArticleQuery query, CancellationToken cancellationToken)
+        public async Task<Response<Domain.Entities.WfxPOArticle>> Handle(GetWfxPOArticleQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
             return entity == null
-                ? throw new ApiException($"Recipe Unit Not Found (Id:{query.Id}).")
-                : new Response<WfxPOArticle>(entity);
+                ? new($"WfxPOArticle Not Found (Id:{query.Id}).")
+                : new Response<Domain.Entities.WfxPOArticle>(entity);
         }
     }
 }

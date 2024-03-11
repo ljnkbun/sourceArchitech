@@ -24,7 +24,7 @@ namespace Shopfloor.IED.Application.Command.Zones
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Zone Not Found.");
+            if (entity == null) return new($"Zone Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

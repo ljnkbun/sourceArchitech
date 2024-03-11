@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Shopfloor.Core.Extensions.Objects;
+using Shopfloor.Core.Models.Entities;
 using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
@@ -34,6 +35,31 @@ namespace Shopfloor.IED.Infrastructure.Repositories
                 .ProjectTo<TModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             return response;
+        }
+
+        public async Task<bool> UpdateDyeingTBMaterialAsync(DyeingTBMaterial dataDyeingTBRequestUpdate, BaseUpdateEntity<DyeingTBMaterialColor> dataDyeingTBMaterialColor)
+        {
+            bool result = true;
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    _dbContext.Set<DyeingTBMaterialColor>().RemoveRange(dataDyeingTBMaterialColor.LstDataDelete);
+
+                    _dbContext.Set<DyeingTBMaterialColor>().AddRange(dataDyeingTBMaterialColor.LstDataAdd);
+
+                    _dbContext.Update(dataDyeingTBRequestUpdate);
+                    _dbContext.Set<DyeingTBMaterialColor>().UpdateRange(dataDyeingTBMaterialColor.LstDataUpdate);
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    result = false;
+                    await transaction.RollbackAsync();
+                }
+            }
+            return result;
         }
 
         public async Task<DyeingTBMaterial> GetWithIncludeByIdAsync(int id) => await _dbContext.Set<DyeingTBMaterial>()

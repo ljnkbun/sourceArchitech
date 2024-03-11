@@ -5,7 +5,8 @@ namespace Shopfloor.IED.Application.Models.DCTemplateDetails
     public class DCTemplateDetailModel : BaseModel
     {
         public int DCTemplateTaskId { get; set; }
-
+        public int ChemicalId { get; set; }
+        public string ChemicalSubCategory { get; set; }
         public string ChemicalCode { get; set; }
 
         public string ChemicalName { get; set; }

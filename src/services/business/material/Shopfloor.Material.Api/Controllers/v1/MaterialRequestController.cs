@@ -16,6 +16,7 @@ namespace Shopfloor.Material.Api.Controllers.v1
             return Ok(await Mediator.Send(new GetMaterialRequestsQuery()
             {
                 RequestNo = filter.RequestNo,
+                HSCode = filter.HSCode,
                 ArticleCode = filter.ArticleCode,
                 ArticleName = filter.ArticleName,
                 ThemeCode = filter.ThemeCode,
@@ -172,6 +173,12 @@ namespace Shopfloor.Material.Api.Controllers.v1
         public async Task<IActionResult> SendApprove(int id)
         {
             return Ok(await Mediator.Send(new SendApproveMaterialRequestCommand { Id = id }));
+        }
+
+        [HttpPut("SendExport/{id}")]
+        public async Task<IActionResult> SendExport(int id)
+        {
+            return Ok(await Mediator.Send(new SendExportMaterialRequestCommand { Id = id }));
         }
 
         [HttpPut("Reject/{id}")]

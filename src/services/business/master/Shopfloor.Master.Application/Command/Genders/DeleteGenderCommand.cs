@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Genders
         public async Task<Response<int>> Handle(DeleteGenderCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Gender Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Gender Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

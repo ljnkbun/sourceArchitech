@@ -27,10 +27,15 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 DivisionType = filter.DivisionType,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
+        }
+        
+        // GET api/v1/<controller>/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            return Ok(await Mediator.Send(new GetFolderTreeQuery { Id = id }));
         }
 
         // GET api/v1/<controller>/all
@@ -38,13 +43,6 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> GetAll()
         {
             return Ok(await Mediator.Send(new GetAllFolderTreeQuery()));
-        }
-
-        // GET api/v1/<controller>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            return Ok(await Mediator.Send(new GetFolderTreeQuery { Id = id }));
         }
 
         // POST api/v1/<controller>

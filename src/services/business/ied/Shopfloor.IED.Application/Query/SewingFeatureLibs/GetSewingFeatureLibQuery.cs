@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.SewingFeatureLibs
         public async Task<Response<SewingFeatureLib>> Handle(GetSewingFeatureLibQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetSewingFeatureLibByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SewingFeatureLib Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"SewingFeatureLib Not Found (Id:{query.Id}).");
             return new Response<SewingFeatureLib>(entity);
         }
     }

@@ -13,15 +13,17 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.Property(e => e.YarnCode).IsRequired().HasMaxLength(100);
             builder.Property(e => e.YarnName).IsRequired().HasMaxLength(250);
             builder.Property(e => e.YarnInRappo).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.YarnTotal).HasColumnType("decimal(28,8)");
             builder.Property(e => e.YarnRatio).HasColumnType("decimal(28,8)");
             builder.Property(e => e.SizingRatio).HasColumnType("decimal(28,8)");
             builder.Property(e => e.ScaleRatio).HasColumnType("decimal(28,8)");
             builder.Property(e => e.ScrapRatio).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.WastageRatio).HasColumnType("decimal(28,8)");
             builder.Property(e => e.Weight).HasColumnType("decimal(28,8)");
             builder.Property(e => e.Deleted).HasDefaultValueSql("((0))");
-            builder.HasOne(e => e.WeavingArticle)
+            builder.HasOne(e => e.WeavingIED)
                 .WithMany(e => e.WeavingYarns)
-                .HasForeignKey(e => e.WeavingArticleId)
+                .HasForeignKey(e => e.WeavingIEDId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -7,8 +7,8 @@ namespace Shopfloor.Barcode.Application.Models.Locations
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int ParentLocationId { get; set; }
+        public int? ParentLocationId { get; set; }
         public string Barcode { get; set; }
-        public LevelLocation LevelLocation { get; set; }
+        public LevelLocation? LevelLocation { get; set; }
     }
 }

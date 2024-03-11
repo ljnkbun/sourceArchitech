@@ -6,9 +6,9 @@ namespace Shopfloor.IED.Domain.Entities
     {
         public DyeingTBRTask()
         {
-            DyeingTBTaskChemicals = new HashSet<DyeingTBRChemical>();
+            DyeingTBRChemicals = new HashSet<DyeingTBRChemical>();
         }
-
+        public int LineNumber { get; set; }
         public int DyeingTBRecipeId { get; set; }
         public int DyeingProcessId { get; set; }
         public string DyeingProcessName { get; set; }
@@ -18,7 +18,8 @@ namespace Shopfloor.IED.Domain.Entities
         public string MachineName { get; set; }
         public decimal Temperature { get; set; }
         public int Minute { get; set; }
+        public decimal Ratio { get; set; }
         public virtual DyeingTBRecipe DyeingTBRecipe { get; set; }
-        public virtual ICollection<DyeingTBRChemical> DyeingTBTaskChemicals { get; set; }
+        public virtual ICollection<DyeingTBRChemical> DyeingTBRChemicals { get; set; }
     }
 }

@@ -7,15 +7,20 @@ namespace Shopfloor.IED.Application.Validations.WeavingIEDs
     {
         public UpdateWeavingIEDCommandValidator()
         {
-            RuleFor(p => p.RequestNo)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
+            RuleFor(p => p.ArticleCode)
                 .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
-            RuleFor(p => p.Comment)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
+            RuleFor(p => p.ArticleName)
                 .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
+            RuleFor(p => p.ProductGroup)
+               .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
+            RuleFor(p => p.SubCategory)
+               .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
+            RuleFor(p => p.Buyer)
+               .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
         }
     }
 }

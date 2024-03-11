@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shopfloor.Barcode.Application.Command.Imports;
 using Shopfloor.Barcode.Application.Parameters.Imports;
 using Shopfloor.Barcode.Application.Query.Imports;
-using Shopfloor.Barcode.Application.Validations.Imports;
+using Shopfloor.Barcode.Domain.Enums;
 
 namespace Shopfloor.Barcode.Api.Controllers.v1
 {
@@ -18,12 +18,18 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 CreatedDate = filter.CreatedDate,
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
+                OrderBy = filter.OrderBy,
                 ModifiedUserId = filter.ModifiedUserId,
                 Code = filter.Code,
                 Name = filter.Name,
-                Note=filter.Note,
+                Note = filter.Note,
+                ArticleName = filter.ArticleName,
+                PONo = filter.PONo,
+                ArticleCode = filter.ArticleCode,
                 IsActive = filter.IsActive,
-                Status = filter.Status
+                Statuses = filter.Statuses,
+                Types = filter.Types,
+                WfxStatuses = filter.WfxStatuses,
             }));
         }
 
@@ -49,17 +55,25 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
+        // PUT api/v1/<controller>/5
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusImportCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/5
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> Put(UpdateStatusImportsCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         // DELETE api/v1/<controller>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteImportCommand { Id = id }));
-        }
-        // DELETE api/v1/<controller>/5
-        [HttpPost("status")]
-        public async Task<IActionResult> UpdateStatus(UpdateImportStatusCommand command)
-        {
-            return Ok(await Mediator.Send(command));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Shopfloor.IED.Application.Command.RequestDivisionFiles;
-using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Validations.RequestDivisionFiles
 {

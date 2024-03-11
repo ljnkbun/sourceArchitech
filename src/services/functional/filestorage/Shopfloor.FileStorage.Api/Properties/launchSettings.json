@@ -1,0 +1,69 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=TCFileStorage;User Id=sa;Password=1;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "RedisSettings_Uri",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "RedisSettings_Password",
+        "NextCloudSettings_Server": "http://10.36.2.140:30020/",
+        "NextCloudSettings_BasePath": "/remote.php/dav/files/admin/",
+        "NextCloudSettings_UserName": "admin",
+        "NextCloudSettings_Password": "admin"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:13000"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionString": "Data Source=.;Initial Catalog=TCFileStorage;User Id=sa;Password=1;TrustServerCertificate=true;",
+        "RabbitMQ_Host": "localhost",
+        "RabbitMQ_Port": "5672",
+        "RabbitMQ_SSL": "false",
+        "RabbitMQ_Username": "guest",
+        "RabbitMQ_Password": "guest",
+        "RedisSettings_Uri": "localhost:6379",
+        "RedisSettings_SSL": "false",
+        "RedisSettings_Password": "",
+        "NextCloudSettings_Server": "http://10.36.2.140:30020/",
+        "NextCloudSettings_BasePath": "/remote.php/dav/files/admin/",
+        "NextCloudSettings_UserName": "admin",
+        "NextCloudSettings_Password": "admin"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:13443;http://localhost:13000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:48648",
+      "sslPort": 44323
+    }
+  }
+}

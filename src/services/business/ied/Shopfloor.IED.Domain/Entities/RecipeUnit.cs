@@ -2,7 +2,7 @@
 
 namespace Shopfloor.IED.Domain.Entities
 {
-    public class RecipeUnit : BaseMasterEntity
+    public class RecipeUnit : BaseNameEntity
     {
     }
 }

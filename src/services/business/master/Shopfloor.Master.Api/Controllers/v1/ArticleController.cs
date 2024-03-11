@@ -19,7 +19,6 @@ namespace Shopfloor.Master.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
-
                 UseForIED = filter.UseForIED,
                 OurContact = filter.OurContact,
                 PurchaseUOM = filter.PurchaseUOM,
@@ -70,7 +69,9 @@ namespace Shopfloor.Master.Api.Controllers.v1
                 ProductSubCategory = filter.ProductSubCategory,
                 ReOrderLevel = filter.ReOrderLevel,
                 StockTypeName = filter.StockTypeName,
-                WFXArticleId = filter.WFXArticleId
+                WFXArticleId = filter.WFXArticleId,
+                ServiceCode = filter.ServiceCode,
+                ServiceName = filter.ServiceName,
             }));
         }
 

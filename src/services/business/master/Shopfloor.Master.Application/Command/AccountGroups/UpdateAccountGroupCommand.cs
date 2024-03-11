@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.AccountGroups
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"AccountGroup Not Found.");
+            if (entity == null) return new($"AccountGroup Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

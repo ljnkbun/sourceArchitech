@@ -14,6 +14,7 @@ namespace Shopfloor.IED.Application.Mappings
             CreateMap<DyeingTBRTask, DyeingTBRTaskModel>().ReverseMap();
             CreateMap<CreateDyeingTBRTaskCommand, DyeingTBRTask>();
             CreateMap<GetDyeingTBRTasksQuery, DyeingTBRTaskParameter>();
+            CreateMap<UpdateDyeingTBRTaskCommand, DyeingTBRTask>();
         }
     }
 }

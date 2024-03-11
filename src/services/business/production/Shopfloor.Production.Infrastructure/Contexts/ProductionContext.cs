@@ -39,11 +39,30 @@ namespace Shopfloor.Production.Infrastructure.Contexts
             }
             return base.SaveChangesAsync(cancellationToken);
         }
-        public virtual DbSet<TestEntity> TestEntities { get; set; }
+        public virtual DbSet<InspectionBySize> InspectionBySizes { get; set; }
+        public virtual DbSet<ProductionOutput> ProductionOutputs { get; set; }
+        public virtual DbSet<DefectCapturing> DefectCapturings { get; set; }
+        public virtual DbSet<DefectCapturingStandard> DefectCapturingStandards { get; set; }
+        public virtual DbSet<Attachment> Attachments { get; set; }
+        public virtual DbSet<DefectCapturing4Points> DefectCapturing4Points { get; set; }
+        public virtual DbSet<DefectCapturing100Points> DefectCapturing100Points { get; set; }
+        public virtual DbSet<Measurement> Measurements { get; set; }
+        public virtual DbSet<FPPOOutput> FPPOOutputs { get; set; }
+        public virtual DbSet<FPPOOutputDetail> FPPOOutputDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new TestEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new InspectionBySizeConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductionOutputConfiguration());
+            modelBuilder.ApplyConfiguration(new DefectCapturingConfiguration());
+            modelBuilder.ApplyConfiguration(new DefectCapturingStandardConfiguration());
+            modelBuilder.ApplyConfiguration(new AttachmentConfiguration());
+            modelBuilder.ApplyConfiguration(new DefectCapturing4PointsConfiguration());
+            modelBuilder.ApplyConfiguration(new DefectCapturing100PointsConfiguration());
+            modelBuilder.ApplyConfiguration(new MeasurementConfiguration());
+
+            modelBuilder.ApplyConfiguration(new FPPOOutputConfiguration());
+            modelBuilder.ApplyConfiguration(new FPPOOutputDetailConfiguration());
         }
     }
 }

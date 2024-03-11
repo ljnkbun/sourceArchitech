@@ -1,6 +1,4 @@
 ﻿using MediatR;
-
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Extensions.Objects;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Material.Application.Models.Buyers;
@@ -175,7 +173,7 @@ namespace Shopfloor.Material.Application.Command.Buyers
         {
             var entity = await _repositoryBuyer.GetByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"{nameof(Buyer)} Not Found.");
+                return new($"{nameof(Buyer)} Not Found.");
             var ignores = new string[]
             {
                 nameof(Buyer.Status),
@@ -186,8 +184,7 @@ namespace Shopfloor.Material.Application.Command.Buyers
             };
             command.ModifiedDate = DateTime.Now;
             command.TransferProperties(entity, ignores);
-
-            var deletedCategories = await _buyerProductCategoryRepository.GetListAsync(x => x.BuyerId == command.Id);                                                                                                           // || !command.ProductCategories.Any(v => v.Id == x.Id)).ToList();
+            var deletedCategories = await _buyerProductCategoryRepository.GetListAsync(x => x.BuyerId == command.Id);
             var insertCategories = command.ProductCategories?.Select(x => new BuyerProductCategory
             {
                 BuyerId = command.Id,

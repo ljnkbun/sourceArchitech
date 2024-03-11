@@ -87,6 +87,12 @@ namespace Shopfloor.Material.Api.Controllers.v1
             if (id != command.Id) return BadRequest();
             return Ok(await Mediator.Send(command));
         }
+        
+        [HttpPut("SendExport/{id}")]
+        public async Task<IActionResult> SendExport(int id)
+        {
+            return Ok(await Mediator.Send(new SendExportPriceListCommand { Id = id }));
+        }
 
         [HttpPost("Import")]
         public async Task<IActionResult> Import(IFormFile file)

@@ -22,8 +22,6 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
                 CreatedDate = filter.CreatedDate,

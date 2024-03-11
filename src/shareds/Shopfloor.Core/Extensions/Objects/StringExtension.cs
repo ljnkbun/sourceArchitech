@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Shopfloor.Core.Extensions.Objects
+﻿namespace Shopfloor.Core.Extensions.Objects
 {
     public static class StringExtension
     {
@@ -50,6 +48,11 @@ namespace Shopfloor.Core.Extensions.Objects
                 text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
             }
             return text;
+        }
+
+        public static string ToSafeLower(this string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : text.ToLower();
         }
     }
 }

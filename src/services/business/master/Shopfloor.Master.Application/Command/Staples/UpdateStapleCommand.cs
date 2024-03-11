@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Staples
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Staple Not Found.");
+            if (entity == null) return new($"Staple Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

@@ -9,12 +9,16 @@ namespace Shopfloor.IED.Application.Command.DCTemplateTasks
     public class CreateDCTemplateTaskCommand : IRequest<Response<int>>
     {
         public int DCTemplateId { get; set; }
-        public int TaskId { get; set; }
-        public string TaskCode { get; set; }
-        public string TaskName { get; set; }
+        public int DyeingProcessId { get; set; }
+        public string DyeingProcessName { get; set; }
+        public int DyeingOpreationId { get; set; }
+        public string DyeingOpreationName { get; set; }
+        public int LineNumber { get; set; }
+        public string MachineCode { get; set; }
+        public string MachineName { get; set; }
         public string Temperature { get; set; }
         public int Minute { get; set; }
-        public virtual ICollection<CreateDCTemplateDetailCommand> DCTemplateDetails { get; set; }
+        public ICollection<CreateDCTemplateDetailCommand> DCTemplateDetails { get; set; }
     }
 
     public class CreateDCTemplateTaskCommandHandler : IRequestHandler<CreateDCTemplateTaskCommand, Response<int>>

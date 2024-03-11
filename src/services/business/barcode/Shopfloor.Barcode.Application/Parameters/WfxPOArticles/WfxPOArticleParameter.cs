@@ -11,7 +11,7 @@ namespace Shopfloor.Barcode.Application.Parameters.WfxPOArticles
         public DateTime? ToOrderDate { get; set; }
         public string OrderRefNum { get; set; }
         public string SupplierName { get; set; }
-        public string WFXArticleCode { get; set; }
+        public string ArticleCode { get; set; }
         public ArticleTypes? ArticleTypes { get; set; }
         public string ArticleType { get; set; }
 

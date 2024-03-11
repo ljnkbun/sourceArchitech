@@ -14,7 +14,9 @@ namespace Shopfloor.IED.Infrastructure.Repositories
         }
         public async Task<List<SewingOperationLibBOL>> GetListAsync(int sewingOperationLibId)
         {
-            return await _dbContext.Set<SewingOperationLibBOL>().Where(s => s.SewingOperationLibId == sewingOperationLibId).ToListAsync();
+            return await _dbContext.Set<SewingOperationLibBOL>().Where(s => s.SewingOperationLibId == sewingOperationLibId)
+                                                                .OrderBy(r => r.LineNumber)
+                                                                .ToListAsync();
         }
     }
 }

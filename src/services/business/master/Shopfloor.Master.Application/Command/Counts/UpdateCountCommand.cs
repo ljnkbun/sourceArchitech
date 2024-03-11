@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Counts
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Count Not Found.");
+            if (entity == null) return new($"Count Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

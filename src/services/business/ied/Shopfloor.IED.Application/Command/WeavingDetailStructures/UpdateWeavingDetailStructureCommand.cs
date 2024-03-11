@@ -9,9 +9,10 @@ namespace Shopfloor.IED.Application.Command.WeavingDetailStructures
     public class UpdateWeavingDetailStructureCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
+        public int? LineNumber { get; set; }
         public StructureType StructureType { get; set; }
-        public int CombString { get; set; }
-        public int SlotNumber { get; set; }
+        public int Denting { get; set; }
+        public int DentSplit { get; set; }
         public int Total { get; set; }
         public bool IsActive { set; get; }
     }
@@ -26,11 +27,12 @@ namespace Shopfloor.IED.Application.Command.WeavingDetailStructures
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"WeavingDetailStructure Not Found.");
+            if (entity == null) return new($"WeavingDetailStructure Not Found.");
 
             entity.StructureType = command.StructureType;
-            entity.CombString = command.CombString;
-            entity.SlotNumber = command.SlotNumber;
+            entity.LineNumber = command.LineNumber;
+            entity.Denting = command.Denting;
+            entity.DentSplit = command.DentSplit;
             entity.Total = command.Total;
             entity.IsActive = command.IsActive;
 

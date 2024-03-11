@@ -12,6 +12,14 @@ namespace Shopfloor.IED.Application.Validations.DCTemplateDetails
         {
             _dcTemplateTask = dcTemplateTask;
 
+            RuleFor(p => p.ChemicalId)
+                .NotNull().WithMessage("{PropertyName} is required.");
+
+            RuleFor(p => p.ChemicalSubCategory)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull()
+                .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
             RuleFor(p => p.ChemicalCode)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()

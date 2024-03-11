@@ -11,11 +11,13 @@ namespace Shopfloor.IED.Domain.Entities
 
         public int DyeingTBRequestId { get; set; }
 
-        public string ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
 
         public string ArticleCode { get; set; }
 
         public string ArticleName { get; set; }
+
+        public string FabricStyleRef { get; set; }
 
         public string MaterialType { get; set; }
 

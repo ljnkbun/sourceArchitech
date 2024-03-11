@@ -10,7 +10,7 @@ using Shopfloor.Core.Models.Excels;
 
 namespace Shopfloor.Barcode.Application.Validations.ExportDetails
 {
-    internal class ImportDataExportDetailCommandValidator : AbstractValidator<ImportDataExportDetailCommand>
+    internal class ImportDataExportDetailCommandValidator : AbstractValidator<UploadExcelExportDetailCommand>
     {
         private readonly DataExportDetailCommandValidator _validationRules;
         private readonly IExportDetailRepository _exportDetailRepository;
@@ -42,7 +42,7 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
             RuleFor(p => p.File).CustomAsync(CustomCheckCreateExportDetailCmd);
         }
 
-        private async Task CustomCheckCreateExportDetailCmd(IFormFile file, ValidationContext<ImportDataExportDetailCommand> context, CancellationToken token)
+        private async Task CustomCheckCreateExportDetailCmd(IFormFile file, ValidationContext<UploadExcelExportDetailCommand> context, CancellationToken token)
         {
             if (file != null)
             {

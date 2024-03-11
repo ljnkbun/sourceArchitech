@@ -10,6 +10,5 @@ namespace Shopfloor.IED.Application.Parameters.RequestDivisionProcesses
         public string ProcessCode { get; set; }
         public string ProcessName { get; set; }
         public int? LineNumber { get; set; }
-        public Status Status { get; set; }
     }
 }

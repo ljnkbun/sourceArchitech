@@ -24,4 +24,19 @@
 		<ProjectReference Include="..\Shopfloor.Barcode.Infrastructure\Shopfloor.Barcode.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="TemplateWFX\ExportDetails.xls">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TemplateWFX\ImportDetail.xls">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TemplateWFX\ImportPODetails.xls">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TemplateWFX\ImportTransferToSiteDetail.xls">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

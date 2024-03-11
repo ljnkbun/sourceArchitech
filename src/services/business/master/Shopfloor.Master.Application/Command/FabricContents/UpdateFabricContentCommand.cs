@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.FabricContents
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"FabricContent Not Found.");
+            if (entity == null) return new($"FabricContent Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

@@ -4,7 +4,6 @@ using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Command.RequestDivisions;
 using Shopfloor.IED.Domain.Entities;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.Requests
@@ -13,7 +12,7 @@ namespace Shopfloor.IED.Application.Command.Requests
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public RequestStatus Status { get; set; }
+        public decimal? ExpectedQty { get; set; }
         public int RequestTypeId { get; set; }
         public bool Deleted { get; set; }
         public bool IsActive { get; set; }
@@ -35,16 +34,16 @@ namespace Shopfloor.IED.Application.Command.Requests
         {
             var entity = await _requestRepository.GetByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"{nameof(Request)} Not Found.");
+                return new($"{nameof(Request)} Not Found.");
 
             entity.Description = command.Description;
-            entity.Status = command.Status;
+            entity.ExpectedQty = command.ExpectedQty;
             entity.RequestTypeId = command.RequestTypeId;
             entity.Deleted = command.Deleted;
             entity.IsActive = command.IsActive;
             entity.RequestDivisions = null;
 
-            var deletedRequestDivisions = await _requestDivisionRepository.GetListAsync(command.Id);                                                                                                           // || !command.ProductCategories.Any(v => v.Id == x.Id)).ToList();
+            var deletedRequestDivisions = await _requestDivisionRepository.GetListAsync(command.Id);
             var insertRequestDivisions = command.RequestDivisions?.Select(x => new RequestDivision
             {
                 RequestId = command.Id,
@@ -52,9 +51,11 @@ namespace Shopfloor.IED.Application.Command.Requests
                 DivisionCode = x.DivisionCode,
                 DivisionName = x.DivisionName,
                 LineNumber = x.LineNumber,
-                Status = x.Status,
+                ExpectedDate = x.ExpectedDate,
+                Remark = x.Remark,
                 IsActive = x.IsActive,
-                RequestDivisionProcesses = _mapper.Map<ICollection<RequestDivisionProcess>>(x.RequestDivisionProcesses)
+                RequestDivisionProcesses = _mapper.Map<ICollection<RequestDivisionProcess>>(x.RequestDivisionProcesses),
+                RequestDivisionFiles = _mapper.Map<ICollection<RequestDivisionFile>>(x.RequestDivisionFiles)
             }).ToList();
 
             await _requestRepository.UpdateRequestAsync(entity, insertRequestDivisions, deletedRequestDivisions);

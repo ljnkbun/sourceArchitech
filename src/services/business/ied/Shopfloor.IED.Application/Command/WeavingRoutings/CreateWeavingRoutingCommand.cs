@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.IED.Application.Command.WeavingOperations;
 using Shopfloor.IED.Domain.Entities;
 using Shopfloor.IED.Domain.Interfaces;
 
@@ -11,13 +12,15 @@ namespace Shopfloor.IED.Application.Command.WeavingRoutings
         public int WeavingIEDId { get; set; }
         public int LineNumber { get; set; }
         public string WeavingProcess { get; set; }
-        public string WeavingOperation { get; set; }
-        public string MachineType { get; set; }
+        public string WeavingProcessCode { get; set; }
+        public ICollection<CreateWeavingOperationCommand> WeavingOperations { get; set; }
     }
+
     public class CreateWeavingRoutingCommandHandler : IRequestHandler<CreateWeavingRoutingCommand, Response<int>>
     {
         private readonly IMapper _mapper;
         private readonly IWeavingRoutingRepository _repository;
+
         public CreateWeavingRoutingCommandHandler(IMapper mapper,
             IWeavingRoutingRepository repository)
         {

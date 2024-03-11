@@ -1,5 +1,5 @@
-﻿using Shopfloor.Core.Models.Parameters;
-using Shopfloor.IED.Domain.Enums;
+﻿using Shopfloor.Core.Definations;
+using Shopfloor.Core.Models.Parameters;
 
 namespace Shopfloor.IED.Application.Parameters.DyeingTBRequestFiles
 {

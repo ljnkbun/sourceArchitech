@@ -2,7 +2,7 @@
 
 namespace Shopfloor.IED.Domain.Entities
 {
-    public class WeavingBorderStyle : BaseMasterEntity
+    public class WeavingBorderStyle : BaseNameEntity
     {
     }
 }

@@ -22,7 +22,7 @@ namespace Shopfloor.Master.Api.Controllers.v1
                 ModifiedUserId = filter.ModifiedUserId,
                 Code = filter.Code,
                 Name = filter.Name,
-                ProcessLibraryId = filter.ProcessLibraryId,
+                ProcessId = filter.ProcessId,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
                 IsActive = filter.IsActive,
@@ -58,6 +58,11 @@ namespace Shopfloor.Master.Api.Controllers.v1
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteOperationLibraryCommand { Id = id }));
+        }
+        [HttpGet("wfxsync")]
+        public async Task<IActionResult> WfxSync()
+        {
+            return Ok(await Mediator.Send(new WfxSyncOperationLibraryCommand()));
         }
     }
 }

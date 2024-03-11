@@ -11,13 +11,16 @@ namespace Shopfloor.IED.Application.Command.WeavingYarns
         public int Id { get; set; }
         public int LineNumber { get; set; }
         public YarnType YarnType { get; set; }
+        public int WFXYarnId { get; set; }
         public string YarnCode { get; set; }
         public string YarnName { get; set; }
         public decimal YarnInRappo { get; set; }
+        public decimal? YarnTotal { get; set; }
         public decimal YarnRatio { get; set; }
         public decimal SizingRatio { get; set; }
         public decimal ScaleRatio { get; set; }
         public decimal ScrapRatio { get; set; }
+        public decimal WastageRatio { get; set; }
         public decimal Weight { get; set; }
         public bool IsActive { set; get; }
     }
@@ -32,10 +35,11 @@ namespace Shopfloor.IED.Application.Command.WeavingYarns
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"WeavingYarn Not Found.");
+            if (entity == null) return new($"WeavingYarn Not Found.");
 
             entity.LineNumber = command.LineNumber;
             entity.YarnType = command.YarnType;
+            entity.WFXYarnId = command.WFXYarnId;
             entity.YarnCode = command.YarnCode;
             entity.YarnName = command.YarnName;
             entity.YarnInRappo = command.YarnInRappo;
@@ -43,7 +47,9 @@ namespace Shopfloor.IED.Application.Command.WeavingYarns
             entity.SizingRatio = command.SizingRatio;
             entity.ScaleRatio = command.ScaleRatio;
             entity.ScrapRatio = command.ScrapRatio;
+            entity.WastageRatio = command.WastageRatio;
             entity.Weight = command.Weight;
+            entity.YarnTotal = command.YarnTotal;
             entity.IsActive = command.IsActive;
 
             await _repository.UpdateAsync(entity);

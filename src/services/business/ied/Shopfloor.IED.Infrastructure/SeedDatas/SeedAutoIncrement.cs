@@ -12,33 +12,41 @@ namespace Shopfloor.IED.Infrastructure.SeedDatas
             {
                 new()
                 {
-                    Type = AutoIncrementType.Request,
-                    Separate = "/",
+                    Type = AutoIncrementType.IER,
+                    Separate = "-",
                     Index = 1,
                     IndexFormat = "D5",
                     IsActive = true
                 },
                 new()
                 {
-                    Type = AutoIncrementType.RC,
-                    Separate = "",
-                    Index = 2,
+                    Type = AutoIncrementType.RCR,
+                    Separate = "-",
+                    Index = 1,
                     IndexFormat = "D5",
                     IsActive = true
                 },
                 new()
                 {
-                    Type = AutoIncrementType.RTB,
-                    Separate = "",
-                    Index = 3,
+                    Type = AutoIncrementType.Macro,
+                    Separate = "-",
+                    Index = 1,
                     IndexFormat = "D5",
                     IsActive = true
                 },
                 new()
                 {
-                    Type = AutoIncrementType.RCP,
-                    Separate = "",
-                    Index = 4,
+                    Type = AutoIncrementType.Operation,
+                    Separate = "-",
+                    Index = 1,
+                    IndexFormat = "D5",
+                    IsActive = true
+                },
+                new()
+                {
+                    Type = AutoIncrementType.Feature,
+                    Separate = "-",
+                    Index = 1,
                     IndexFormat = "D5",
                     IsActive = true
                 }

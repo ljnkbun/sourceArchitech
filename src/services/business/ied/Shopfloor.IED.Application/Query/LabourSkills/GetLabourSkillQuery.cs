@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.LabourSkills
         public async Task<Response<LabourSkill>> Handle(GetLabourSkillQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"LabourSkill Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"LabourSkill Not Found (Id:{query.Id}).");
             return new Response<LabourSkill>(entity);
         }
     }

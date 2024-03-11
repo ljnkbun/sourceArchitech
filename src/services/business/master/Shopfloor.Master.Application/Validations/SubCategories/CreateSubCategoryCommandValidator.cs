@@ -26,22 +26,25 @@ namespace Shopfloor.Master.Application.Validations.SubCategories
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
             RuleFor(p => p.SubCategoryGroupId)
-                .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-                .MustAsync(IsExistSubCategoryGroup);
+                .MustAsync(IsExistSubCategoryGroup).WithMessage("{PropertyName} not found.");
 
             RuleFor(p => p.ProductGroupId)
                 .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-                .MustAsync(IsExistProductGroup);
+                .MustAsync(IsExistProductGroup).WithMessage("{PropertyName} not found."); ;
             _subCategoryRepository = subCategoryRepository;
         }
 
         private async Task<bool> IsExistProductGroup(int id, CancellationToken cancellationToken)
         {
-            return await _productGroupRepository.GetByIdAsync(id) != null;
+            return await _productGroupRepository.IsExistAsync(id);
         }
-        private async Task<bool> IsExistSubCategoryGroup(int id, CancellationToken cancellationToken)
+        private async Task<bool> IsExistSubCategoryGroup(int? id, CancellationToken cancellationToken)
         {
-            return await _subCategoryGroupRepository.GetByIdAsync(id) != null;
+            if (id.HasValue)
+            {
+                return await _subCategoryGroupRepository.IsExistAsync(id.Value);
+            }
+            return true;
         }
 
         private async Task<bool> IsUniqueAsync(string code, CancellationToken cancellationToken)

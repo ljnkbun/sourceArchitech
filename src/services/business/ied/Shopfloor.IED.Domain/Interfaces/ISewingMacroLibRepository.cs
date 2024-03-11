@@ -7,5 +7,6 @@ namespace Shopfloor.IED.Domain.Interfaces
     {
         Task<SewingMacroLib> GetSewingMacroLibByIdAsync(int id);
         Task UpdateSewingMacroLibAsync(SewingMacroLib entity, List<SewingMacroLibBOL> insertItems, List<SewingMacroLibBOL> deleteItems);
+        Task<SewingMacroLib> AddSewingMacroLibAsync(SewingMacroLib entity);
     }
 }

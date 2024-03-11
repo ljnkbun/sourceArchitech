@@ -8,28 +8,28 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.WeavingRusticFabricSpecs
 {
-    public class GetWeavingRusticFabricSpecsQuery : IRequest<PagedResponse<IReadOnlyList<WeavingRusticFabricSpecModel>>>, ICacheableMediatrQuery
+    public class GetWeavingRusticFabricSpecsQuery : IRequest<PagedResponse<IReadOnlyList<WeavingRusticFabricSpecModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int? WeavingIEDId { get; set; }
         public int? LineNumber { get; set; }
-        public string BackgroundType { get; set; }
-        public decimal? BackgroundLoomFrame { get; set; }
-        public string BorderType { get; set; }
-        public decimal? BorderLoomFrame { get; set; }
+        public string ContentWeaveStyle { get; set; }
+        public decimal? HarnessFrameCWS { get; set; }
+        public string MarginWeaveStyle { get; set; }
+        public decimal? HarnessFrameMWS { get; set; }
         public decimal? WeightGM { get; set; }
         public decimal? WeightGM2 { get; set; }
-        public decimal? VerticalShrinkage { get; set; }
-        public decimal? HorizontalShrinkage { get; set; }
+        public decimal? WarpShrinkage { get; set; }
+        public decimal? WeftShrinkage { get; set; }
         public string MachineType { get; set; }
         public decimal? RPM { get; set; }
-        public decimal? CombNum { get; set; }
-        public decimal? CombSize { get; set; }
-        public decimal? VerticalDensity { get; set; }
-        public decimal? HorizontalDensity { get; set; }
-        public decimal? RusticSize { get; set; }
-        public decimal? HorizontalDensitySetting { get; set; }
+        public decimal? ReedCount { get; set; }
+        public decimal? ReedWidth { get; set; }
+        public decimal? WarpDensity { get; set; }
+        public decimal? WeftDensity { get; set; }
+        public decimal? GreigeWidth { get; set; }
+        public decimal? SettingWeftDensity { get; set; }
         public bool? Deleted { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
@@ -38,9 +38,6 @@ namespace Shopfloor.IED.Application.Query.WeavingRusticFabricSpecs
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"WeavingRusticFabricSpecs";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetWeavingRusticFabricSpecsQueryHandler : IRequestHandler<GetWeavingRusticFabricSpecsQuery, PagedResponse<IReadOnlyList<WeavingRusticFabricSpecModel>>>
     {

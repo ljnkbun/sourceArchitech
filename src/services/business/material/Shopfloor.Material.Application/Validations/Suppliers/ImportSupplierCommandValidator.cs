@@ -50,6 +50,10 @@ namespace Shopfloor.Material.Application.Validations.Suppliers
                             context.AddFailure(string.Join(Environment.NewLine, valid.Errors));
                     }
                 }
+                else
+                {
+                    context.AddFailure(string.Join(Environment.NewLine, "No data import"));
+                }
             }
         }
     }

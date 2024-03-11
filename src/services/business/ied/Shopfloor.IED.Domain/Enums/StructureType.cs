@@ -3,6 +3,7 @@
     public enum StructureType : byte
     {
         Border = 0,
-        Background = 1
+        Background = 1,
+        Total = 2,
     }
 }

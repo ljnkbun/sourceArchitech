@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.RequestArticleOutputs
         public async Task<Response<RequestArticleOutput>> Handle(GetRequestArticleOutputQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetRequestArticleOutputByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"RequestArticleOutput Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"RequestArticleOutput Not Found (Id:{query.Id}).");
             return new Response<RequestArticleOutput>(entity);
         }
     }

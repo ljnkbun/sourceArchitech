@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using System.Security.Authentication;
+using MassTransit;
+using Shopfloor.Ambassador.Api.Consumers.Requests;
+using Shopfloor.Ambassador.Api.Consumers.Wfxs;
 using Shopfloor.EventBus.Definations;
 using Shopfloor.EventBus.Extensions;
 using Shopfloor.Master.Api.Consumers.Requests;
-using System.Security.Authentication;
 
 namespace Shopfloor.Ambassador.Api.Extensions
 {
@@ -16,6 +18,11 @@ namespace Shopfloor.Ambassador.Api.Extensions
                 x.AddConsumer<GetWfxMasterDataRequestConsumer>();
                 x.AddConsumer<GetWfxArticleRequestConsumer>();
                 x.AddConsumer<GetWfxPOArticleRequestConsumer>();
+                x.AddConsumer<GetWfxGDIRequestConsumer>();
+                x.AddConsumer<GetWfxGDNRequestConsumer>();
+                x.AddConsumer<GetWfxPorRequestConsumer>();
+                x.AddConsumer<GetWfxWebSharedServiceConsumer>();
+                x.AddConsumer<GetWFXOperationLibraryRequestConsumer>();
                 #endregion
 
                 #region UsingRabbitMq
@@ -76,6 +83,26 @@ namespace Shopfloor.Ambassador.Api.Extensions
                     cfg.ReceiveEndpoint(RequestQueueName.GetWfxPOArticleRequest, e =>
                     {
                         e.ConfigureConsumer<GetWfxPOArticleRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxGDIRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxGDIRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxGDNRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxGDNRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxPorRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxPorRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxWebSharedRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxWebSharedServiceConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWFXOperationLibraryRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWFXOperationLibraryRequestConsumer>(context);
                     });
                 });
                 #endregion

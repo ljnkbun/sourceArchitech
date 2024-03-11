@@ -1,28 +1,28 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Shopfloor.Barcode.Application.Command.WfxPOArticles;
 using Shopfloor.Barcode.Application.Services.Wfxs;
 using Shopfloor.Barcode.Application.Settings;
-using Shopfloor.Barcode.Domain.Entities;
-using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Core.Extensions.Exceptions;
 
 namespace Shopfloor.Barcode.Application.Jobs
 {
     public class WfxPOArticleDataSyncJob : BackgroundService
     {
+        private readonly IMediator _mediator;
         private readonly ILogger<WfxPOArticleDataSyncJob> _logger;
         private readonly IWfxPOArticleServices _wfxArticleRequestService;
-        private readonly IWfxPOArticleRepository _articleRepository;
         private readonly JobSettings _settings;
         public WfxPOArticleDataSyncJob(IServiceProvider serviceProvider,
             ILogger<WfxPOArticleDataSyncJob> logger,
             IOptions<JobSettings> setting)
         {
             var scope = serviceProvider.CreateScope();
+            _mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             _wfxArticleRequestService = scope.ServiceProvider.GetRequiredService<IWfxPOArticleServices>();
-            _articleRepository = scope.ServiceProvider.GetRequiredService<IWfxPOArticleRepository>();
             _logger = logger;
             _settings = setting.Value;
         }
@@ -48,20 +48,15 @@ namespace Shopfloor.Barcode.Application.Jobs
             try
             {
                 var entites = await _wfxArticleRequestService.GetPOArticlesAsync();
-                if (entites.Any())
+                if (entites != null && entites.Any())
                 {
-                    SaveWfxPOArticleSync(entites);
+                    await _mediator.Send(new SaveWfxPOArticlesSyncCommand() { Data = entites.ToList() });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"Error SyncWfxPOArticle: {ex.FullMessage()}");
+                _logger.LogInformation("Error SyncWfxPOArticle: {Exception}", ex.FullMessage());
             }
-        }
-
-        private async void SaveWfxPOArticleSync(IReadOnlyList<WfxPOArticle> entites)
-        {
-            await _articleRepository.SaveWfxPOArticleSync(entites.ToList());
         }
 
     }

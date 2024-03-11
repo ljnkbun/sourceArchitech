@@ -4,12 +4,16 @@ namespace Shopfloor.IED.Domain.Entities
 {
     public class WeavingRouting : BaseEntity
     {
-        public int WeavingArticleId { get; set; }
+        public WeavingRouting()
+        {
+            WeavingOperations = new HashSet<WeavingOperation>();
+        }
+
+        public int WeavingIEDId { get; set; }
         public int LineNumber { get; set; }
         public string WeavingProcess { get; set; }
-        public string WeavingOperation { get; set; }
-        public string MachineType { get; set; }
-        public bool Deleted { get; set; }
-        public virtual WeavingArticle WeavingArticle { get; set; }
+        public string WeavingProcessCode { get; set; }
+        public virtual WeavingIED WeavingIED { get; set; }
+        public virtual ICollection<WeavingOperation> WeavingOperations { get; set; }
     }
 }

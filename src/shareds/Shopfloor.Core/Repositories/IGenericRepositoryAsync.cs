@@ -1,5 +1,6 @@
 ﻿using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
+using System.Threading.Tasks;
 
 namespace Shopfloor.Core.Repositories
 {
@@ -10,6 +11,9 @@ namespace Shopfloor.Core.Repositories
         Task<IReadOnlyList<T>> GetReponseAsync<TParam>(TParam parameter);
         Task<PagedResponse<IReadOnlyList<T>>> GetPagedReponseAsync<TParam>(TParam parameter) where TParam : RequestParameter;
         Task<PagedResponse<IReadOnlyList<TModel>>> GetModelPagedReponseAsync<TParam, TModel>(TParam parameter)
+            where TModel : class
+            where TParam : RequestParameter;
+        Task<PagedResponse<IReadOnlyList<TModel>>> GetModelSingleQueryPagedReponseAsync<TParam, TModel>(TParam parameter)
             where TModel : class
             where TParam : RequestParameter;
         Task<T> AddAsync(T entity);

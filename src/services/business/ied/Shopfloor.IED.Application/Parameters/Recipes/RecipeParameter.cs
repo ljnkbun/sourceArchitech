@@ -4,13 +4,13 @@ namespace Shopfloor.IED.Application.Parameters.Recipes
 {
     public class RecipeParameter : RequestParameter
     {
-        public int? DyeingTBRequestId { get; set; }
-
-        public int? DyeingTBRVersionId { get; set; }
+        public int? DyeingTBRecipeId { get; set; }
 
         public string RecipeNo { get; set; }
 
         public DateTime? JobDate { get; set; }
+
+        public string Description { get; set; }
 
         public string TCFNO { get; set; }
 

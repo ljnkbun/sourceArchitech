@@ -13,8 +13,9 @@ namespace Shopfloor.Barcode.Infrastructure.TypeConfigurations
             builder.Property(e => e.Code).HasMaxLength(200);
             builder.Property(e => e.Name).HasMaxLength(500);
             builder.Property(e => e.Note).HasMaxLength(500);
-            builder.Property(e => e.Status).HasColumnType("tinyint");
             builder.Property(e => e.Type).HasColumnType("tinyint");
+            builder.Property(e => e.Status).HasColumnType("tinyint");
+            builder.Property(e => e.WfxStatus).HasColumnType("tinyint");
         }
     }
 }

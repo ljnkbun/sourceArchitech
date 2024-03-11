@@ -2,7 +2,10 @@
 {
     public enum OperationBOLType : byte
     {
-        Task = 0,
-        Macro = 1
+        CO = 0,
+        MN = 1,
+        BU = 2,
+        CM = 3,
+        MC = 4
     }
 }

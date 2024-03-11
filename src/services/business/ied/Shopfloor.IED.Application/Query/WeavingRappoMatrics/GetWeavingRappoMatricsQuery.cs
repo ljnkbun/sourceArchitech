@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.WeavingRappoMatrics;
 using Shopfloor.IED.Application.Parameters.WeavingRappoMatrics;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.WeavingRappoMatrics
 {
-    public class GetWeavingRappoMatricsQuery : IRequest<PagedResponse<IReadOnlyList<WeavingRappoMatricModel>>>, ICacheableMediatrQuery
+    public class GetWeavingRappoMatricsQuery : IRequest<PagedResponse<IReadOnlyList<WeavingRappoMatricModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int? WeavingRappoId { get; set; }
+        public int? SlotIndex { get; set; }
         public int? RowIndex { get; set; }
         public int? ColumnIndex { get; set; }
         public int? LoopIndex { get; set; }
@@ -28,9 +27,6 @@ namespace Shopfloor.IED.Application.Query.WeavingRappoMatrics
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"WeavingRappoMatrics";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetWeavingRappoMatricsQueryHandler : IRequestHandler<GetWeavingRappoMatricsQuery, PagedResponse<IReadOnlyList<WeavingRappoMatricModel>>>
     {

@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.WeavingBorderStyles
         public async Task<Response<WeavingBorderStyle>> Handle(GetWeavingBorderStyleQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"WeavingBorderStyle Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"WeavingBorderStyle Not Found (Id:{query.Id}).");
             return new Response<WeavingBorderStyle>(entity);
         }
     }

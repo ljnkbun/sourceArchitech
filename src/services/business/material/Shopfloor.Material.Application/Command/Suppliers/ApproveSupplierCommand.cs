@@ -24,7 +24,7 @@ namespace Shopfloor.Material.Application.Command.Suppliers
         public async Task<Response<int>> Handle(ApproveSupplierCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Supplier Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Supplier Not Found (Id:{command.Id}).");
             entity.Status = ProcessStatus.Approved;
             entity.ReasonReject = null;
             await _repository.UpdateAsync(entity);

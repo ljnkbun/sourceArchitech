@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.CategoryMapMaterialTypes
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"CategoryMapMaterialType Not Found.");
+            if (entity == null) return new($"CategoryMapMaterialType Not Found.");
 
             entity.CategoryId = command.CategoryId;
             entity.MaterialTypeId = command.MaterialTypeId;

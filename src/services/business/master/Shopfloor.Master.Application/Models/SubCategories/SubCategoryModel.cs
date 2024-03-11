@@ -6,7 +6,7 @@ namespace Shopfloor.Master.Application.Models.SubCategories
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int SubCategoryGroupId { get; set; }
+        public int? SubCategoryGroupId { get; set; }
         public string SubCategoryGroupName { get; set; }
         public string SubCategoryGroupCode { get; set; }
         public string ExciseTarrifNo { get; set; }

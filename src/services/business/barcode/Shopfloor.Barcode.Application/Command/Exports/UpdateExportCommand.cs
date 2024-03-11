@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shopfloor.Barcode.Application.Command.ExportArticles;
+using Shopfloor.Barcode.Application.Command.ExportDetails;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.Exports
@@ -13,7 +14,9 @@ namespace Shopfloor.Barcode.Application.Command.Exports
     {
         public int Id { get; set; }
         public ExportStatus? Status { get; set; }
+        public string Name { get; set; }
         public string Note { get; set; }
+        public EntityState? EntityState { get; set; }
         public virtual ICollection<UpdateExportArticleCommand> ExportArticles { get; set; }
     }
 
@@ -31,21 +34,36 @@ namespace Shopfloor.Barcode.Application.Command.Exports
 
         public async Task<Response<int>> Handle(UpdateExportCommand command, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetExportByIdAsync(command.Id) ?? throw new ApiException($"ExportEntity Not Found.");
+            var entity = await _repository.GetExportByIdAsync(command.Id);
+            if (entity == null) return new($"ExportEntity Not Found.");
             entity.Status = command.Status;
             entity.Note = command.Note;
+            entity.Name = command.Name;
 
-            var oldArticles = entity.ExportArticles;
-            var oldDetails = entity.ExportArticles.SelectMany(x => x.ExportDetails);
+            var dbArticles = entity.ExportArticles;
+            var dbDetails = entity.ExportArticles.SelectMany(x => x.ExportDetails);
             var newDetails = command.ExportArticles.SelectMany(x => x.ExportDetails);
-            entity.ExportArticles = _mapper.Map<ICollection<ExportArticle>>(command.ExportArticles);
-            var deleteArticles = oldArticles.Where(x => !command.ExportArticles.Select(o => o.Id).Contains(x.Id));
-            var deleteDetails = oldDetails.Where(x => !newDetails.Select(o => o.Id).Contains(x.Id));
+            entity.ExportArticles = null;
 
-            foreach (var article in deleteArticles) article.Export = null;
-            foreach (var detail in deleteDetails) detail.ExportArticle = null;
+            // Article
+            var newArticleModifieds = command.ExportArticles.Where(x => x.EntityState == EntityState.Modified);
+            var dbArticleModifieds = dbArticles.Where(x => newArticleModifieds.Any(c => c.Id == x.Id))
+                .Select(x => _mapper.Map<UpdateExportArticleCommand, ExportArticle>(newArticleModifieds.First(c => c.Id == x.Id), x));
+            var newArticleDeleteds = command.ExportArticles.Where(x => x.EntityState == EntityState.Deleted).Select(x => _mapper.Map<ExportArticle>(x));
+            var dbArticleDeleteds = dbArticles.Where(x => newArticleDeleteds.Any(c => c.Id == x.Id));
 
-            await _repository.UpdateExportAsync(entity, deleteArticles, deleteDetails);
+            // Detail
+            var newDetailModifieds = newDetails.Where(x => x.EntityState == EntityState.Modified);
+            var dbDetailModifieds = dbDetails.Where(x => newDetailModifieds.Any(c => c.Id == x.Id))
+                .Select(x => _mapper.Map<UpdateExportDetailCommand, ExportDetail>(newDetailModifieds.First(c => c.Id == x.Id), x));
+
+
+            var newDetailDeleteds = newDetails.Where(x => x.EntityState == EntityState.Deleted).Select(x => _mapper.Map<ExportDetail>(x));
+            var dbDetailDeleteds = dbDetails.Where(x => newDetailDeleteds.Any(c => c.Id == x.Id));
+
+            var newDetailAddeds = newDetails.Where(x => x.EntityState == EntityState.Added).Select(x => _mapper.Map<ExportDetail>(x)).ToList();
+
+            await _repository.UpdateExportAsync(entity, dbArticleModifieds, dbArticleDeleteds, newDetailAddeds, dbDetailModifieds, dbDetailDeleteds);
             return new Response<int>(entity.Id);
         }
     }

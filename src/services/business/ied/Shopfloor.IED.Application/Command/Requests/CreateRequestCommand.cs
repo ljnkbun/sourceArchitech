@@ -11,7 +11,7 @@ namespace Shopfloor.IED.Application.Command.Requests
     public class CreateRequestCommand : IRequest<Response<int>>
     {
         public string Description { get; set; }
-        public RequestStatus Status { get; set; }
+        public decimal? ExpectedQty { get; set; }
         public int RequestTypeId { get; set; }
         public ICollection<CreateRequestDivisionCommand> RequestDivisions { get; set; }
     }
@@ -28,8 +28,8 @@ namespace Shopfloor.IED.Application.Command.Requests
 
         public async Task<Response<int>> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
         {
-            request.Status = RequestStatus.Draft;
             var entity = _mapper.Map<Request>(request);
+            entity.Status = RequestStatus.Draft;
             await _repository.AddRequestAsync(entity);
             return new Response<int>(entity.Id);
         }

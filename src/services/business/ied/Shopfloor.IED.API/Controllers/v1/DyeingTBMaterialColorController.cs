@@ -61,6 +61,13 @@ namespace Shopfloor.IED.Api.Controllers.v1
             return Ok(await Mediator.Send(new GetDyeingTBMaterialColorQuery { Id = id }));
         }
 
+        // GET api/v1/<controller>/5
+        [HttpGet("parent/{id}")]
+        public async Task<IActionResult> GetParent(int id)
+        {
+            return Ok(await Mediator.Send(new GetDyeingTBMaterialColorWithParentQuery { Id = id }));
+        }
+
         // POST api/v1/<controller>
         [HttpPost]
         public async Task<IActionResult> Post(CreateDyeingTBMaterialColorCommand command)

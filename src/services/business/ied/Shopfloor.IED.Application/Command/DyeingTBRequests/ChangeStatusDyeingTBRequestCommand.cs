@@ -26,7 +26,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRequests
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"DyeingTBRequest Not Found.");
+            if (entity == null) return new($"DyeingTBRequest Not Found.");
             entity.Status = command.Status;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

@@ -13,7 +13,7 @@ public interface ISupplierRepository : IGenericRepositoryAsync<Supplier>
         where TParam : RequestParameter;
 
     Task<bool> UpdateSupplierAsync(Supplier datalUpdate,
-        BaseListCreateDeleteEntity<SupplierProductCategory> dataSupplierProductCategory);
+        BaseUpdateEntity<SupplierProductCategory> dataSupplierProductCategory);
 
     Task<List<Supplier>> GetSupplierByIdsAsync(int[] ids);
 
@@ -22,4 +22,6 @@ public interface ISupplierRepository : IGenericRepositoryAsync<Supplier>
     Task<Supplier> AddSupplierAsync(Supplier entity);
 
     Task<bool> AddSupplierRangeAsync(List<Supplier> entities);
+
+    Task<bool> IsExistAsync(int id);
 }

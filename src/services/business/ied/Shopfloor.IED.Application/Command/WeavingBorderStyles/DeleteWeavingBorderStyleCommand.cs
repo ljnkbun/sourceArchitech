@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.WeavingBorderStyles
         public async Task<Response<int>> Handle(DeleteWeavingBorderStyleCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Shape Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Shape Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

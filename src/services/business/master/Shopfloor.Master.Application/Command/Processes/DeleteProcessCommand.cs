@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Master.Domain.Interfaces;
 
@@ -19,7 +18,7 @@ namespace Shopfloor.Master.Application.Command.Processes
         public async Task<Response<int>> Handle(DeleteProcessCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Process Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Process Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

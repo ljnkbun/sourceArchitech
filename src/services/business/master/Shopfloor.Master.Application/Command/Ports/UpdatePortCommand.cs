@@ -27,7 +27,7 @@ namespace Shopfloor.Master.Application.Command.Ports
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Port Not Found.");
+            if (entity == null) return new($"Port Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

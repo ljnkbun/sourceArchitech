@@ -45,25 +45,36 @@ namespace Shopfloor.Material.Infrastructure.Repositories
             return response;
         }
 
-        public async Task<bool> UpdateMaterialRequestAsync(MaterialRequest datalUpdate, BaseListCreateDeleteEntity<MOQMSQRoudingOptionItem> dataMoqmsqRoudingOptionItem
-            , BaseListCreateDeleteEntity<SupplierWisePurchaseOption> dataSupplierWisePurchaseOption
-            , BaseListCreateDeleteEntity<FabricComposition> dataFabricComposition
-            , BaseListCreateDeleteEntity<MaterialRequestDynamicColumn> dataMaterialRequestDynamicColumn)
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _dbContext.Set<MaterialRequest>().AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> UpdateMaterialRequestAsync(MaterialRequest datalUpdate, BaseUpdateEntity<MOQMSQRoudingOptionItem> dataMoqmsqRoudingOptionItem
+            , BaseUpdateEntity<SupplierWisePurchaseOption> dataSupplierWisePurchaseOption
+            , BaseUpdateEntity<FabricComposition> dataFabricComposition
+            , BaseUpdateEntity<MaterialRequestDynamicColumn> dataMaterialRequestDynamicColumn)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    _dbContext.Update(datalUpdate);
                     _dbContext.Set<MOQMSQRoudingOptionItem>().RemoveRange(dataMoqmsqRoudingOptionItem.LstDataDelete);
-                    await _dbContext.Set<MOQMSQRoudingOptionItem>().AddRangeAsync(dataMoqmsqRoudingOptionItem.LstDataAdd);
                     _dbContext.Set<SupplierWisePurchaseOption>().RemoveRange(dataSupplierWisePurchaseOption.LstDataDelete);
-                    await _dbContext.Set<SupplierWisePurchaseOption>().AddRangeAsync(dataSupplierWisePurchaseOption.LstDataAdd);
-                    _dbContext.Set<FabricComposition>().RemoveRange(dataFabricComposition.LstDataDelete);
-                    await _dbContext.Set<FabricComposition>().AddRangeAsync(dataFabricComposition.LstDataAdd);
                     _dbContext.Set<MaterialRequestDynamicColumn>().RemoveRange(dataMaterialRequestDynamicColumn.LstDataDelete);
+                    _dbContext.Set<FabricComposition>().RemoveRange(dataFabricComposition.LstDataDelete);
+
+                    await _dbContext.Set<MOQMSQRoudingOptionItem>().AddRangeAsync(dataMoqmsqRoudingOptionItem.LstDataAdd);
+                    await _dbContext.Set<SupplierWisePurchaseOption>().AddRangeAsync(dataSupplierWisePurchaseOption.LstDataAdd);
+                    await _dbContext.Set<FabricComposition>().AddRangeAsync(dataFabricComposition.LstDataAdd);
                     await _dbContext.Set<MaterialRequestDynamicColumn>().AddRangeAsync(dataMaterialRequestDynamicColumn.LstDataAdd);
+
+                    _dbContext.Update(datalUpdate);
+                    _dbContext.Set<MOQMSQRoudingOptionItem>().UpdateRange(dataMoqmsqRoudingOptionItem.LstDataUpdate);
+                    _dbContext.Set<SupplierWisePurchaseOption>().UpdateRange(dataSupplierWisePurchaseOption.LstDataUpdate);
+                    _dbContext.Set<FabricComposition>().UpdateRange(dataFabricComposition.LstDataUpdate);
+                    _dbContext.Set<MaterialRequestDynamicColumn>().UpdateRange(dataMaterialRequestDynamicColumn.LstDataUpdate);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }

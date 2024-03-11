@@ -24,7 +24,7 @@ namespace Shopfloor.Master.Application.Command.Departments
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Department Not Found.");
+            if (entity == null) return new($"Department Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

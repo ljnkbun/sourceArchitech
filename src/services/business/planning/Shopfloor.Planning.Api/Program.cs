@@ -6,11 +6,17 @@ using Shopfloor.Core.Services;
 using Shopfloor.Core.Settings;
 using Shopfloor.Planning.Api.Extensions;
 using Shopfloor.Planning.Api.Services;
+using Shopfloor.Planning.Application;
 using Shopfloor.Planning.Application.Extensions;
+using Shopfloor.Planning.Application.Settings;
 using Shopfloor.Planning.Infrastructure.Contexts;
 using Shopfloor.Planning.Infrastructure.Extensions;
-using Shopfloor.Planning.Infrastructure.SeedDatas;
 using System.Text.Json.Serialization;
+using Shopfloor.Planning.Infrastructure.SeedDatas;
+using Shopfloor.Planning.Domain.Interfaces;
+using Shopfloor.Planning.Infrastructure.Repositories;
+using Shopfloor.Planning.Api.Jobs;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +37,9 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddDistributedCache(configuration);
 builder.Services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+builder.Services.Configure<JobPorSettings>(configuration.GetSection("JobPorSettings"));
+builder.Services.Configure<JobSettings>(configuration.GetSection("JobSettings"));
+builder.Services.Configure<QueueCapacitySettings>(configuration.GetSection("QueueCapacitySettings"));
 builder.Services.AddSharedInfrastructure();
 builder.Services.AddApiVersioningExtension();
 
@@ -39,6 +48,16 @@ builder.Services.AddInfrastructure(configuration);
 builder.Services.AddApplication();
 builder.Services.AddHealthChecks();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(configurePolicy =>
+    {
+        configurePolicy.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers()
     .AddJsonOptions(opts => opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,6 +65,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEventBus(configuration);
+builder.Services.AddJob();
+builder.Services.AddSingleton<IBackgroundTaskQueue>(ctx =>
+{
+    var queueCapacity = ctx.GetRequiredService<IOptions<QueueCapacitySettings>>().Value.Capacity;
+    return new BackgroundTaskQueue(queueCapacity);
+});
+builder.Services.AddHostedService<QueuedHostedService>();
 
 var app = builder.Build();
 
@@ -54,6 +80,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthorization();
 
@@ -67,8 +94,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
     if (configuration["IsSeedData"] == "True")
     {
-        await SeedTestEntity.SeedTestEntityAsync(db);
-        Log.Information("Finished Seeding Default Data");
+        await SeedAutoIncrement.SeedAsync(db);
     }
     Log.Information("Application Starting");
 }

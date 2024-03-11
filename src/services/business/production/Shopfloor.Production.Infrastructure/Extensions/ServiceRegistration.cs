@@ -27,7 +27,16 @@ namespace Shopfloor.Production.Infrastructure.Extensions
                           .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
             }
 
-            services.AddTransient<ITestEntityRepository, TestEntityRepository>();
+            services.AddTransient<IInspectionBySizeRepository, InspectionBySizeRepository>();
+            services.AddTransient<IProductionOutputRepository, ProductionOutputRepository>();
+            services.AddTransient<IDefectCapturingRepository, DefectCapturingRepository>();
+            services.AddTransient<IDefectCapturingStandardRepository, DefectCapturingStandardRepository>();
+            services.AddTransient<IDefectCapturing4PointsRepository, DefectCapturing4PointsRepository>();
+            services.AddTransient<IDefectCapturing100PointsRepository, DefectCapturing100PointsRepository>();
+            services.AddTransient<IMeasurementRepository, MeasurementRepository>();
+            services.AddTransient<IFPPOOutputRepository, FPPOOutputRepository>();
+            services.AddTransient<IFPPOOutputDetailRepository, FPPOOutputDetailRepository>();
+            services.AddTransient<IAttachmentRepository, AttachmentRepository>();
         }
     }
 }

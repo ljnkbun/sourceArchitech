@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.CategoryMapMaterialTypes
         public async Task<Response<CategoryMapMaterialType>> Handle(GetCategoryMapMaterialTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"CategoryMapMaterialType Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"CategoryMapMaterialType Not Found (Id:{query.Id}).");
             return new Response<CategoryMapMaterialType>(entity);
         }
     }

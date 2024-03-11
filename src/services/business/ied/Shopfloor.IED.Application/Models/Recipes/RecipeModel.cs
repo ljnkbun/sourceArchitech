@@ -4,11 +4,11 @@ namespace Shopfloor.IED.Application.Models.Recipes
 {
     public class RecipeModel : BaseModel
     {
-        public int DyeingTBRequestId { get; set; }
-
-        public int DyeingTBRVersionId { get; set; }
+        public int DyeingTBRecipeId { get; set; }
 
         public string RecipeNo { get; set; }
+
+        public string Description { get; set; }
 
         public DateTime JobDate { get; set; }
 

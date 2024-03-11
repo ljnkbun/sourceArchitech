@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Shopfloor.Core.Extensions.Objects;
+using Shopfloor.Core.Models.Entities;
 using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
@@ -64,10 +65,38 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             return entity;
         }
 
+        public async Task<bool> UpdateDyeingTBRequestAsync(DyeingTBRequest dataDyeingTBRequestUpdate, BaseUpdateEntity<DyeingTBMaterial> dataDyeingTBMaterial, BaseUpdateEntity<DyeingTBMaterialColor> dataDyeingTBMaterialColor)
+        {
+            bool result = true;
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    _dbContext.Set<DyeingTBMaterialColor>().RemoveRange(dataDyeingTBMaterialColor.LstDataDelete);
+                    _dbContext.Set<DyeingTBMaterial>().RemoveRange(dataDyeingTBMaterial.LstDataDelete);
+
+                    _dbContext.Set<DyeingTBMaterial>().AddRange(dataDyeingTBMaterial.LstDataAdd);
+                    _dbContext.Set<DyeingTBMaterialColor>().AddRange(dataDyeingTBMaterialColor.LstDataAdd);
+
+                    _dbContext.Update(dataDyeingTBRequestUpdate);
+                    _dbContext.Set<DyeingTBMaterial>().UpdateRange(dataDyeingTBMaterial.LstDataUpdate);
+                    _dbContext.Set<DyeingTBMaterialColor>().UpdateRange(dataDyeingTBMaterialColor.LstDataUpdate);
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    result = false;
+                    await transaction.RollbackAsync();
+                }
+            }
+            return result;
+        }
+
         private async Task<string> GetNewRequestNoAsync()
         {
-            var autoIncrement = await _dbContext.Set<AutoIncrement>().FirstOrDefaultAsync(x => x.Type == AutoIncrementType.RTB);
-            string inputValue = $"{AutoIncrementType.RTB}{autoIncrement.Separate}{DateTime.Now:yyyyMM}";
+            var autoIncrement = await _dbContext.Set<AutoIncrement>().FirstOrDefaultAsync(x => x.Type == AutoIncrementType.RCR);
+            string inputValue = $"{AutoIncrementType.RCR}{autoIncrement.Separate}{DateTime.Now:yyMMdd}";
             if (inputValue != autoIncrement.InputValue)
             {
                 autoIncrement.Index = 1;
@@ -78,7 +107,7 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             int count = 0;
             do
             {
-                requestNo = AutoIncrementHelper.GetNewRequestNo(inputValue, autoIncrement);
+                requestNo = AutoIncrementHelper.GetNewCode(inputValue, autoIncrement);
                 isUnique = await _dbContext.Set<DyeingTBRequest>().AllAsync(x => x.RequestNo != requestNo);
                 autoIncrement.Index++;
                 count++;

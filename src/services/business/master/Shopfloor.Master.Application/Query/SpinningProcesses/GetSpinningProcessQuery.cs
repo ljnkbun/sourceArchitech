@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.SpinningProcesses
         public async Task<Response<SpinningProcess>> Handle(GetSpinningProcessQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SpinningProcess Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"SpinningProcess Not Found (Id:{query.Id}).");
             return new Response<SpinningProcess>(entity);
         }
     }

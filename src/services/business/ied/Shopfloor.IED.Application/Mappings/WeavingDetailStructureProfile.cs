@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.WeavingDetailStructures
         {
             CreateMap<WeavingDetailStructure, WeavingDetailStructureModel>().ReverseMap();
             CreateMap<CreateWeavingDetailStructureCommand, WeavingDetailStructure>();
+            CreateMap<UpdateCreateWeavingDetailStructure, WeavingDetailStructure>();
             CreateMap<GetWeavingDetailStructuresQuery, WeavingDetailStructureParameter>();
         }
     }

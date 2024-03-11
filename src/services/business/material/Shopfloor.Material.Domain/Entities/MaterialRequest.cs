@@ -11,10 +11,11 @@ namespace Shopfloor.Material.Domain.Entities
             MoqmsqRoudingOptionItems = new HashSet<MOQMSQRoudingOptionItem>();
             FabricCompositions = new HashSet<FabricComposition>();
             DynamicColumns = new HashSet<MaterialRequestDynamicColumn>();
+            MaterialRequestFiles = new HashSet<MaterialRequestFile>();
         }
 
         public string RequestNo { get; set; }
-
+        public string HSCode { get; set; }
         public string ProductCatCode { get; set; }
 
         public string ProductCatName { get; set; }
@@ -224,5 +225,7 @@ namespace Shopfloor.Material.Domain.Entities
         public virtual ICollection<FabricComposition> FabricCompositions { get; set; }
 
         public virtual ICollection<MaterialRequestDynamicColumn> DynamicColumns { get; set; }
+
+        public virtual ICollection<MaterialRequestFile> MaterialRequestFiles { get; set; }
     }
 }

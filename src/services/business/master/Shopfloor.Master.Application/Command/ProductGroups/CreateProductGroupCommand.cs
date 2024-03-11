@@ -12,7 +12,6 @@ namespace Shopfloor.Master.Application.Command.ProductGroups
         public string Code { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
-        public int MaterialTypeId { get; set; }
         public ICollection<CreateMaterialTypeMapProductGroupCommand> MaterialTypeMapProductGroups { get; set; }
 
     }
@@ -30,10 +29,6 @@ namespace Shopfloor.Master.Application.Command.ProductGroups
         public async Task<Response<int>> Handle(CreateProductGroupCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<ProductGroup>(request);
-            foreach (var item in entity.MaterialTypeMapProductGroups)
-            {
-                item.MaterialTypeId = entity.MaterialTypeId;
-            }
             await _repository.AddAsync(entity);
             return new Response<int>(entity.Id);
         }

@@ -46,7 +46,7 @@ namespace Shopfloor.Material.Infrastructure.Repositories
         }
 
         public async Task<bool> UpdatePriceListAsync(PriceList dataUpdate
-            , BaseListCreateDeleteEntity<PriceListDetail> dataPriceListDetail)
+            , BaseUpdateEntity<PriceListDetail> dataPriceListDetail)
         {
             bool result = true;
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
@@ -54,10 +54,8 @@ namespace Shopfloor.Material.Infrastructure.Repositories
                 try
                 {
                     _dbContext.Update(dataUpdate);
-                    if (dataPriceListDetail.LstDataDelete is { Count: > 0 })
-                        _dbContext.Set<PriceListDetail>().RemoveRange(dataPriceListDetail.LstDataDelete);
-                    if (dataPriceListDetail.LstDataAdd is { Count: > 0 })
-                        await _dbContext.Set<PriceListDetail>().AddRangeAsync(dataPriceListDetail.LstDataAdd);
+                    _dbContext.Set<PriceListDetail>().RemoveRange(dataPriceListDetail.LstDataDelete);
+                    await _dbContext.Set<PriceListDetail>().AddRangeAsync(dataPriceListDetail.LstDataAdd);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }

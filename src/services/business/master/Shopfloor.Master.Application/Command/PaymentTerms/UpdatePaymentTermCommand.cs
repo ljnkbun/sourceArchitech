@@ -24,7 +24,7 @@ namespace Shopfloor.Master.Application.Command.PaymentTerms
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"PaymentTerms Not Found.");
+            if (entity == null) return new($"PaymentTerms Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

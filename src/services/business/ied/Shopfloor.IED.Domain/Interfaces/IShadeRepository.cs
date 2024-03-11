@@ -3,7 +3,7 @@ using Shopfloor.IED.Domain.Entities;
 
 namespace Shopfloor.IED.Domain.Interfaces
 {
-    public interface IShadeRepository : IMasterRepositoryAsync<Shade>
+    public interface IShadeRepository : INameRepositoryAsync<Shade>
     {
     }
 }

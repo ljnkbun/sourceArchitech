@@ -2,9 +2,18 @@
 using MassTransit;
 using Shopfloor.EventBus.Definations;
 using Shopfloor.EventBus.Extensions;
+using Shopfloor.EventBus.Models.Message;
 using Shopfloor.EventBus.Models.Requests;
+using Shopfloor.EventBus.Models.Requests.Ambassadors.Wfxs;
 using Shopfloor.Master.Api.Consumers.Requests;
+using Shopfloor.Master.Api.Consumers.Requests.Buyers;
+using Shopfloor.Master.Api.Consumers.Requests.Calendars;
 using Shopfloor.Master.Api.Consumers.Requests.Divisions;
+using Shopfloor.Master.Api.Consumers.Requests.Factories;
+using Shopfloor.Master.Api.Consumers.Requests.Lines;
+using Shopfloor.Master.Api.Consumers.Requests.Machines;
+using Shopfloor.Master.Api.Consumers.Requests.PlanningGroups;
+using Shopfloor.Master.Api.Consumers.Requests.Suppliers;
 
 namespace Shopfloor.Master.Api.Extensions
 {
@@ -14,7 +23,24 @@ namespace Shopfloor.Master.Api.Extensions
         {
             services.AddMassTransit(x =>
             {
+                #region AddRequestClient
+
+                x.AddRequestClient<GetWfxArticleRequest>();
+                x.AddRequestClient<GetWfxMasterDataRequest>();
+                x.AddRequestClient<CalculateFactoryCapacityMessage>();
+                x.AddRequestClient<GetWfxWebSharedRequest>();
+                x.AddRequestClient<GetWFXOperationLibraryRequest>();
+                #endregion
+
                 #region AddConsumer
+                //Supplier
+                x.AddConsumer<GetSupplierByIdRequestConsumer>();
+                x.AddConsumer<GetSuppliersRequestConsumer>();
+
+                //Buyer
+                x.AddConsumer<GetBuyerByIdRequestConsumer>();
+                x.AddConsumer<GetBuyersRequestConsumer>();
+
                 //Category
                 x.AddConsumer<GetCategoryByIdRequestConsumer>();
                 x.AddConsumer<GetCategoriesRequestConsumer>();
@@ -187,10 +213,6 @@ namespace Shopfloor.Master.Api.Extensions
                 x.AddConsumer<GetGroupNameByIdRequestConsumer>();
                 x.AddConsumer<GetGroupNamesRequestConsumer>();
 
-                //Process
-                x.AddConsumer<GetProcessByIdRequestConsumer>();
-                x.AddConsumer<GetProcessesRequestConsumer>();
-
                 //Gauge
                 x.AddConsumer<GetGaugeByIdRequestConsumer>();
                 x.AddConsumer<GetGaugesRequestConsumer>();
@@ -201,11 +223,13 @@ namespace Shopfloor.Master.Api.Extensions
 
                 //Article
                 x.AddConsumer<GetArticleByIdRequestConsumer>();
+                x.AddConsumer<GetArticlesByIdsRequestConsumer>();
+                x.AddConsumer<GetArticlessRequestConsumer>();
                 x.AddConsumer<GetArticlesRequestConsumer>();
 
-                //ProcessLibrary
-                x.AddConsumer<GetProcessLibraryByIdRequestConsumer>();
-                x.AddConsumer<GetProcessLibrariesRequestConsumer>();
+                //Process
+                x.AddConsumer<GetProcessByIdRequestConsumer>();
+                x.AddConsumer<GetProcessesRequestConsumer>();
 
                 //OperationLibrary
                 x.AddConsumer<GetOperationLibraryByIdRequestConsumer>();
@@ -218,6 +242,41 @@ namespace Shopfloor.Master.Api.Extensions
                 //Division
                 x.AddConsumer<GetDivisionByIdRequestConsumer>();
                 x.AddConsumer<GetDivisionsRequestConsumer>();
+
+                // Holiday
+                x.AddConsumer<GetHolidayByIdRequestConsumer>();
+                x.AddConsumer<GetHolidaysRequestConsumer>();
+
+                // Machine
+                x.AddConsumer<GetMachineByIdRequestConsumer>();
+                x.AddConsumer<GetMachinesRequestConsumer>();
+
+                // Line
+                x.AddConsumer<GetLineByIdRequestConsumer>();
+                x.AddConsumer<GetLinesRequestConsumer>();
+
+
+                // PlanningGroup
+                x.AddConsumer<GetPlanningGroupByIdRequestConsumer>();
+                x.AddConsumer<GetPlanningGroupsRequestConsumer>();
+
+                // PlanningGroupFactory
+                x.AddConsumer<GetPlanningGroupFactoryByIdRequestConsumer>();
+                x.AddConsumer<GetPlanningGroupFactoryByIdsRequestConsumer>();
+                x.AddConsumer<GetPlanningGroupFactoriesRequestConsumer>();
+
+                // Calendar
+                x.AddConsumer<GetCalendarByIdRequestConsumer>();
+                x.AddConsumer<GetCalendarByIdsRequestConsumer>();
+                x.AddConsumer<GetCalendarsRequestConsumer>();
+
+                // Factory
+                x.AddConsumer<GetFactoriesRequestConsumer>();
+                x.AddConsumer<GetFactoryByIdRequestConsumer>();
+
+                // DataCalculate
+                x.AddConsumer<GetDataCalculateRequestConsumer>();
+
                 #endregion
 
                 #region UsingRabbitMq
@@ -265,6 +324,27 @@ namespace Shopfloor.Master.Api.Extensions
                             }
                         });
                     }
+                    //Buyers
+                    cfg.ReceiveEndpoint(RequestQueueName.GetBuyerByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetBuyerByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetBuyersRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetBuyersRequestConsumer>(context);
+                    });
+
+                    //Suppliers
+                    cfg.ReceiveEndpoint(RequestQueueName.GetSupplierByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetSupplierByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetSuppliersRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetSuppliersRequestConsumer>(context);
+                    });
 
                     //Categories
                     cfg.ReceiveEndpoint(RequestQueueName.GetCategoryByIdRequest, e =>
@@ -736,16 +816,6 @@ namespace Shopfloor.Master.Api.Extensions
                     {
                         e.ConfigureConsumer<GetGroupNamesRequestConsumer>(context);
                     });
-                    //Process
-                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessByIdRequest, e =>
-                    {
-                        e.ConfigureConsumer<GetProcessByIdRequestConsumer>(context);
-                    });
-
-                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessesRequest, e =>
-                    {
-                        e.ConfigureConsumer<GetProcessesRequestConsumer>(context);
-                    });
                     //Gauge
                     cfg.ReceiveEndpoint(RequestQueueName.GetGaugeByIdRequest, e =>
                     {
@@ -772,19 +842,29 @@ namespace Shopfloor.Master.Api.Extensions
                         e.ConfigureConsumer<GetArticleByIdRequestConsumer>(context);
                     });
 
+                    cfg.ReceiveEndpoint(RequestQueueName.GetArticlesByIdsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetArticlesByIdsRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetArticlessRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetArticlessRequestConsumer>(context);
+                    });
+
                     cfg.ReceiveEndpoint(RequestQueueName.GetArticlesRequest, e =>
                     {
                         e.ConfigureConsumer<GetArticlesRequestConsumer>(context);
                     });
-                    //ProcessLibrary
-                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessLibraryByIdRequest, e =>
+                    //Process
+                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessByIdRequest, e =>
                     {
-                        e.ConfigureConsumer<GetProcessLibraryByIdRequestConsumer>(context);
+                        e.ConfigureConsumer<GetProcessByIdRequestConsumer>(context);
                     });
 
-                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessLibrariesRequest, e =>
+                    cfg.ReceiveEndpoint(RequestQueueName.GetProcessesRequest, e =>
                     {
-                        e.ConfigureConsumer<GetProcessLibrariesRequestConsumer>(context);
+                        e.ConfigureConsumer<GetProcessesRequestConsumer>(context);
                     });
                     //OperationLibrary
                     cfg.ReceiveEndpoint(RequestQueueName.GetOperationLibraryByIdRequest, e =>
@@ -816,11 +896,100 @@ namespace Shopfloor.Master.Api.Extensions
                     {
                         e.ConfigureConsumer<GetDivisionsRequestConsumer>(context);
                     });
-                });
-                #endregion
 
-                #region AddRequestClient
-                x.AddRequestClient<GetWfxArticleRequest>();
+                    // Machine
+                    cfg.ReceiveEndpoint(RequestQueueName.GetMachineByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetMachineByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetMachinesRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetMachinesRequestConsumer>(context);
+                    });
+
+                    // Line
+                    cfg.ReceiveEndpoint(RequestQueueName.GetLineByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetLineByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetLinesRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetLinesRequestConsumer>(context);
+                    });
+
+                    // PlanningGroup
+                    cfg.ReceiveEndpoint(RequestQueueName.GetPlanningGroupByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetPlanningGroupByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetPlanningGroupsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetPlanningGroupsRequestConsumer>(context);
+                    });
+
+                    // PlanningGroupFactory
+                    cfg.ReceiveEndpoint(RequestQueueName.GetPlanningGroupFactoryByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetPlanningGroupFactoryByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetPlanningGroupFactoriesRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetPlanningGroupFactoriesRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetPlanningGroupFactoryByIdsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetPlanningGroupFactoryByIdsRequestConsumer>(context);
+                    });
+
+                    // Calendar
+                    cfg.ReceiveEndpoint(RequestQueueName.GetCalendarByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetCalendarByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetCalendarByIdsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetCalendarByIdsRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetCalendarsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetCalendarsRequestConsumer>(context);
+                    });
+
+                    // Holiday
+                    cfg.ReceiveEndpoint(RequestQueueName.GetHolidayByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetHolidayByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetHolidaysRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetHolidaysRequestConsumer>(context);
+                    });
+
+                    // Factory
+                    cfg.ReceiveEndpoint(RequestQueueName.GetFactoryByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetFactoryByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetFactoriesRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetFactoriesRequestConsumer>(context);
+                    });
+
+                    // Data Calculate
+                    cfg.ReceiveEndpoint(RequestQueueName.GetDataCalculateRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetDataCalculateRequestConsumer>(context);
+                    });
+                });
                 #endregion
             });
             services.AddEventBusService();

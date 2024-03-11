@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Countries
         public async Task<Response<Country>> Handle(GetCountryQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Country Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Country Not Found (Id:{query.Id}).");
             return new Response<Country>(entity);
         }
     }

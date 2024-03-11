@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Command.RequestArticleInputs;
 using Shopfloor.IED.Domain.Interfaces;
@@ -9,10 +8,11 @@ namespace Shopfloor.IED.Application.Command.RequestArticleOutputs
     public class UpdateRequestArticleOutputCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
-        public int ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
         public string Color { get; set; }
+        public string BaseColorList { get; set; }
         public bool IsActive { set; get; }
         public ICollection<UpdateRequestArticleInputCommand> RequestArticleInputs { get; set; }
     }
@@ -27,12 +27,13 @@ namespace Shopfloor.IED.Application.Command.RequestArticleOutputs
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"RequestArticleOutput Not Found.");
+            if (entity == null) return new($"RequestArticleOutput Not Found.");
 
-            entity.ArticleId = command.ArticleId;
+            entity.WFXArticleId = command.WFXArticleId;
             entity.ArticleCode = command.ArticleCode;  
             entity.ArticleName = command.ArticleName;
             entity.Color = command.Color;
+            entity.BaseColorList = command.BaseColorList;
             entity.IsActive = command.IsActive;
 
             await _repository.UpdateAsync(entity);

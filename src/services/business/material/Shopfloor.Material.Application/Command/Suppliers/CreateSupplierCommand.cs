@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.Material.Application.Command.MaterialRequestFiles;
+using Shopfloor.Material.Application.Command.SupplierFiles;
 using Shopfloor.Material.Application.Models.SupplierProductCategory;
 using Shopfloor.Material.Domain.Entities;
 using Shopfloor.Material.Domain.Enums;
@@ -131,6 +133,8 @@ namespace Shopfloor.Material.Application.Command.Suppliers
         public decimal MaximumOutAmount { get; set; }
 
         public ICollection<SupplierProductCategoryModel> SupplierProductCategories { get; set; }
+
+        public ICollection<CreateSupplierFileCommand> SupplierFiles { get; set; }
     }
 
     public class CreateSupplierCommandHandler : IRequestHandler<CreateSupplierCommand, Response<int>>

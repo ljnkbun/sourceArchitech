@@ -11,14 +11,14 @@ namespace Shopfloor.IED.Application.Command.SewingMacroLibs
     public class UpdateSewingMacroLibCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
-        public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal BundleTMU { get; set; }
-        public decimal ManualTMU { get; set; }
-        public decimal MachineTMU { get; set; }
+        public decimal? ManualTMU { get; set; }
+        public decimal? MachineTMU { get; set; }
+        public decimal? BundleTMU { get; set; }
         public decimal TotalBasicMinutes { get; set; }
         public decimal NoneMachineTime { get; set; }
+        public int? SewingComponentGroupId { get; set; }
         public bool Deleted { get; set; }
         public bool IsActive { set; get; }
         public virtual ICollection<SewingMacroLibBOLModel> SewingMacroLibBOLs { get; set; }
@@ -37,9 +37,8 @@ namespace Shopfloor.IED.Application.Command.SewingMacroLibs
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"SewingMacroLib Not Found.");
+            if (entity == null) return new($"SewingMacroLib Not Found.");
 
-            entity.Code = command.Code;
             entity.Name = command.Name;
             entity.Description = command.Description;
             entity.BundleTMU = command.BundleTMU;
@@ -47,17 +46,25 @@ namespace Shopfloor.IED.Application.Command.SewingMacroLibs
             entity.ManualTMU = command.ManualTMU;
             entity.NoneMachineTime = command.NoneMachineTime;
             entity.TotalBasicMinutes = command.TotalBasicMinutes;
+            entity.SewingComponentGroupId = command.SewingComponentGroupId;
             entity.Deleted = command.Deleted;
             entity.IsActive = command.IsActive;
             entity.SewingMacroLibBOLs = null;
 
-            var deleteItems = await _bolRepository.GetListAsync(command.Id);                                                                                                           // || !command.ProductCategories.Any(v => v.Id == x.Id)).ToList();
+            var deleteItems = await _bolRepository.GetListAsync(command.Id);
             var insertItems = command.SewingMacroLibBOLs?.Select(x => new SewingMacroLibBOL
             {
                 SewingMacroLibId = command.Id,
                 SewingTaskLibId = x.SewingTaskLibId,
+                Type = x.Type,
+                Code = x.Code,
+                Name = x.Name,
+                Description = x.Description,
                 LineNumber = x.LineNumber,
                 Freq = x.Freq,
+                BundleTMU = x.BundleTMU,
+                MachineTMU = x.MachineTMU,
+                ManualTMU = x.ManualTMU,
                 TotalTMU = x.TotalTMU
             }).ToList();
 

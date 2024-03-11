@@ -19,12 +19,12 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
 
         public override async Task<ExportDetail> GetByIdAsync(int id)
         {
-            return await _ExportDetailSet.Include(x => x.ArticleBarcode).FirstOrDefaultAsync(x => x.Id == id);
+            return await _ExportDetailSet.Include(x => x.ArticleBarcode).Include(x => x.ExportArticle).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<ICollection<ExportDetail>> GetByIdsAsync(int[] ids)
         {
-            return await _ExportDetailSet.Include(x => x.ArticleBarcode).Where(x => ids.Contains(x.Id)).ToListAsync();
+            return await _ExportDetailSet.Include(x => x.ArticleBarcode).Include(x => x.ExportArticle).Where(x => ids.Contains(x.Id)).ToListAsync();
         }
 
     }

@@ -9,7 +9,12 @@ namespace Shopfloor.IED.Application.Command.WeavingIEDs
     public class UpdateWeavingIEDCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
-        public string RequestNo { get; set; }
+        public int? WFXArticleId { get; set; }
+        public string ArticleCode { get; set; }
+        public string ArticleName { get; set; }
+        public string ProductGroup { get; set; }
+        public string SubCategory { get; set; }
+        public string Buyer { get; set; }
         public string Comment { get; set; }
         public Status Status { get; set; }
         public bool IsActive { set; get; }
@@ -25,9 +30,14 @@ namespace Shopfloor.IED.Application.Command.WeavingIEDs
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"WeavingIED Not Found.");
+            if (entity == null) return new($"WeavingIED Not Found.");
 
-            entity.RequestNo = command.RequestNo;
+            entity.WFXArticleId = command.WFXArticleId; 
+            entity.ArticleCode = command.ArticleCode;
+            entity.ArticleName = command.ArticleName;
+            entity.ProductGroup = command.ProductGroup;
+            entity.SubCategory = command.SubCategory;
+            entity.Buyer = command.Buyer;
             entity.Comment = command.Comment;
             entity.Status = command.Status;
             entity.IsActive = command.IsActive;

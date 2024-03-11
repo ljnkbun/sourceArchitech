@@ -10,11 +10,19 @@ namespace Shopfloor.Master.Application.Command.Processes
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public string DefaultArticleOutput { get; set; }
+        public int? CategoryId { get; set; }
+        public int? ProductGroupId { get; set; }
+        public int? SubCategoryId { get; set; }
+        public int? SubCategoryGroupId { get; set; }
+        public int? DivisionId { get; set; }
     }
+
     public class CreateProcessCommandHandler : IRequestHandler<CreateProcessCommand, Response<int>>
     {
         private readonly IMapper _mapper;
         private readonly IProcessRepository _repository;
+
         public CreateProcessCommandHandler(IMapper mapper,
             IProcessRepository repository)
         {

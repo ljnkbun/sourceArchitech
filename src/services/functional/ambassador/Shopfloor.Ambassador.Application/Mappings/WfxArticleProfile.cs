@@ -12,7 +12,7 @@ namespace Shopfloor.Ambassador.Application.Mappings
         {
             CreateMap<WfxArticle, WfxArticleDto>().ReverseMap();
             CreateMap<WfxArticleBaseColor, WfxArticleBaseColorDto>().ReverseMap();
-            CreateMap<WfxArticleFlexField, WfxArticleFlexFieldDto>().ReverseMap();
+            CreateMap<Models.WfxArticleFlexField, WfxArticleFlexFieldDto>().ReverseMap();
             CreateMap<WfxArticleBaseSize, WfxArticleBaseSizeDto>().ReverseMap();
             CreateMap<GetWfxArticleQuery, WfxArticleParameter>().ReverseMap();
         }

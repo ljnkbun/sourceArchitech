@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.WeavingDetailStructures
         public async Task<Response<WeavingDetailStructure>> Handle(GetWeavingDetailStructureQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"WeavingDetailStructure Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"WeavingDetailStructure Not Found (Id:{query.Id}).");
             return new Response<WeavingDetailStructure>(entity);
         }
     }

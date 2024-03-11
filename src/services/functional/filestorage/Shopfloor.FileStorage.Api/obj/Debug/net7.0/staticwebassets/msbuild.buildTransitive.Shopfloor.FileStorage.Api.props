@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Shopfloor.FileStorage.Api.props" />
+</Project>

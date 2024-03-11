@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.PricePers
         public async Task<Response<PricePer>> Handle(GetPricePerQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"PricePer Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"PricePer Not Found (Id:{query.Id}).");
             return new Response<PricePer>(entity);
         }
     }

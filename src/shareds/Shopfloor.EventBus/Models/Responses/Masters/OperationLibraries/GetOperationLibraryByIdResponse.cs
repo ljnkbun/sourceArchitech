@@ -4,6 +4,6 @@
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int ProcessLibraryId { get; set; }
+        public int ProcessId { get; set; }
     }
 }

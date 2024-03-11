@@ -13,7 +13,9 @@ namespace Shopfloor.IED.Application.WeavingRappoMatrics
         {
             CreateMap<WeavingRappoMatric, WeavingRappoMatricModel>().ReverseMap();
             CreateMap<CreateWeavingRappoMatricCommand, WeavingRappoMatric>();
+            CreateMap<UpdateWeavingRappoMatricCommand, WeavingRappoMatric>();
             CreateMap<GetWeavingRappoMatricsQuery, WeavingRappoMatricParameter>();
+            CreateMap<UpdateCreateWeavingRappoMatricModel, WeavingRappoMatric>();
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Shopfloor.IED.Application.Command.RecipeUnits
 {
     public class CreateRecipeUnitCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
     }
     public class CreateRecipeUnitCommandHandler : IRequestHandler<CreateRecipeUnitCommand, Response<int>>

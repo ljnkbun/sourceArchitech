@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.RecipeChemicals
         public async Task<Response<Domain.Entities.RecipeChemical>> Handle(GetRecipeChemicalQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"RecipeChemical Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"RecipeChemical Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.RecipeChemical>(entity);
         }
     }

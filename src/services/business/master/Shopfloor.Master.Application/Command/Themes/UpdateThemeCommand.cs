@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Themes
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Theme Not Found.");
+            if (entity == null) return new($"Theme Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

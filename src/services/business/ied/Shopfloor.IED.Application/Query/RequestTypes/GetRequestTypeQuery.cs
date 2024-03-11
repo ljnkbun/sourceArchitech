@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.RequestTypes
         public async Task<Response<RequestType>> Handle(GetRequestTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"RequestType Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"RequestType Not Found (Id:{query.Id}).");
             return new Response<RequestType>(entity);
         }
     }

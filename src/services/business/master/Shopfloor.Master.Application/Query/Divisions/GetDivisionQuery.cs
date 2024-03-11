@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Divisions
         public async Task<Response<Division>> Handle(GetDivisionQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Division Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"Division Not Found (Id: {query.Id}).");
             return new Response<Division>(entity);
         }
     }

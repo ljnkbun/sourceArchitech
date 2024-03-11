@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.FabricContents
         public async Task<Response<FabricContent>> Handle(GetFabricContentQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"FabricContent Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"FabricContent Not Found (Id:{query.Id}).");
             return new Response<FabricContent>(entity);
         }
     }

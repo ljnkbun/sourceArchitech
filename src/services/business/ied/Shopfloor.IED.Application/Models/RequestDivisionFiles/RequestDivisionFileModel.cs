@@ -1,5 +1,5 @@
-﻿using Shopfloor.Core.Models.Entities;
-using Shopfloor.IED.Domain.Enums;
+﻿using Shopfloor.Core.Definations;
+using Shopfloor.Core.Models.Entities;
 
 namespace Shopfloor.IED.Application.Models.RequestDivisionFiles
 {

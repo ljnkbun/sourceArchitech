@@ -17,6 +17,8 @@ namespace Shopfloor.Material.Infrastructure.TypeConfigurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(e => e.Moq).HasMaxLength(500);
+            builder.Property(e => e.MoqRoundingTypeId).HasMaxLength(500);
+            builder.Property(e => e.SupplierId).HasMaxLength(500);
             builder.Property(e => e.MoqSurChargeValue).HasMaxLength(500);
             builder.Property(e => e.MoqSurchargeCurrency).HasMaxLength(500);
             builder.Property(e => e.Color).HasMaxLength(500);

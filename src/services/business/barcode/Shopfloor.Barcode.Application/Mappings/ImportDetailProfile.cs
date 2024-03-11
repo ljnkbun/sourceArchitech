@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Shopfloor.Barcode.Application.Command.ImportDetails;
 using Shopfloor.Barcode.Application.Models.ImportDetails;
+using Shopfloor.Barcode.Application.Models.WfxPOArticles;
 using Shopfloor.Barcode.Application.Parameters.ImportDetails;
 using Shopfloor.Barcode.Application.Query.ImportDetails;
 using Shopfloor.Barcode.Domain.Constants;
@@ -19,8 +20,12 @@ namespace Shopfloor.Barcode.Application.Mappings
                 .ForMember(x => x.GDNNumber, opt => opt.MapFrom(src => src.ImportArticle.GDNNumber))
                 .ForMember(x => x.SupplierName, opt => opt.MapFrom(src => src.ImportArticle.SupplierName))
                 .ForMember(x => x.OrderRefNum, opt => opt.MapFrom(src => src.ImportArticle.OrderRefNum))
+                .ForMember(x => x.Unit, opt => opt.MapFrom(src => src.UOM))
                 .ForMember(x => x.ArticleBarcode, opt => opt.MapFrom(src => src.ArticleBarcode.Barcode));
-            CreateMap<ImportDetail, ImportDetailModel>().ReverseMap();
+            CreateMap<ImportDetail, ImportDetailModel>()
+                .ForMember(x => x.ArticleBarcodeModel, d => d.MapFrom(o => o.ArticleBarcode))
+                .ReverseMap();
+            CreateMap<ImportDetailModel, WfxPOArticleChildModel>().ReverseMap();
             CreateMap<GetImportDetailsQuery, ImportDetailParameter>();
             CreateMap<CreateImportDetailCommand, ImportDetail>()
                 .ForMember(x => x.Status, opt => opt.MapFrom(src => ItemStatus.BEFORE_CHECKIN));

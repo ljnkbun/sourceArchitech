@@ -2,7 +2,6 @@
 using MediatR;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Command.RequestArticleOutputs;
-using Shopfloor.IED.Application.Command.RequestDivisions;
 using Shopfloor.IED.Domain.Entities;
 using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
@@ -16,7 +15,6 @@ namespace Shopfloor.IED.Application.Command.RequestDivisionProcesses
         public string ProcessCode { get; set; }
         public string ProcessName { get; set; }
         public int LineNumber { get; set; }
-        public Status Status { get; set; }
         public ICollection<CreateRequestArticleOutputCommand> RequestArticleOutputs { get; set; }
     }
     public class CreateRequestDivisionProcessCommandHandler : IRequestHandler<CreateRequestDivisionProcessCommand, Response<int>>

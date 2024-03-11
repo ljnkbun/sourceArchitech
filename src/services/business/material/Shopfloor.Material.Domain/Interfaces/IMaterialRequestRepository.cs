@@ -13,10 +13,10 @@ namespace Shopfloor.Material.Domain.Interfaces
             where TParam : RequestParameter;
 
         Task<bool> UpdateMaterialRequestAsync(MaterialRequest datalUpdate,
-            BaseListCreateDeleteEntity<MOQMSQRoudingOptionItem> dataMoqmsqRoudingOptionItem
-            , BaseListCreateDeleteEntity<SupplierWisePurchaseOption> dataSupplierWisePurchaseOption
-            , BaseListCreateDeleteEntity<FabricComposition> dataFabricComposition
-            , BaseListCreateDeleteEntity<MaterialRequestDynamicColumn> dataMaterialRequestDynamicColumn);
+            BaseUpdateEntity<MOQMSQRoudingOptionItem> dataMoqmsqRoudingOptionItem
+            , BaseUpdateEntity<SupplierWisePurchaseOption> dataSupplierWisePurchaseOption
+            , BaseUpdateEntity<FabricComposition> dataFabricComposition
+            , BaseUpdateEntity<MaterialRequestDynamicColumn> dataMaterialRequestDynamicColumn);
 
         Task<List<MaterialRequest>> GetMaterialRequestByIdsAsync(int[] ids);
 
@@ -25,5 +25,7 @@ namespace Shopfloor.Material.Domain.Interfaces
         Task<MaterialRequest> AddMaterialRequestAsync(MaterialRequest entity);
 
         Task<bool> AddMaterialRequestRangeAsync(List<MaterialRequest> entities);
+
+        Task<bool> IsExistAsync(int id);
     }
 }

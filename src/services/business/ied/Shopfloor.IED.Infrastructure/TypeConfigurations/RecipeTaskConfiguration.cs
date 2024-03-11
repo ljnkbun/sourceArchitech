@@ -11,9 +11,15 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         {
             base.Configure(builder);
 
-            builder.Property(e => e.DyeingOpreation).HasMaxLength(250);
-            builder.Property(e => e.MachineType).HasMaxLength(250);
+            builder.Property(e => e.DyeingOperationName).HasMaxLength(250);
+            builder.Property(e => e.DyeingProcessName).HasMaxLength(250);
+            builder.Property(e => e.MachineName).HasMaxLength(250);
+            builder.Property(e => e.MachineCode).HasColumnType("varchar(100)");
+            builder.Property(e => e.DyeingOperationCode).HasColumnType("varchar(100)");
+            builder.Property(e => e.DyeingProcessCode).HasColumnType("varchar(100)");
+            builder.Property(e => e.Time).HasColumnType("decimal(28,8)");
             builder.Property(e => e.Temperature).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.Ratio).HasDefaultValue(0).HasColumnType("decimal(28,8)");
             builder.HasOne(s => s.Recipe)
                 .WithMany(g => g.RecipeTasks)
                 .HasForeignKey(s => s.RecipeId)

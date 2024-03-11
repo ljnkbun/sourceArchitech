@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Shopfloor.Barcode.Application.Models.ImportArticles;
 using Shopfloor.Barcode.Application.Parameters.ImportArticles;
+using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Core.Models.Responses;
 
@@ -28,6 +29,7 @@ namespace Shopfloor.Barcode.Application.Query.ImportArticles
         public string UOM { get; set; }
         public decimal? Units { get; set; }
         public string OCNum { get; set; }
+        public ItemStatus? Status { get; set; }
 
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -49,7 +51,8 @@ namespace Shopfloor.Barcode.Application.Query.ImportArticles
         public async Task<PagedResponse<IReadOnlyList<ImportArticleModel>>> Handle(GetImportArticlesQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<ImportArticleParameter>(request);
-            validFilter.SetSearchProps(new string[] { nameof(ImportArticleParameter.ArticleCode), nameof(ImportArticleParameter.GDNNumber) }.ToList());
+
+            validFilter.OrderBy = string.IsNullOrEmpty(validFilter.OrderBy) ? " ModifiedDate DESC " : validFilter.OrderBy;
             return await _repository.GetModelPagedReponseAsync<ImportArticleParameter, ImportArticleModel>(validFilter);
         }
     }

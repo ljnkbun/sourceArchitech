@@ -40,7 +40,7 @@ namespace Shopfloor.Material.Application.Command.DynamicColumns
 
         public Guid? ModifiedUserId { get; set; }
 
-        public List<DynamicColumnContentModel> DynamicColumnContents { get; set; }
+        public ICollection<DynamicColumnContentModel> DynamicColumnContents { get; set; }
     }
 
     public class CreateDynamicColumnCommandHandler : IRequestHandler<CreateDynamicColumnCommand, Response<int>>
@@ -49,7 +49,7 @@ namespace Shopfloor.Material.Application.Command.DynamicColumns
 
         private readonly IDynamicColumnRepository _repository;
 
-        public CreateDynamicColumnCommandHandler(IMapper mapper, ILogger<CreateDynamicColumnCommand> logger,
+        public CreateDynamicColumnCommandHandler(IMapper mapper,
             IDynamicColumnRepository repository)
         {
             _repository = repository;

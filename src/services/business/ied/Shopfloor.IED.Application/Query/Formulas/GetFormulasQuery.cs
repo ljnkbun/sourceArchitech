@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.Formulas;
 using Shopfloor.IED.Application.Parameters.Formulas;
@@ -8,7 +7,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.Formulas
 {
-    public class GetFormulasQuery : IRequest<PagedResponse<IReadOnlyList<FormulaModel>>>, ICacheableMediatrQuery
+    public class GetFormulasQuery : IRequest<PagedResponse<IReadOnlyList<FormulaModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

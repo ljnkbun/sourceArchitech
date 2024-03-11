@@ -24,7 +24,7 @@ namespace Shopfloor.Master.Application.Command.Factories
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Factory Not Found.");
+            if (entity == null) return new($"Factory Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

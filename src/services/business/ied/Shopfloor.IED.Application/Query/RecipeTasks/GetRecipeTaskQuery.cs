@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.RecipeTasks
         public async Task<Response<Domain.Entities.RecipeTask>> Handle(GetRecipeTaskQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"RecipeTask Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"RecipeTask Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.RecipeTask>(entity);
         }
     }

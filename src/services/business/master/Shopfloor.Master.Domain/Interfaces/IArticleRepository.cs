@@ -13,5 +13,7 @@ namespace Shopfloor.Master.Domain.Interfaces
         Task<List<Article>> GetAllArticlesForSycnWFXAsync(string category);
         Task<Article> GetArticleByWFXIdAsync(int wfxId);
         Task<Article> GetArticleByCodeAsync(string code);
+        Task<List<Article>> GetArticlesByIdsAsync(List<int> ids);
+        Task<ICollection<Article>> GetByArticleCodeAsync(ICollection<string> articleCode);
     }
 }

@@ -8,7 +8,6 @@ namespace Shopfloor.IED.Application.Command.Lights
 {
     public class CreateLightCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
     }
     public class CreateLightCommandHandler : IRequestHandler<CreateLightCommand, Response<int>>

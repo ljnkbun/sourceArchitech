@@ -3,7 +3,7 @@ using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Domain.Interfaces;
 
-namespace Shopfloor.IED.Application.Command.DCTemplate
+namespace Shopfloor.IED.Application.Command.DCTemplates
 {
     public class UpdateDCTemplateCommand : IRequest<Response<int>>
     {
@@ -26,7 +26,7 @@ namespace Shopfloor.IED.Application.Command.DCTemplate
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"DCTemplate Not Found.");
+            if (entity == null) return new($"DCTemplate Not Found.");
 
             entity.Name = command.Name;
             entity.Code = command.Code;

@@ -10,9 +10,9 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         public override void Configure(EntityTypeBuilder<WeavingDetailStructure> builder)
         {
             base.Configure(builder);
-            builder.HasOne(e => e.WeavingArticle)
+            builder.HasOne(e => e.WeavingIED)
                 .WithMany(e => e.WeavingDetailStructures)
-                .HasForeignKey(e => e.WeavingArticleId)
+                .HasForeignKey(e => e.WeavingIEDId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

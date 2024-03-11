@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
+using Shopfloor.Core.Definations;
 using Shopfloor.Core.Models.Responses;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.RequestDivisionFiles
@@ -27,7 +26,7 @@ namespace Shopfloor.IED.Application.Command.RequestDivisionFiles
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"RequestDivisionFile Not Found.");
+            if (entity == null) return new($"RequestDivisionFile Not Found.");
 
             entity.RequestDivisionId = command.RequestDivisionId;
             entity.FileType = command.FileType;

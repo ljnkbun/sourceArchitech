@@ -9,8 +9,8 @@ public interface IDyeingTBMaterialColorRepository : IGenericRepositoryAsync<Dyei
 {
     Task<bool> IsExistAsync(int id);
 
-    Task<DyeingTBMaterialColor> GetWithIncludeByIdAsync(int id);
-
     Task<PagedResponse<IReadOnlyList<TModel>>> GetMaterialColorPagedResponseAsync<TParam, TModel>(TParam parameter)
         where TParam : RequestParameter where TModel : class;
+
+    Task<DyeingTBMaterialColor> GetWithParentByIdAsync(int id);
 }

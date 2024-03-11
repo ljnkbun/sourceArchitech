@@ -63,6 +63,10 @@ namespace Shopfloor.Material.Application.Validations.MaterialRequests
                                     context.AddFailure(string.Join(Environment.NewLine, valid.Errors));
                             }
                         }
+                        else
+                        {
+                            context.AddFailure(string.Join(Environment.NewLine, "No data import"));
+                        }
                         break;
                     }
                     case MaterialRequestType.Fabric:
@@ -76,6 +80,10 @@ namespace Shopfloor.Material.Application.Validations.MaterialRequests
                                 if (!valid.IsValid)
                                     context.AddFailure(string.Join(Environment.NewLine, valid.Errors));
                             }
+                        }
+                        else
+                        {
+                            context.AddFailure(string.Join(Environment.NewLine, "No data import"));
                         }
                         break;
                     }
@@ -91,6 +99,10 @@ namespace Shopfloor.Material.Application.Validations.MaterialRequests
                                     context.AddFailure(string.Join(Environment.NewLine, valid.Errors));
                             }
                         }
+                        else
+                        {
+                            context.AddFailure(string.Join(Environment.NewLine, "No data import"));
+                        }
                         break;
                     }
                     case MaterialRequestType.Yarns:
@@ -104,6 +116,10 @@ namespace Shopfloor.Material.Application.Validations.MaterialRequests
                                 if (!valid.IsValid)
                                     context.AddFailure(string.Join(Environment.NewLine, valid.Errors));
                             }
+                        }
+                        else
+                        {
+                            context.AddFailure(string.Join(Environment.NewLine, "No data import"));
                         }
                         break;
                     }

@@ -11,8 +11,8 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         {
             base.Configure(builder);
             builder.Property(e => e.ArticleCode).HasColumnType("varchar(50)");
-            builder.Property(e => e.ArticleId).HasMaxLength(250);
             builder.Property(e => e.ArticleName).HasMaxLength(500);
+            builder.Property(e => e.FabricStyleRef).HasMaxLength(500);
             builder.Property(e => e.MaterialType).HasMaxLength(250);
             builder.Property(e => e.FabricContent).HasMaxLength(500);
             builder.Property(e => e.Lights).HasMaxLength(500);

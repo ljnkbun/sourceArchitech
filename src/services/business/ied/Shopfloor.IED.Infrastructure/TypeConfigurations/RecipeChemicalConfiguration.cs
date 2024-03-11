@@ -12,6 +12,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.ChemicalCode).HasColumnType("varchar(50)");
             builder.Property(e => e.ChemicalName).HasMaxLength(250);
+            builder.Property(e => e.ChemicalSubcategory).HasMaxLength(250);
             builder.Property(e => e.Unit).HasMaxLength(250);
             builder.Property(e => e.Value).HasColumnType("decimal(28,8)");
             builder.HasOne(s => s.RecipeTask)

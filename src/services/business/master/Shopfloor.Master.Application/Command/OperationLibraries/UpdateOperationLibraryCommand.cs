@@ -10,7 +10,7 @@ namespace Shopfloor.Master.Application.Command.OperationLibraries
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int ProcessLibraryId { get; set; }
+        public int ProcessId { get; set; }
         public bool IsActive { set; get; }
     }
     public class UpdateOperationLibraryCommandHandler : IRequestHandler<UpdateOperationLibraryCommand, Response<int>>
@@ -24,11 +24,11 @@ namespace Shopfloor.Master.Application.Command.OperationLibraries
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"OperationLibrary Not Found.");
+            if (entity == null) return new($"OperationLibrary Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;
-            entity.ProcessLibraryId = command.ProcessLibraryId;
+            entity.ProcessId = command.ProcessId;
             entity.IsActive = command.IsActive;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

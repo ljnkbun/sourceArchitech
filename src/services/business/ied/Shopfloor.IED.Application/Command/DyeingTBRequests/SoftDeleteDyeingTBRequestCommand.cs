@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRequests
         public async Task<Response<int>> Handle(SoftDeleteDyeingTBRequestCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRequest Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"DyeingTBRequest Not Found (Id:{command.Id}).");
             entity.Deleted = true;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

@@ -12,5 +12,7 @@ namespace Shopfloor.Barcode.Domain.Interfaces
             where TParam : RequestParameter
             where TModel : class;
         Task SaveWfxPOArticleSync(List<WfxPOArticle> entites);
+        Task<ICollection<WfxPOArticle>> GetByArticleCodeOrderRefAsync(string articleCode, string orderRefNum);
+        Task<ICollection<WfxPOArticle>> GetByOrderRefsAsync(string[] orderRefNums);
     }
 }

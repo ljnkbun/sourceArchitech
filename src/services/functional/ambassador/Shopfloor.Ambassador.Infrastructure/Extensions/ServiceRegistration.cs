@@ -6,6 +6,7 @@ using Shopfloor.Ambassador.Domain.Interfaces;
 using Shopfloor.Ambassador.Infrastructure.Contexts;
 using Shopfloor.Ambassador.Infrastructure.Repositories;
 using Shopfloor.Ambassador.Infrastructure.Services;
+using Shopfloor.Ambassador.Infrastructure.Services.Wfxs;
 using Shopfloor.Core.Helpers;
 
 namespace Shopfloor.Ambassador.Infrastructure.Extensions
@@ -51,6 +52,37 @@ namespace Shopfloor.Ambassador.Infrastructure.Extensions
             services.AddHttpClient<IWfxPOArticleDataService, WfxPOArticleDataService>((x) =>
             {
                 string apiUrl = configuration["WfxApiPOArticleSettings:Uri"];
+                x.BaseAddress = new Uri(apiUrl);
+            });
+
+
+            services.AddTransient<IWfxGDIDataService, WfxGDIDataService>();
+            services.AddHttpClient<IWfxGDIDataService, WfxGDIDataService>((x) =>
+            {
+                string apiUrl = configuration["WfxApiGDISettings:Uri"];
+                x.BaseAddress = new Uri(apiUrl);
+            });
+
+            services.AddTransient<IWfxGDNDataService, WfxGDNDataService>();
+            services.AddHttpClient<IWfxGDNDataService, WfxGDNDataService>((x) =>
+            {
+                string apiUrl = configuration["WfxApiGDNSettings:Uri"];
+                x.BaseAddress = new Uri(apiUrl);
+            });
+            services.AddTransient<IWfxPorDataService, WfxPorDataService>();
+            services.AddHttpClient<IWfxPorDataService, WfxPorDataService>((x) =>
+            {
+                string apiUrl = configuration["WfxApiPorSettings:Uri"];
+                x.BaseAddress = new Uri(apiUrl);
+            });
+
+            services.AddTransient<IWfxImportSyncDataService, WfxImportSyncDataService>();
+            services.AddTransient<IWfxExportSyncDataService, WfxExportSyncDataService>();
+
+            services.AddTransient<IWfxWebSharedService, WfxWebSharedService>();
+            services.AddHttpClient<IWfxWebSharedService, WfxWebSharedService>((x) =>
+            {
+                string apiUrl = configuration["WFXWebSharedAPI:Uri"];
                 x.BaseAddress = new Uri(apiUrl);
             });
         }

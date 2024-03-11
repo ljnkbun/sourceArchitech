@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.YarnCompositions
         public async Task<Response<YarnComposition>> Handle(GetYarnCompositionQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"YarnComposition Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"YarnComposition Not Found (Id:{query.Id}).");
             return new Response<YarnComposition>(entity);
         }
     }

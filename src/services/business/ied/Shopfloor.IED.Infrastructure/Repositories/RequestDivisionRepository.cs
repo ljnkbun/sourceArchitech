@@ -4,7 +4,6 @@ using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
 using Shopfloor.IED.Domain.Interfaces;
 using Shopfloor.IED.Infrastructure.Contexts;
-using System.Linq.Expressions;
 
 namespace Shopfloor.IED.Infrastructure.Repositories
 {
@@ -27,6 +26,11 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             return await _dbContext.Set<RequestDivision>()
                  .Include(p => p.RequestDivisionProcesses)
                 .FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task<bool> IsExistAsync(int id)
+        {
+            return await _dbContext.Set<RequestDivision>().AnyAsync(x => x.Id == id);
         }
     }
 }

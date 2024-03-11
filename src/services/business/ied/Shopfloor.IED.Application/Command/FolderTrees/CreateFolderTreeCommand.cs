@@ -29,20 +29,20 @@ namespace Shopfloor.IED.Application.Command.FolderTrees
         {
 
             var entity = _mapper.Map<FolderTree>(request);
-            entity.Level = await GetNodeLevel(request.ParentId);
+            entity.Level = await GetNodeLevel(request.ParentId ?? 0);
             await _repository.AddAsync(entity);
             return new Response<int>(entity.Id);
         }
 
-        private async Task<byte> GetNodeLevel(int? parentId)
+        private async Task<byte> GetNodeLevel(int parentId)
         {
             byte levelOfRoot = 1;
-            if (parentId == null)
+            if (parentId == 0)
             {
                 return levelOfRoot;
             }
 
-            var parentNode = await _repository.GetByIdAsync(parentId ?? 0);
+            var parentNode = await _repository.GetByIdAsync(parentId);
             return (byte)((parentNode?.Level ?? 0) + 1);
         }
     }

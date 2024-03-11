@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.RequestDivisionFiles
         public async Task<Response<int>> Handle(DeleteRequestDivisionFileCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"RequestDivisionFile Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"RequestDivisionFile Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

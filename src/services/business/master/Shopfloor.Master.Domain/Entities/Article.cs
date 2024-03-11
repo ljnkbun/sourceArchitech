@@ -56,6 +56,8 @@ namespace Shopfloor.Master.Domain.Entities
         public decimal? MinimumOrderQty { get; set; }
         public decimal? RequirementMultiple { get; set; }
         public bool UseForIED { get; set; }
+        public string ServiceCode { get; set; }
+        public string ServiceName { get; set; }
         public virtual ICollection<ArticleBaseColor> BaseColorList { get; set; }
         public virtual ICollection<ArticleBaseSize> BaseSizeList { get; set; }
         public virtual ICollection<ArticleFlexField> FlexFieldList { get; set; }

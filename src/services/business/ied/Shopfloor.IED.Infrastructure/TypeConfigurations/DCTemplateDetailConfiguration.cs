@@ -10,6 +10,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         public override void Configure(EntityTypeBuilder<DCTemplateDetail> builder)
         {
             base.Configure(builder);
+            builder.Property(e => e.ChemicalSubCategory).HasMaxLength(250);
             builder.Property(e => e.ChemicalCode).HasColumnType("varchar(50)");
             builder.Property(e => e.ChemicalName).HasMaxLength(250);
             builder.Property(e => e.Unit).HasMaxLength(500);

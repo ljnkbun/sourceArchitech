@@ -7,8 +7,8 @@ namespace Shopfloor.Master.Application.Validations.MaterialTypes
     public class CreateMaterialTypeCommandValidator : AbstractValidator<CreateMaterialTypeCommand>
     {
         private readonly IMaterialTypeRepository _materialTypeRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        public CreateMaterialTypeCommandValidator(IMaterialTypeRepository materialTypeRepository, ICategoryRepository categoryRepository)
+
+        public CreateMaterialTypeCommandValidator(IMaterialTypeRepository materialTypeRepository)
         {
 
             RuleFor(p => p.Code)
@@ -22,16 +22,7 @@ namespace Shopfloor.Master.Application.Validations.MaterialTypes
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.CategoryId)
-            .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-            .MustAsync(IsExistCategory).WithMessage("{PropertyName} not exists");
-
             _materialTypeRepository = materialTypeRepository;
-            _categoryRepository = categoryRepository;
-        }
-        private async Task<bool> IsExistCategory(int id, CancellationToken cancellationToken)
-        {
-            return await _categoryRepository.GetByIdAsync(id) != null;
         }
         private async Task<bool> IsUniqueAsync(string code, CancellationToken cancellationToken)
         {

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.DCTemplateDetails;
 using Shopfloor.IED.Application.Parameters.DCTemplateDetails;
@@ -8,9 +7,11 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DCTemplateDetails
 {
-    public class GetDCTemplateDetailsQuery : IRequest<PagedResponse<IReadOnlyList<DCTemplateDetailModel>>>, ICacheableMediatrQuery
+    public class GetDCTemplateDetailsQuery : IRequest<PagedResponse<IReadOnlyList<DCTemplateDetailModel>>>
     {
         public int? DCTemplateTaskId { get; set; }
+        public int? ChemicalId { get; set; }
+        public string ChemicalSubCategory { get; set; }
 
         public string ChemicalCode { get; set; }
 

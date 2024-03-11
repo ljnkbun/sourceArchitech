@@ -8,11 +8,12 @@ namespace Shopfloor.IED.Application.Command.DCTemplateDetails
     public class CreateDCTemplateDetailCommand : IRequest<Response<int>>
     {
         public int DCTemplateTaskId { get; set; }
+        public int ChemicalId { get; set; }
+        public string ChemicalSubCategory { get; set; }
         public string ChemicalCode { get; set; }
         public string ChemicalName { get; set; }
         public string Unit { get; set; }
         public decimal Value { get; set; }
-        public int LineNumber { get; set; }
     }
 
     public class CreateDCTemplateDetailCommandHandler : IRequestHandler<CreateDCTemplateDetailCommand, Response<int>>

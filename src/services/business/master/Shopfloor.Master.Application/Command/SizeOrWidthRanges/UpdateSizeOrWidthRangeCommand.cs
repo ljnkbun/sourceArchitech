@@ -25,7 +25,7 @@ namespace Shopfloor.Master.Application.Command.SizeOrWidthRanges
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"SizeOrWidthRange Not Found.");
+            if (entity == null) return new($"SizeOrWidthRange Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

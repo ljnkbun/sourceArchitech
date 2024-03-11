@@ -5,7 +5,7 @@ using Shopfloor.Master.Application.Parameters.Processes;
 using Shopfloor.Master.Application.Query.Processes;
 using Shopfloor.Master.Domain.Entities;
 
-namespace Shopfloor.Master.Application.Processes
+namespace Shopfloor.Master.Application.Mappings
 {
     public class ProcessProfile : Profile
     {
@@ -14,6 +14,7 @@ namespace Shopfloor.Master.Application.Processes
             CreateMap<Process, ProcessModel>().ReverseMap();
             CreateMap<CreateProcessCommand, Process>();
             CreateMap<GetProcessesQuery, ProcessParameter>();
+            CreateMap<GetProcessesByDivisionCodeQuery, ProcessByDivisionIdParameter>();
         }
     }
 }

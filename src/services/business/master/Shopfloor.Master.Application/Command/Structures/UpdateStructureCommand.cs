@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Structures
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Structure Not Found.");
+            if (entity == null) return new($"Structure Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

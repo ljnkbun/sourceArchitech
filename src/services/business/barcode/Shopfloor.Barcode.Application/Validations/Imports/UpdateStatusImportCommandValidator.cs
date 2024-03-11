@@ -3,7 +3,7 @@ using Shopfloor.Barcode.Application.Command.Imports;
 
 namespace Shopfloor.Barcode.Application.Validations.Imports
 {
-    public class UpdateStatusImportCommandValidator : AbstractValidator<UpdateImportStatusCommand>
+    public class UpdateStatusImportCommandValidator : AbstractValidator<UpdateStatusImportCommand>
     {
         public UpdateStatusImportCommandValidator()
         {

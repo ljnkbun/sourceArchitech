@@ -58,6 +58,19 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
+        // PUT api/v1/<controller>/5
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusExportDetailCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+         // PUT api/v1/<controller>/5
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> UpdateStatusExportDetails(UpdateStatusExportDetailsCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
 
         // PUT api/v1/<controller>/5
         [HttpPut("range")]
@@ -82,7 +95,7 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         [HttpPost("import")]
         public async Task<IActionResult> Import(IFormFile file)
         {
-            return Ok(await Mediator.Send(new ImportDataExportDetailCommand { File = file }));
+            return Ok(await Mediator.Send(new UploadExcelExportDetailCommand { File = file }));
         }
 
         [HttpGet("export")]
@@ -91,5 +104,23 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
             return await Mediator.Send(new ExportDataExportDetailsQuery { Ids = request.Ids });
         }
 
+        [HttpPost("Print")]
+        public async Task<IActionResult> Print(PrintExportDetailsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
+
+        [HttpGet("Scan")]
+        public async Task<IActionResult> Scan(ScanBarcodeQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpPost("Scans")]
+        public async Task<IActionResult> Scans(ScanBarcodesQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
     }
 }

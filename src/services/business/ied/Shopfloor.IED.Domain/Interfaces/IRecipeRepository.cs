@@ -13,6 +13,12 @@ public interface IRecipeRepository : IGenericRepositoryAsync<Recipe>
 
     Task<Recipe> AddRecipeAsync(Recipe entity);
 
+    Task<bool> IsExistByRecipeIdAsync(int recipeId);
+
     Task<PagedResponse<IReadOnlyList<TModel>>> GetRecipePagedResponseAsync<TParam, TModel>(TParam parameter)
         where TParam : RequestParameter where TModel : class;
+
+    Task<Recipe> GetByTBRecipeIdAsync(int id);
+
+    Task<Recipe> GetWithIncludeByDyeingTBRecipeIdAsync(int dyeingTBRecipeId);
 }

@@ -8,15 +8,15 @@ namespace Shopfloor.IED.Application.Command.Recipes
 {
     public class CreateRecipeCommand : IRequest<Response<int>>
     {
-        public int DyeingTBRequestId { get; set; }
-
-        public int DyeingTBRVersionId { get; set; }
+        public int DyeingTBRecipeId { get; set; }
 
         public DateTime JobDate { get; set; }
 
         public string TCFNO { get; set; }
 
         public string Style { get; set; }
+
+        public string Description { get; set; }
 
         public string FabricCode { get; set; }
 
@@ -41,7 +41,7 @@ namespace Shopfloor.IED.Application.Command.Recipes
         public string InCharge { get; set; }
 
         public string Manager { get; set; }
-        
+
         public ICollection<CreateRecipeTaskCommand> RecipeTask { get; set; }
     }
 

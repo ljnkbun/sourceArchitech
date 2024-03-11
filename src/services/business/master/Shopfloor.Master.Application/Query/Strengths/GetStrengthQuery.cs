@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Strengths
         public async Task<Response<Strength>> Handle(GetStrengthQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Strength Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Strength Not Found (Id:{query.Id}).");
             return new Response<Strength>(entity);
         }
     }

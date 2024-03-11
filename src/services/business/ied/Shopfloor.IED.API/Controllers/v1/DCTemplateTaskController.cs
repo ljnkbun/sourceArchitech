@@ -16,11 +16,14 @@ namespace Shopfloor.IED.Api.Controllers.v1
             return Ok(await Mediator.Send(new GetDCTemplateTasksQuery()
             {
                 DCTemplateId = filter.DCTemplateId,
-                TaskCode = filter.TaskCode,
-                TaskName = filter.TaskName,
+                DyeingProcessId = filter.DyeingProcessId,
+                DyeingProcessName = filter.DyeingProcessName,
+                DyeingOpreationId = filter.DyeingOpreationId,
+                DyeingOpreationName = filter.DyeingOpreationName,
+                MachineCode = filter.MachineCode,
+                MachineName = filter.MachineName,
                 Temperature = filter.Temperature,
                 Minute = filter.Minute,
-                TaskId = filter.TaskId,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
                 CreatedDate = filter.CreatedDate,
@@ -28,10 +31,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 

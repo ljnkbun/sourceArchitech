@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
-using Shopfloor.Core.Models.Responses;
 using Shopfloor.Barcode.Domain.Interfaces;
+using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
 {
@@ -19,7 +18,7 @@ namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
         public async Task<Response<int>> Handle(DeleteArticleBarcodeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"ArticleBarcode Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"ArticleBarcode Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

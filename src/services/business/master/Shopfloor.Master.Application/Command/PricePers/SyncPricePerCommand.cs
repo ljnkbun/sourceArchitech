@@ -13,12 +13,9 @@ namespace Shopfloor.Master.Application.Command.PricePers
     }
     public class SyncPricePerCommandHandler : IRequestHandler<SyncPricePerCommand, Response<bool>>
     {
-        private readonly IMapper _mapper;
         private readonly IPricePerRepository _repository;
-        public SyncPricePerCommandHandler(IMapper mapper,
-            IPricePerRepository repository)
+        public SyncPricePerCommandHandler(IPricePerRepository repository)
         {
-            _mapper = mapper;
             _repository = repository;
         }
         public async Task<Response<bool>> Handle(SyncPricePerCommand command, CancellationToken cancellationToken)
@@ -27,8 +24,8 @@ namespace Shopfloor.Master.Application.Command.PricePers
             var newEntities = GetNewEntities(entities, command.Data);
             var updateEntities = GetUpdateEntities(entities, command.Data);
 
-            if(newEntities.Count> 0) { await _repository.AddRangeAsync(newEntities); }
-            if(updateEntities.Count> 0) { await _repository.UpdateRangeAsync(updateEntities); }
+            if (newEntities.Count > 0) { await _repository.AddRangeAsync(newEntities); }
+            if (updateEntities.Count > 0) { await _repository.UpdateRangeAsync(updateEntities); }
 
             return new Response<bool>(true);
         }

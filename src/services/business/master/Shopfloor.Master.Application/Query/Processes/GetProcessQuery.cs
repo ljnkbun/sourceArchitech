@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Master.Domain.Entities;
 using Shopfloor.Master.Domain.Interfaces;
@@ -19,8 +18,8 @@ namespace Shopfloor.Master.Application.Query.Processes
         }
         public async Task<Response<Process>> Handle(GetProcessQuery query, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Process Not Found (Id:{query.Id}).");
+            var entity = await _repository.GetProcessInculdeLineMachine(query.Id);
+            if (entity == null) return new ($"Process Not Found (Id:{query.Id}).");
             return new Response<Process>(entity);
         }
     }

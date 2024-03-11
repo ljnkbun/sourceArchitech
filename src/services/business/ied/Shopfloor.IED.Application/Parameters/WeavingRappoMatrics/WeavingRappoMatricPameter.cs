@@ -6,6 +6,7 @@ namespace Shopfloor.IED.Application.Parameters.WeavingRappoMatrics
     public class WeavingRappoMatricParameter : RequestParameter
     {
         public int? WeavingRappoId { get; set; }
+        public int? SlotIndex { get; set; }
         public int? RowIndex { get; set; }
         public int? ColumnIndex { get; set; }
         public int? LoopIndex { get; set; }

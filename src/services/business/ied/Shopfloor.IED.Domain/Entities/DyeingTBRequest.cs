@@ -13,7 +13,7 @@ namespace Shopfloor.IED.Domain.Entities
 
         public string RequestNo { get; set; }
 
-        public int RequestType { get; set; }
+        public int RecipeCategoryId { get; set; }
 
         public DateTime RequestDate { get; set; }
 
@@ -30,6 +30,8 @@ namespace Shopfloor.IED.Domain.Entities
         public TBRequestStatus Status { get; set; }
 
         public bool Deleted { get; set; }
+
+        public int? DyeingIEDId { get; set; }
 
         public virtual ICollection<DyeingTBMaterial> DyeingTBMaterials { get; set; }
 

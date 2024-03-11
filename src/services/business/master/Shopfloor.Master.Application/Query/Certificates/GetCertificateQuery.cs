@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Certificates
         public async Task<Response<Certificate>> Handle(GetCertificateQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Certificate Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Certificate Not Found (Id:{query.Id}).");
             return new Response<Certificate>(entity);
         }
     }

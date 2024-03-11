@@ -39,7 +39,7 @@ namespace Shopfloor.Master.Api.Consumers.Requests
             {
                 Data = _mapper.Map<List<WfxArticleDto>>(article.Data)
             };
-            Log.Information($"GetArticleRequestConsumer: response={response}");
+            Log.Information($"GetArticleRequestConsumer: response={response.ToJson()}");
             await context.RespondAsync(response);
         }
     }

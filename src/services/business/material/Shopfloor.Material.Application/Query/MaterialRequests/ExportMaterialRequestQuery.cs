@@ -35,55 +35,14 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
                 throw new ArgumentNullException(nameof(request.Ids));
             var data = new List<Dictionary<string, object>>();
             var materialRequests = await _repository.GetMaterialRequestByIdsAsync(request.Ids);
-            string fname;
-            switch (request.Type)
-            {
-                case MaterialRequestType.Trims:
-                    {
-                        fname = "ArticleTrimsMaster.xls";
-                        foreach (var material in materialRequests)
-                            data.Add(await CellData(material, request.Type));
-
-                        if (data.Count == 0)
-                            throw new Exception("Not found data");
-                        break;
-                    }
-                case MaterialRequestType.Fabric:
-                    {
-                        fname = "ArticleTextileFabricMaster.xls";
-                        foreach (var material in materialRequests)
-                            data.Add(await CellData(material, request.Type));
-
-                        if (data.Count == 0)
-                            throw new Exception("Not found data");
-                        break;
-                    }
-                case MaterialRequestType.Yarns:
-                    {
-                        fname = "ArticleYarnMaster.xls";
-                        foreach (var material in materialRequests)
-                            data.Add(await CellData(material, request.Type));
-
-                        if (data.Count == 0)
-                            throw new Exception("Not found data");
-                        break;
-                    }
-                case MaterialRequestType.Misc:
-                    {
-                        fname = "ArticleMiscMaster.xls";
-                        foreach (var material in materialRequests)
-                            data.Add(await CellData(material, request.Type));
-
-                        if (data.Count == 0)
-                            throw new Exception("Not found data");
-                        break;
-                    }
-                default:
-                    throw new Exception("Not found data");
-            }
-            var fullPath = Path.Combine(_webHostEnvironment.ContentRootPath, "TemplateWFX", fname);
+            if (materialRequests.Count == 0)
+                throw new Exception("Not found data");
+            string fileName = GetFileName(request.Type);
+            foreach (var material in materialRequests)
+                data.Add(await CellData(material, request.Type));
+            var fullPath = Path.Combine(_webHostEnvironment.ContentRootPath, "TemplateWFX", fileName);
             if (!File.Exists(fullPath))
-                throw new FileNotFoundException(fname);
+                throw new FileNotFoundException(fileName);
             var ms = ExportExcelHelper.WriteExcelHSSF(fullPath, new ExcelInputDataModel
             {
                 Data = data,
@@ -92,7 +51,7 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
             });
             return new FileContentResult(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
-                FileDownloadName = fname,
+                FileDownloadName = fileName,
                 EnableRangeProcessing = true,
             };
         }
@@ -233,6 +192,7 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
                         dic.Add("AT", material.DynamicColumns
                             .FirstOrDefault(x => dynamicColumn.Any(y => y.Id == x.DynamicColumnId && y.Code == "Structure"))
                             ?.Value ?? "");
+                        dic.Add("AU", material.HSCode);
                         break;
                     }
                 case MaterialRequestType.Yarns:
@@ -323,5 +283,15 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
             }
             return dic;
         }
+
+        private string GetFileName(string type) =>
+            type switch
+            {
+                MaterialRequestType.Trims => "ArticleTrimsMaster.xls",
+                MaterialRequestType.Fabric => "ArticleTextileFabricMaster.xls",
+                MaterialRequestType.Yarns => "ArticleYarnMaster.xls",
+                MaterialRequestType.Misc => "ArticleMiscMaster.xls",
+                _ => throw new Exception("Not found data")
+            };
     }
 }

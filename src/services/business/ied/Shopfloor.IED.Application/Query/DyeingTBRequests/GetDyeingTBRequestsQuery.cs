@@ -9,17 +9,19 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DyeingTBRequests
 {
-    public class GetDyeingTBRequestsQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRequestModel>>>, ICacheableMediatrQuery
+    public class GetDyeingTBRequestsQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRequestModel>>>
     {
         public string RequestNo { get; set; }
 
-        public int? RequestType { get; set; }
+        public int? RecipeCategoryId { get; set; }
 
         public DateTime? RequestDate { get; set; }
 
         public string StyleRef { get; set; }
 
         public string Remark { get; set; }
+
+        public int? DyeingIEDId { get; set; }
 
         public string Buyer { get; set; }
 
@@ -48,12 +50,6 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRequests
         public Guid? ModifiedUserId { get; set; }
 
         public bool? IsActive { get; set; }
-
-        public bool BypassCache { get; set; }
-
-        public string CacheKey => $"DyeingTBRequests";
-
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

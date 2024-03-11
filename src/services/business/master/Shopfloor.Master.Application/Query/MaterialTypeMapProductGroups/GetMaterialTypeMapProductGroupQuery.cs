@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.MaterialTypeMapProductGroups
         public async Task<Response<MaterialTypeMapProductGroup>> Handle(GetMaterialTypeMapProductGroupQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"MaterialTypeMapProductGroup Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"MaterialTypeMapProductGroup Not Found (Id:{query.Id}).");
             return new Response<MaterialTypeMapProductGroup>(entity);
         }
     }

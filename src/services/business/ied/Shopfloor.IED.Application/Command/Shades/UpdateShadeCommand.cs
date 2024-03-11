@@ -8,9 +8,7 @@ namespace Shopfloor.IED.Application.Command.Shades
     public class UpdateShadeCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
-        public string Code { get; set; }
         public string Name { get; set; }
-        public bool IsActive { set; get; }
     }
     public class UpdateShadeCommandHandler : IRequestHandler<UpdateShadeCommand, Response<int>>
     {
@@ -23,11 +21,9 @@ namespace Shopfloor.IED.Application.Command.Shades
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Shade Not Found.");
+            if (entity == null) return new($"Shade Not Found.");
 
-            entity.Code = command.Code;
             entity.Name = command.Name;
-            entity.IsActive = command.IsActive;
 
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

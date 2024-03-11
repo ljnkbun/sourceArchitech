@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Shopfloor.IED.Application.Command.SewingTaskLibs;
+using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Validations.SewingTaskLibs
@@ -22,13 +23,25 @@ namespace Shopfloor.IED.Application.Validations.SewingTaskLibs
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.Freq)
-                .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
+            RuleFor(p => p.MachineName)
+                .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
+            RuleFor(p => p.TaskType).IsInEnum();
+            RuleFor(p => p).Must(IsDataValid).WithMessage("Data invalid.");
         }
 
         private async Task<bool> IsUniqueAsync(string code, CancellationToken token)
         {
             return await _sewingTaskLibRepository.IsUniqueAsync(code);
+        }
+        private bool IsDataValid(CreateSewingTaskLibCommand command)
+        {
+            if ((command.TaskType == TaskType.BU && (command.SewingBundleId == null || command.SewingBundleId == 0))
+                || (command.TaskType != TaskType.BU && command.SewingBundleId != null))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

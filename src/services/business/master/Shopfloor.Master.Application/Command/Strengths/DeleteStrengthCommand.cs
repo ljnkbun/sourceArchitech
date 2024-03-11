@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Strengths
         public async Task<Response<int>> Handle(DeleteStrengthCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Strength Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Strength Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

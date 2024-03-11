@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Shopfloor.Core.Exceptions;
+﻿using AutoMapper;
+using MediatR;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Master.Domain.Entities;
 using Shopfloor.Master.Domain.Interfaces;
@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Factories
         public async Task<Response<Factory>> Handle(GetFactoryQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Factory Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"Factory Not Found (Id: {query.Id}).");
             return new Response<Factory>(entity);
         }
     }

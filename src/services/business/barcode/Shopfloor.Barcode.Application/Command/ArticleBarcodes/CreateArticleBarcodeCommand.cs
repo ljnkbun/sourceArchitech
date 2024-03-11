@@ -22,6 +22,10 @@ namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
         public decimal? NumberOfCone { get; set; }
         public decimal? WeightPerCone { get; set; }
         public string Location { get; set; }
+        public string Site { get; set; }
+        public string Category { get; set; }
+        public string SubCategory { get; set; }
+        public string GroupCode { get; set; }
         public string Note { get; set; }
         public int? CurrentLocationId { get; set; }
         public int? PreLocationId { get; set; }

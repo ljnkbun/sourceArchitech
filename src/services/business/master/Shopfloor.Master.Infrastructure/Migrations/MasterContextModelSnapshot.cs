@@ -144,7 +144,8 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HSCode")
                         .HasMaxLength(500)
@@ -196,7 +197,8 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PerSizeCons")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PricePer")
                         .HasMaxLength(500)
@@ -239,6 +241,14 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<string>("SellingPriceCurrency")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ServiceCode")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ServiceName")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -399,6 +409,47 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.ToTable("ArticleFlexFields");
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Buyer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("WFXBuyerId")
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Buyer", (string)null);
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.BuyerType", b =>
                 {
                     b.Property<int>("Id")
@@ -443,6 +494,111 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("BuyerType", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Calendar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Calendar", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.CalendarDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BreakHours")
+                        .HasMaxLength(4)
+                        .HasColumnType("decimal(2,1)");
+
+                    b.Property<int>("CalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("Shift")
+                        .HasColumnType("tinyint");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<decimal>("WorkingHours")
+                        .HasMaxLength(24)
+                        .HasColumnType("decimal(3,1)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalendarId");
+
+                    b.ToTable("CalendarDetail", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Category", b =>
@@ -1550,6 +1706,184 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.ToTable("GroupName", (string)null);
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Holiday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holiday", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Line", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("FactoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WFXLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Worker")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("FactoryId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("Line", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Machine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("Capacity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("FactoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Gauge")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<string>("MachineDiameter")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SerialNo")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("FactoryId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("Machine", (string)null);
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.MachineType", b =>
                 {
                     b.Property<int>("Id")
@@ -1603,9 +1937,6 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -1773,7 +2104,10 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("ProcessLibraryId")
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WFXOperationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1781,7 +2115,7 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.HasIndex("ProcessLibraryId");
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("OperationLibrary", (string)null);
                 });
@@ -1927,6 +2261,106 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.ToTable("PaymentTerm", (string)null);
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.PlanningGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CalendarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalendarId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("PlanningGroup", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.PlanningGroupFactory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FactoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PlanningGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactoryId");
+
+                    b.HasIndex("PlanningGroupId");
+
+                    b.ToTable("PlanningGroupFactory", (string)null);
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Port", b =>
                 {
                     b.Property<int>("Id")
@@ -2041,47 +2475,8 @@ namespace Shopfloor.Master.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Process", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProcessLibrary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -2096,6 +2491,13 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("DefaultArticleOutput")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("DivisionId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -2113,12 +2515,34 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("ProductGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubCategoryGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WFXProcessId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("ProcessLibrary", (string)null);
+                    b.HasIndex("DivisionId");
+
+                    b.HasIndex("ProductGroupId");
+
+                    b.HasIndex("SubCategoryGroupId");
+
+                    b.HasIndex("SubCategoryId");
+
+                    b.ToTable("Process", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProductGroup", b =>
@@ -2150,9 +2574,6 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<int>("MaterialTypeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -2173,6 +2594,50 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductGroup", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProductGroupUOM", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ProductGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UOMId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductGroupId");
+
+                    b.HasIndex("UOMId");
+
+                    b.ToTable("ProductGroupUOM", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ShipmentTerm", b =>
@@ -2558,7 +3023,7 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Property<int>("ProductGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubCategoryGroupId")
+                    b.Property<int?>("SubCategoryGroupId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -2668,6 +3133,47 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.HasIndex("OperationLibraryId");
 
                     b.ToTable("SubOperationLibrary", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("WFXSupplierId")
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Supplier", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.SupplierType", b =>
@@ -2994,6 +3500,17 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("Article");
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.CalendarDetail", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Calendar", "Calendar")
+                        .WithMany("CalendarDetails")
+                        .HasForeignKey("CalendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Calendar");
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.CategoryMapMaterialType", b =>
                 {
                     b.HasOne("Shopfloor.Master.Domain.Entities.Category", "Category")
@@ -3034,6 +3551,40 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("Divsion");
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Line", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Factory", "Factory")
+                        .WithMany("Lines")
+                        .HasForeignKey("FactoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Process", "Process")
+                        .WithMany("Lines")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Factory");
+
+                    b.Navigation("Process");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Machine", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Factory", "Factory")
+                        .WithMany("Machines")
+                        .HasForeignKey("FactoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Process", "Process")
+                        .WithMany("Machines")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Factory");
+
+                    b.Navigation("Process");
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.MaterialTypeMapProductGroup", b =>
                 {
                     b.HasOne("Shopfloor.Master.Domain.Entities.MaterialType", "MaterialType")
@@ -3055,13 +3606,51 @@ namespace Shopfloor.Master.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.OperationLibrary", b =>
                 {
-                    b.HasOne("Shopfloor.Master.Domain.Entities.ProcessLibrary", "ProcessLibrary")
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Process", "Process")
                         .WithMany("OperationLibraries")
-                        .HasForeignKey("ProcessLibraryId")
+                        .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ProcessLibrary");
+                    b.Navigation("Process");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.PlanningGroup", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Calendar", "Calendar")
+                        .WithMany("PlanningGroups")
+                        .HasForeignKey("CalendarId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Process", "Process")
+                        .WithMany("PlanningGroups")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Calendar");
+
+                    b.Navigation("Process");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.PlanningGroupFactory", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Factory", "Factory")
+                        .WithMany("PlanningGroupFactories")
+                        .HasForeignKey("FactoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.PlanningGroup", "PlanningGroup")
+                        .WithMany("PlanningGroupFactories")
+                        .HasForeignKey("PlanningGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Factory");
+
+                    b.Navigation("PlanningGroup");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Port", b =>
@@ -3075,6 +3664,44 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Process", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Category", "Category")
+                        .WithMany("Processs")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.Division", "Division")
+                        .WithMany("Processes")
+                        .HasForeignKey("DivisionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.ProductGroup", "ProductGroup")
+                        .WithMany("Processs")
+                        .HasForeignKey("ProductGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.SubCategoryGroup", "SubCategoryGroup")
+                        .WithMany("Processs")
+                        .HasForeignKey("SubCategoryGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.SubCategory", "SubCategory")
+                        .WithMany("Processs")
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Division");
+
+                    b.Navigation("ProductGroup");
+
+                    b.Navigation("SubCategory");
+
+                    b.Navigation("SubCategoryGroup");
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProductGroup", b =>
                 {
                     b.HasOne("Shopfloor.Master.Domain.Entities.Category", "Category")
@@ -3084,6 +3711,25 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProductGroupUOM", b =>
+                {
+                    b.HasOne("Shopfloor.Master.Domain.Entities.ProductGroup", "ProductGroup")
+                        .WithMany("ProductGroupUOMs")
+                        .HasForeignKey("ProductGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.Master.Domain.Entities.UOM", "UOM")
+                        .WithMany("ProductGroupUOMs")
+                        .HasForeignKey("UOMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductGroup");
+
+                    b.Navigation("UOM");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.SubCategory", b =>
@@ -3097,8 +3743,7 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.HasOne("Shopfloor.Master.Domain.Entities.SubCategoryGroup", "SubCategoryGroup")
                         .WithMany("SubCategories")
                         .HasForeignKey("SubCategoryGroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ProductGroup");
 
@@ -3144,9 +3789,18 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("FlexFieldList");
                 });
 
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Calendar", b =>
+                {
+                    b.Navigation("CalendarDetails");
+
+                    b.Navigation("PlanningGroups");
+                });
+
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Category", b =>
                 {
                     b.Navigation("CategoryMapMaterialTypes");
+
+                    b.Navigation("Processs");
 
                     b.Navigation("ProductGroups");
                 });
@@ -3161,6 +3815,17 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("Departments");
 
                     b.Navigation("Factories");
+
+                    b.Navigation("Processes");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Factory", b =>
+                {
+                    b.Navigation("Lines");
+
+                    b.Navigation("Machines");
+
+                    b.Navigation("PlanningGroupFactories");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.MaterialType", b =>
@@ -3175,26 +3840,50 @@ namespace Shopfloor.Master.Infrastructure.Migrations
                     b.Navigation("SubOperationLibraries");
                 });
 
-            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProcessLibrary", b =>
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.PlanningGroup", b =>
                 {
+                    b.Navigation("PlanningGroupFactories");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.Process", b =>
+                {
+                    b.Navigation("Lines");
+
+                    b.Navigation("Machines");
+
                     b.Navigation("OperationLibraries");
+
+                    b.Navigation("PlanningGroups");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.ProductGroup", b =>
                 {
                     b.Navigation("MaterialTypeMapProductGroups");
 
+                    b.Navigation("Processs");
+
+                    b.Navigation("ProductGroupUOMs");
+
                     b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("Shopfloor.Master.Domain.Entities.SubCategory", b =>
+                {
+                    b.Navigation("Processs");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.SubCategoryGroup", b =>
                 {
+                    b.Navigation("Processs");
+
                     b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("Shopfloor.Master.Domain.Entities.UOM", b =>
                 {
                     b.Navigation("FromUOMConversions");
+
+                    b.Navigation("ProductGroupUOMs");
 
                     b.Navigation("ToUOMConversions");
                 });

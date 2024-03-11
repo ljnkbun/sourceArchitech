@@ -20,9 +20,11 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
-                WeavingArticleId = filter.WeavingArticleId,
+                WeavingIEDId = filter.WeavingIEDId,
                 LineNumber = filter.LineNumber,
+                YarnTotal = filter.YarnTotal,
                 YarnType = filter.YarnType,
+                WFXYarnId = filter.WFXYarnId,
                 YarnCode = filter.YarnCode,
                 YarnName = filter.YarnName,
                 YarnInRappo = filter.YarnInRappo,
@@ -30,13 +32,12 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 SizingRatio = filter.SizingRatio,
                 ScaleRatio = filter.ScaleRatio,
                 ScrapRatio = filter.ScrapRatio,
+                WastageRatio = filter.WastageRatio,
                 Weight = filter.Weight,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

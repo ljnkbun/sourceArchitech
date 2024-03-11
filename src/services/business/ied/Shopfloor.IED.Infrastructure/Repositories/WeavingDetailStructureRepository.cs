@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
 using Shopfloor.IED.Domain.Interfaces;
@@ -11,5 +12,8 @@ namespace Shopfloor.IED.Infrastructure.Repositories
         public WeavingDetailStructureRepository(IEDContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
+
+        public async Task<List<WeavingDetailStructure>> GetAllByWeavingIEDId(int weavingId) => await _dbContext.Set<WeavingDetailStructure>().AsNoTracking()
+            .Where(x => x.WeavingIEDId == weavingId).ToListAsync();
     }
 }

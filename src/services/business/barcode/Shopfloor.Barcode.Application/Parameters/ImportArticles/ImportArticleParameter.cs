@@ -1,3 +1,4 @@
+using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Core.Models.Parameters;
 
 namespace Shopfloor.Barcode.Application.Parameters.ImportArticles
@@ -17,6 +18,7 @@ namespace Shopfloor.Barcode.Application.Parameters.ImportArticles
         public string UOM { get; set; }
         public decimal? Units { get; set; }
         public string OCNum { get; set; }
+        public ItemStatus? Status { get; set; }
 
 
     }

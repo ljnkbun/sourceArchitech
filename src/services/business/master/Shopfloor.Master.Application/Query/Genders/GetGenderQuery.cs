@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Genders
         public async Task<Response<Gender>> Handle(GetGenderQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Gender Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"Gender Not Found (Id: {query.Id}).");
             return new Response<Gender>(entity);
         }
     }

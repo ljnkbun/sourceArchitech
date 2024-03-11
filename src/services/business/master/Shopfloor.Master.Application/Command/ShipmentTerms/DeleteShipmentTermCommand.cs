@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.ShipmentTerms
         public async Task<Response<int>> Handle(DeleteShipmentTermCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"ShipmentTerm Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"ShipmentTerm Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

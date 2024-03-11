@@ -7,6 +7,7 @@ using Shopfloor.EventBus.Models.Requests;
 using Shopfloor.EventBus.Models.Responses;
 using Shopfloor.EventBus.Services;
 using Shopfloor.Material.Application.Definitions;
+using Shopfloor.Material.Application.Helpers;
 using Shopfloor.Material.Application.Models.Buyers;
 using Shopfloor.Material.Domain.Entities;
 using Shopfloor.Material.Domain.Enums;
@@ -38,51 +39,48 @@ namespace Shopfloor.Material.Application.Command.Buyers
         {
             var input = new ImportExcelModel(0, 2, FieldMaps.Buyer);
             var data = ImportExcelHelper.ReadExcel<BuyerImportExcelModel>(request.File, input);
-            if (data == null || data.Count == 0)
-                return new Core.Models.Responses.Response<bool>(false, "No data import");
             var tasks = new List<Task>();
-
             var countriesTask = _requestClientService.GetResponseAsync<GetCountriesRequest, GetCountriesResponse>(new GetCountriesRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(countriesTask);
             var companyCurrenciesTask = _requestClientService.GetResponseAsync<GetCompanyCurrenciesRequest, GetCompanyCurrenciesResponse>(new GetCompanyCurrenciesRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(companyCurrenciesTask);
             var categoriesTask = _requestClientService.GetResponseAsync<GetCategoriesRequest, GetCategoriesResponse>(new GetCategoriesRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(categoriesTask);
             var groupNameTask = _requestClientService.GetResponseAsync<GetGroupNamesRequest, GetGroupNamesResponse>(new GetGroupNamesRequest()
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(groupNameTask);
             var subCategoriesTask = _requestClientService.GetResponseAsync<GetSubCategoriesRequest, GetSubCategoriesResponse>(new GetSubCategoriesRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(subCategoriesTask);
             var accountGroupTask = _requestClientService.GetResponseAsync<GetAccountGroupsRequest, GetAccountGroupsResponse>(new GetAccountGroupsRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(accountGroupTask);
             var buyerTypeTask = _requestClientService.GetResponseAsync<GetBuyerTypesRequest, GetBuyerTypesResponse>(new GetBuyerTypesRequest
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue
-            });
+            }, cancellationToken);
             tasks.Add(buyerTypeTask);
 
             await Task.WhenAll(tasks);
@@ -95,47 +93,50 @@ namespace Shopfloor.Material.Application.Command.Buyers
             var buyerType = buyerTypeTask.Result;
 
             var buyers = new List<Buyer>();
+
             foreach (var r in data)
             {
                 var x = _mapper.Map<Buyer>(r);
-                x.ProductCategories = new List<BuyerProductCategory>();
-                x.CountryName = countries?.Message?.Data?.FirstOrDefault(v => v.Name == r.Country?.Trim() || v.Code == r.Country?.Trim())?.Name;
-                x.Country = countries?.Message?.Data?.FirstOrDefault(v => v.Name == r.Country?.Trim() || v.Code == r.Country?.Trim())?.Code;
-                x.CurrencyName = companyCurrencies?.Message?.Data?.FirstOrDefault(v => v.Name == r.Currency?.Trim() || v.Code == r.Currency?.Trim())?.Name;
-                x.Currency = companyCurrencies?.Message?.Data?.FirstOrDefault(v => v.Name == r.Currency?.Trim() || v.Code == r.Currency?.Trim())?.Code;
-                x.GroupName = groupName?.Message?.Data?.FirstOrDefault(v => v.Name == r.GroupNameCode?.Trim() || v.Code == r.GroupNameCode?.Trim())?.Name;
-                x.GroupNameCode = groupName?.Message?.Data?.FirstOrDefault(v => v.Name == r.GroupNameCode?.Trim() || v.Code == r.GroupNameCode?.Trim())?.Code;
-                x.Category = subCategories?.Message?.Data?.FirstOrDefault(v => v.Name == r.Category?.Trim() || v.Code == r.Category?.Trim())?.Name;
-                x.AccountGroupName = accountGroup?.Message?.Data?.FirstOrDefault(v => v.Name == r.AccountGroup?.Trim() || v.Code == r.AccountGroup?.Trim())?.Name;
-                x.AccountGroup = accountGroup?.Message?.Data?.FirstOrDefault(v => v.Name == r.AccountGroup?.Trim() || v.Code == r.AccountGroup?.Trim())?.Code;
-                x.BuyerTypeName = buyerType?.Message?.Data?.FirstOrDefault(v => v.Name == r.BuyerType?.Trim() || v.Code == r.BuyerType?.Trim())?.Name;
-                x.BuyerType = buyerType?.Message?.Data?.FirstOrDefault(v => v.Name == r.BuyerType?.Trim() || v.Code == r.BuyerType?.Trim())?.Code;
+                var dataFilterCountry = ObjectHelper.FindDataCodeName(countries?.Message?.Data, r.Country);
+                var dataFilterCurrency = ObjectHelper.FindDataCodeName(companyCurrencies?.Message?.Data, r.Currency);
+                var dataFilterGroupName = ObjectHelper.FindDataCodeName(groupName?.Message?.Data, r.GroupNameCode);
+                var dataFilterCategory = ObjectHelper.FindDataCodeName(subCategories?.Message?.Data, r.Category);
+                var dataFilterAccountGroup = ObjectHelper.FindDataCodeName(accountGroup?.Message?.Data, r.AccountGroup);
+                var dataFilterBuyerType = ObjectHelper.FindDataCodeName(buyerType?.Message?.Data, r.BuyerType);
+
+                ObjectHelper.SetDataProperties(x, dataFilterCategory, "CategoryCode", "CategoryName");
+                ObjectHelper.SetDataProperties(x, dataFilterCountry, "CountryCode", "CountryName");
+                ObjectHelper.SetDataProperties(x, dataFilterCurrency, "CurrencyCode", "CurrencyName");
+                ObjectHelper.SetDataProperties(x, dataFilterGroupName, "GroupNameCode", "GroupName");
+                ObjectHelper.SetDataProperties(x, dataFilterAccountGroup, "AccountGroupCode", "AccountGroupName");
+                ObjectHelper.SetDataProperties(x, dataFilterBuyerType, "BuyerType", "BuyerTypeName");
 
                 if (!string.IsNullOrEmpty(r.BusinessSegment))
                 {
                     var buz = r.BusinessSegment.Split(',');
-                    x.IsRetailer = buz.Any(v => v.Equals("retailer", StringComparison.OrdinalIgnoreCase));
-                    x.IsServiceProvider = buz.Any(v => v.Equals("serviceprovider", StringComparison.OrdinalIgnoreCase));
-                    x.IsWholesaler = buz.Any(v => v.Equals("wholesaler", StringComparison.OrdinalIgnoreCase));
-                    x.IsManufacture = buz.Any(v => v.Equals("manufacturer", StringComparison.OrdinalIgnoreCase));
-                    x.IsTransporter = buz.Any(v => v.Equals("transporter", StringComparison.OrdinalIgnoreCase));
-                    x.IsComposition = buz.Any(v => v.Equals("composition dealer", StringComparison.OrdinalIgnoreCase));
-                    x.IsBuying = buz.Any(v => v.StartsWith("buying", StringComparison.OrdinalIgnoreCase));
-                    x.IsBrand = buz.Any(v => v.Equals("brand", StringComparison.OrdinalIgnoreCase));
-                    x.IsOther = buz.Any(v => v.Equals("other", StringComparison.OrdinalIgnoreCase));
+                    var businessSegmentSet = new HashSet<string>(buz, StringComparer.OrdinalIgnoreCase);
+                    x.IsRetailer = businessSegmentSet.Contains("retailer");
+                    x.IsServiceProvider = businessSegmentSet.Contains("serviceprovider");
+                    x.IsWholesaler = businessSegmentSet.Contains("wholesaler");
+                    x.IsManufacture = businessSegmentSet.Contains("manufacturer");
+                    x.IsTransporter = businessSegmentSet.Contains("transporter");
+                    x.IsComposition = businessSegmentSet.Contains("composition dealer");
+                    x.IsBuying = businessSegmentSet.Any(v => v.StartsWith("buying"));
+                    x.IsBrand = businessSegmentSet.Contains("brand");
+                    x.IsOther = businessSegmentSet.Contains("other");
                 }
-                if (!string.IsNullOrEmpty(r.ProductCategory) && categories != null && categories.Message.Data != null)
+
+                if (!string.IsNullOrEmpty(r.ProductCategory) && categories is { Message.Data: not null })
                 {
-                    var cats = r.ProductCategory.Split(',');
-                    foreach (var c in cats)
+                    foreach (var c in r.ProductCategory.Split(','))
                     {
-                        var f = categories.Message.Data?.FirstOrDefault(x => x.Name.Equals(c, StringComparison.OrdinalIgnoreCase));
-                        if (f != null)
+                        var category = categories.Message.Data?.FirstOrDefault(z => z.Name.Equals(c, StringComparison.OrdinalIgnoreCase));
+                        if (category != null)
                         {
                             x.ProductCategories.Add(new BuyerProductCategory
                             {
-                                CategoryCode = f.Code,
-                                CategoryName = f.Name,
+                                CategoryCode = category.Code,
+                                CategoryName = category.Name,
                                 IsActive = true
                             });
                         }

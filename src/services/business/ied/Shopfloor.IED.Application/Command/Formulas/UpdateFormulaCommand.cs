@@ -26,7 +26,7 @@ namespace Shopfloor.IED.Application.Command.Formulas
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Formula Not Found.");
+            if (entity == null) return new($"Formula Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

@@ -15,7 +15,7 @@ namespace Shopfloor.Master.Application.Query.OperationLibraries
         public int PageSize { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int? ProcessLibraryId { get; set; }
+        public int? ProcessId { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -45,7 +45,7 @@ namespace Shopfloor.Master.Application.Query.OperationLibraries
                 { 
                     nameof(OperationLibraryParameter.Code), 
                     nameof(OperationLibraryParameter.Name),
-                    nameof(OperationLibraryParameter.ProcessLibraryId)
+                    nameof(OperationLibraryParameter.ProcessId)
                 }.ToList());
             return await _repository.GetModelPagedReponseAsync<OperationLibraryParameter, OperationLibraryModel>(validFilter);
         }

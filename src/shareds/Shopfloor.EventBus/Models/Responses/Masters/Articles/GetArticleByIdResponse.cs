@@ -48,5 +48,10 @@
         public decimal? MinimumOrderQty { get; set; }
         public decimal? RequirementMultiple { get; set; }
         public bool UseForIED { get; set; }
+        public string ServiceCode { get; set; }
+        public string ServiceName { get; set; }
+        public List<WfxArticleBaseColorDto> BaseColorList { get; set; }
+        public List<WfxArticleBaseSizeDto> BaseSizeList { get; set; }
+        public List<WfxArticleFlexFieldDto> FlexFieldList { get; set; }
     }
 }

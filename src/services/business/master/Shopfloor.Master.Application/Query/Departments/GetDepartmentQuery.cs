@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Departments
         public async Task<Response<Department>> Handle(GetDepartmentQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Department Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"Department Not Found (Id: {query.Id}).");
             return new Response<Department>(entity);
         }
     }

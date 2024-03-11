@@ -36,8 +36,9 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 Note = filter.Note,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-            })); ; ;
+            }));
         }
+
         [HttpPost("Import")]
         public async Task<IActionResult> Import(IFormFile file, ImportType importType)
         {
@@ -45,41 +46,60 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         }
 
         [HttpGet("Export")]
-        public async Task<IActionResult> ExportExcel()
+        public async Task<IActionResult> ExportExcel([FromQuery] ExportDataImportDetailParameter request)
         {
-            return await Mediator.Send(new ExportExcelImportDetailsQuery());
+            return await Mediator.Send(new ExportExcelImportDetailsQuery { Ids = request.Ids });
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetImportDetailQuery { Id = id }));
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateImportDetailCommand command)
         {
             if (id != command.Id) return BadRequest();
             return Ok(await Mediator.Send(command));
         }
+
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusImportDetailCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> Put(UpdateStatusImportDetailsCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateImportDetailCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
+
         [HttpDelete("DeleteMulti")]
         public async Task<IActionResult> DeleteMulti(DeleteImportDetailsCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
+
         [HttpPost("UpdateMulti")]
         public async Task<IActionResult> UpdateMulti(UpdateImportDetailsCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteImportDetailCommand { Id = id }));
         }
+
         [HttpPost("Print")]
         public async Task<IActionResult> Print(PrintImportDetailsQuery query)
         {

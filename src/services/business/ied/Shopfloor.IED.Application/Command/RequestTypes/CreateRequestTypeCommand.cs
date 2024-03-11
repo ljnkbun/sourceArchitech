@@ -8,7 +8,6 @@ namespace Shopfloor.IED.Application.Command.RequestTypes
 {
     public class CreateRequestTypeCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
     }
     public class CreateRequestTypeCommandHandler : IRequestHandler<CreateRequestTypeCommand, Response<int>>

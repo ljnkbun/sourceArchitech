@@ -5,6 +5,7 @@ using Shopfloor.Core.Extensions.Services;
 using Shopfloor.Core.Services;
 using Shopfloor.Core.Settings;
 using Shopfloor.IED.Api.Services;
+using Shopfloor.IED.Api.Extensions;
 using Shopfloor.IED.Application.Extensions;
 using Shopfloor.IED.Infrastructure.Contexts;
 using Shopfloor.IED.Infrastructure.Extensions;
@@ -36,7 +37,6 @@ builder.Services.AddApiVersioningExtension();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Services.AddInfrastructure(configuration);
 builder.Services.AddApplication();
-//builder.Services.AddJob();
 builder.Services.AddHealthChecks();
 
 builder.Services.AddCors(options =>
@@ -55,7 +55,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddEventBus(configuration);
+builder.Services.AddEventBus(configuration);
 
 var app = builder.Build();
 

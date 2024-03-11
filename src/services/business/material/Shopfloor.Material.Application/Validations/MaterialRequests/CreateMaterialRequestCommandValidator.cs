@@ -13,6 +13,8 @@ namespace Shopfloor.Material.Application.Validations.MaterialRequests
             _repositoryMaterialRequestDynamicColumn = repositoryMaterialRequestDynamicColumn;
 
             #region Global
+            RuleFor(p => p.HSCode)
+                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
             RuleFor(p => p.ArticleName)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

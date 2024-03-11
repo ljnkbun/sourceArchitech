@@ -131,5 +131,7 @@ namespace Shopfloor.Material.Domain.Entities
         public decimal MaximumOutAmount { get; set; }
 
         public virtual ICollection<SupplierProductCategory> SupplierProductCategories { get; set; }
+
+        public virtual ICollection<SupplierFile> SupplierFiles { get; set; }
     }
 }

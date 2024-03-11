@@ -1,8 +1,10 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shopfloor.Ambassador.Api.Extensions;
 using Shopfloor.Ambassador.Api.Services;
 using Shopfloor.Ambassador.Application.Extensions;
+using Shopfloor.Ambassador.Application.Settings;
 using Shopfloor.Ambassador.Infrastructure.Contexts;
 using Shopfloor.Ambassador.Infrastructure.Extensions;
 using Shopfloor.Ambassador.Infrastructure.SeedDatas;
@@ -10,7 +12,6 @@ using Shopfloor.Cache.Extensions;
 using Shopfloor.Core.Extensions.Services;
 using Shopfloor.Core.Services;
 using Shopfloor.Core.Settings;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddDistributedCache(configuration);
 builder.Services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+builder.Services.Configure<WFXWebSharedAPISetting>(configuration.GetSection("WFXWebSharedAPI"));
 builder.Services.AddSharedInfrastructure();
 builder.Services.AddApiVersioningExtension();
 
@@ -39,8 +41,22 @@ builder.Services.AddInfrastructure(configuration);
 builder.Services.AddApplication();
 builder.Services.AddHealthChecks();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(configurePolicy =>
+    {
+        configurePolicy.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers()
-    .AddJsonOptions(opts => opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        opts.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -54,6 +70,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthorization();
 

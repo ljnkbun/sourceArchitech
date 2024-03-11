@@ -17,6 +17,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 RecipeTaskId = filter.RecipeTaskId,
                 ChemicalCode = filter.ChemicalCode,
                 ChemicalName = filter.ChemicalName,
+                ChemicalSubcategory = filter.ChemicalSubcategory,
                 Unit = filter.Unit,
                 Value = filter.Value,
                 PageSize = filter.PageSize,

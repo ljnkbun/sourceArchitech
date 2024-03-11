@@ -24,7 +24,7 @@ namespace Shopfloor.Master.Application.Command.UOMConversions
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"UOMConversion Not Found.");
+            if (entity == null) return new($"UOMConversion Not Found.");
 
             entity.FromUOMId = command.FromUOMId;
             entity.ToUOMId = command.ToUOMId;

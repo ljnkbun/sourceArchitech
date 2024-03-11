@@ -14,6 +14,7 @@ namespace Shopfloor.Master.Application.Mappings
             CreateMap<Factory, FactoryModel>()
                 .ForMember(dest => dest.DivisionCode, opts => opts.MapFrom(src => src.Divsion.Code))
                 .ForMember(dest => dest.DivisionName, opts => opts.MapFrom(src => src.Divsion.Name))
+                .ForMember(dest => dest.ProcessIds, opts => opts.MapFrom(src => src.PlanningGroupFactories.Select(x => x.PlanningGroup.ProcessId).Distinct()))
                 .ReverseMap();
             CreateMap<CreateFactoryCommand, Factory>();
             CreateMap<GetFactoriesQuery, FactoryParameter>();

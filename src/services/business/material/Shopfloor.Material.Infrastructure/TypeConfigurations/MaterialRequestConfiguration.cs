@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit.Internals;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Shopfloor.Core.EntityConfigurations;
@@ -13,7 +14,7 @@ namespace Shopfloor.Material.Infrastructure.TypeConfigurations
             base.Configure(builder);
 
             builder.Property(e => e.RequestNo).HasColumnType("varchar(50)");
-
+            builder.Property(e => e.HSCode).HasColumnType("varchar(100)");
             builder.Property(e => e.ArticleName).HasMaxLength(500);
 
             builder.Property(e => e.ArticleDesc).HasMaxLength(500);
@@ -125,6 +126,9 @@ namespace Shopfloor.Material.Infrastructure.TypeConfigurations
             builder.Property(e => e.MinimumOrderQty).HasColumnType("decimal(28,8)");
             builder.Property(e => e.ArticleNameChinese).HasColumnType("varchar(200)");
             builder.Property(e => e.FabricAndMaterial).HasColumnType("varchar(200)");
+            builder.Property(e => e.MaterialTypeCode).HasMaxLength(200);
+            builder.Property(e => e.MaterialTypeName).HasMaxLength(500);
+            builder.Property(e => e.ArticleCode).HasMaxLength(200);
         }
     }
 }

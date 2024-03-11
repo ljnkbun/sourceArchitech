@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.IED.Application.Command.RequestArticleOutputs;
 using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
@@ -13,7 +14,7 @@ namespace Shopfloor.IED.Application.Command.RequestDivisionProcesses
         public string ProcessCode { get; set; }
         public string ProcessName { get; set; }
         public int LineNumber { get; set; }
-        public Status Status { get; set; }
+        public ICollection<UpdateRequestArticleOutputCommand> RequestArticleOutputs { get; set; }
     }
     public class UpdateRequestDivisionProcessCommandHandler : IRequestHandler<UpdateRequestDivisionProcessCommand, Response<int>>
     {
@@ -26,13 +27,12 @@ namespace Shopfloor.IED.Application.Command.RequestDivisionProcesses
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"RequestDivisionProcess Not Found.");
+            if (entity == null) return new($"RequestDivisionProcess Not Found.");
 
             entity.ProcessId = command.ProcessId;
             entity.ProcessCode = command.ProcessCode;
             entity.ProcessName = command.ProcessName;
             entity.LineNumber = command.LineNumber;
-            entity.Status = command.Status;
 
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

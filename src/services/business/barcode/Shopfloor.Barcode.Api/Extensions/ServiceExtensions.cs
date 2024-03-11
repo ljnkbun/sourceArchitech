@@ -1,4 +1,6 @@
 ﻿using MassTransit;
+using Shopfloor.Barcode.Api.Consumers.Requests;
+using Shopfloor.EventBus.Definations;
 using Shopfloor.EventBus.Extensions;
 using Shopfloor.EventBus.Models.Requests;
 using System.Security.Authentication;
@@ -34,6 +36,17 @@ namespace Shopfloor.Barcode.Api.Extensions
                 x.AddRequestClient<GetUOMConversionsRequest>();
                 x.AddRequestClient<GetUOMByIdRequest>();
                 x.AddRequestClient<GetWfxPOArticleRequest>();
+                x.AddRequestClient<GetWfxGDIRequest>();
+                x.AddRequestClient<GetWfxGDNRequest>();
+
+                x.AddRequestClient<GetArticlessRequest>();
+                #endregion
+
+                #region AddConsumer
+                x.AddConsumer<GetWfxImportSyncRequestConsumer>();
+                x.AddConsumer<GetWfxExportSyncRequestConsumer>();
+                x.AddConsumer<CreateArticleBarcodeRequestConsumer>();
+                x.AddConsumer<GetArticleBarcodeByBarcodesRequestConsumer>();
                 #endregion
 
                 #region UsingRabbitMq
@@ -82,6 +95,23 @@ namespace Shopfloor.Barcode.Api.Extensions
                         });
                     }
 
+                    // Wfx
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxImportSyncRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxImportSyncRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetWfxExportSyncRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetWfxExportSyncRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.CreateArticleBarcodeRequest, e =>
+                    {
+                        e.ConfigureConsumer<CreateArticleBarcodeRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(RequestQueueName.GetArticleBarcodeByBarcodesRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetArticleBarcodeByBarcodesRequestConsumer>(context);
+                    });
                 });
                 #endregion
             });

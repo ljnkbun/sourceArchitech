@@ -34,7 +34,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBMaterialColors
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"DyeingTBMaterialColor Not Found.");
+            if (entity == null) return new($"DyeingTBMaterialColor Not Found.");
 
             entity.Color = command.Color;
             entity.Pantone = command.Pantone;

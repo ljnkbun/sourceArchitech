@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Command.DCTemplateTasks
         public async Task<Response<int>> Handle(DeleteDCTemplateTaskCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"DCTemplateTask Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"DCTemplateTask Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

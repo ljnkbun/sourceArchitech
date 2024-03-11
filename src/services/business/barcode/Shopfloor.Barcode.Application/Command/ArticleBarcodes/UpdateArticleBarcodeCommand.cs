@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
@@ -14,7 +13,6 @@ namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
         public decimal? Quantity { get; set; }
         public decimal? RemainQuantity { get; set; }
         public string UOM { get; set; }
-        public string Unit { get; set; }
         public string Shade { get; set; }
         public string OC { get; set; }
         public string Color { get; set; }
@@ -35,13 +33,13 @@ namespace Shopfloor.Barcode.Application.Command.ArticleBarcodes
         }
         public async Task<Response<int>> Handle(UpdateArticleBarcodeCommand command, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(command.Id) ?? throw new ApiException($"ArticleBarcode Not Found.");
+            var entity = await _repository.GetByIdAsync(command.Id);
+            if (entity == null) return new($"ArticleBarcode Not Found.");
             entity.Barcode = command.Barcode;
             entity.ArticleName = command.ArticleName;
             entity.ArticleCode = command.ArticleCode;
             entity.Quantity = command.Quantity;
             entity.RemainQuantity = command.RemainQuantity;
-            entity.Unit = command.Unit;
             entity.Shade = command.Shade;
             entity.OC = command.OC;
             entity.Color = command.Color;

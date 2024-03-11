@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.SpinningProcesses
         public async Task<Response<int>> Handle(DeleteSpinningProcessCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"SpinningProcess Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"SpinningProcess Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

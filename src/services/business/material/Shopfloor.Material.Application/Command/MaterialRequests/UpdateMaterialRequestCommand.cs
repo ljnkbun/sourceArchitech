@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-
 using MediatR;
-
-using Shopfloor.Core.Exceptions;
+using NPOI.OpenXmlFormats.Dml;
+using Shopfloor.Core.Extensions.Objects;
 using Shopfloor.Core.Models.Entities;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Material.Application.Models.FabricCompositions;
@@ -15,9 +14,10 @@ using Shopfloor.Material.Domain.Interfaces;
 
 namespace Shopfloor.Material.Application.Command.MaterialRequests
 {
-    public class UpdateMaterialRequestCommand : IRequest<Response<int>>
+    public class UpdateMaterialRequestCommand : IRequest<Response<bool>>
     {
         public int Id { get; set; }
+        public string HSCode { get; set; }
 
         public string ProductCatCode { get; set; }
 
@@ -228,228 +228,132 @@ namespace Shopfloor.Material.Application.Command.MaterialRequests
         public ICollection<MaterialRequestDynamicColumnModel> DynamicColumns { get; set; }
     }
 
-    public class UpdateMaterialRequestCommandHandler : IRequestHandler<UpdateMaterialRequestCommand, Response<int>>
+    public class UpdateMaterialRequestCommandHandler : IRequestHandler<UpdateMaterialRequestCommand, Response<bool>>
     {
         private readonly IMaterialRequestRepository _repositoryMaterial;
-
-        private readonly IMOQMSQRoudingOptionItemRepository _repositoryMoqmsqRoudingOptionItem;
-
-        private readonly IFabricCompositionRepository _repositoryFabricComposition;
-
-        private readonly ISupplierWisePurchaseOptionRepository _repositorySupplierWisePurchaseOption;
 
         private readonly IMapper _mapper;
 
         public UpdateMaterialRequestCommandHandler(IMaterialRequestRepository repositoryMaterial,
-            IMapper mapper,
-            IMOQMSQRoudingOptionItemRepository repositoryMoqmsqRoudingOptionItem,
-            IFabricCompositionRepository repositoryFabricComposition,
-            ISupplierWisePurchaseOptionRepository repositorySupplierWisePurchaseOption)
+            IMapper mapper)
         {
             _repositoryMaterial = repositoryMaterial;
             _mapper = mapper;
-            _repositoryMoqmsqRoudingOptionItem = repositoryMoqmsqRoudingOptionItem;
-            _repositoryFabricComposition = repositoryFabricComposition;
-            _repositorySupplierWisePurchaseOption = repositorySupplierWisePurchaseOption;
         }
 
-        public async Task<Response<int>> Handle(UpdateMaterialRequestCommand command, CancellationToken cancellationToken)
+        public async Task<Response<bool>> Handle(UpdateMaterialRequestCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repositoryMaterial.GetWithIncludeByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"MaterialRequest Not Found.");
-            var dataMaterialRequest = _mapper.Map<MaterialRequest>(command);
-            entity.MaterialTypeCode = dataMaterialRequest.MaterialTypeCode;
-            entity.MaterialTypeName = dataMaterialRequest.MaterialTypeName;
-            entity.ArticleCode = dataMaterialRequest.ArticleCode;
-            entity.ArticleName = dataMaterialRequest.ArticleName;
-            entity.PicName = dataMaterialRequest.PicName;
-            entity.ArticleDesc = dataMaterialRequest.ArticleDesc;
-            entity.BuyingPrice = dataMaterialRequest.BuyingPrice;
-            entity.BuyerRef = dataMaterialRequest.BuyerRef;
-            entity.SupplierRef = dataMaterialRequest.SupplierRef;
-            entity.OrderQtyMultiple = dataMaterialRequest.OrderQtyMultiple;
-            entity.ProvisionalStyleRef = dataMaterialRequest.ProvisionalStyleRef;
-            entity.SampleRef = dataMaterialRequest.SampleRef;
-            entity.ReorderLevel = dataMaterialRequest.ReorderLevel;
-            entity.Remarks = dataMaterialRequest.Remarks;
-            entity.ContentName = dataMaterialRequest.ContentName;
-            entity.SecondaryUomConversion = dataMaterialRequest.SecondaryUomConversion;
-            entity.StockMovementConversion = dataMaterialRequest.StockMovementConversion;
-            entity.Brand = dataMaterialRequest.Brand;
-            entity.BuyerCode = dataMaterialRequest.BuyerCode;
-            entity.BuyerDivisionSupplierCode = dataMaterialRequest.BuyerDivisionSupplierCode;
-            entity.BuyingCurrencyCode = dataMaterialRequest.BuyingCurrencyCode;
-            entity.ColorGroupCode = dataMaterialRequest.ColorGroupCode;
-            entity.ColorTypeCode = dataMaterialRequest.ColorTypeCode;
-            entity.ConsUomCode = dataMaterialRequest.ConsUomCode;
-            entity.ConstructionCode = dataMaterialRequest.ConstructionCode;
-            entity.CountCode = dataMaterialRequest.CountCode;
-            entity.CropSeasonCode = dataMaterialRequest.CropSeasonCode;
-            entity.DivisionCode = dataMaterialRequest.DivisionCode;
-            entity.FiberTypeCode = dataMaterialRequest.FiberTypeCode;
-            entity.GenderCode = dataMaterialRequest.GenderCode;
-            entity.GradeCode = dataMaterialRequest.GradeCode;
-            entity.MicronaireCode = dataMaterialRequest.MicronaireCode;
-            entity.OriginCode = dataMaterialRequest.OriginCode;
-            entity.OurContactCode = dataMaterialRequest.OurContactCode;
-            entity.PerSizeConsCode = dataMaterialRequest.PerSizeConsCode;
-            entity.PricePerCode = dataMaterialRequest.PricePerCode;
-            entity.ProductCatCode = dataMaterialRequest.ProductCatCode;
-            entity.ProductGroupCode = dataMaterialRequest.ProductGroupCode;
-            entity.ProductSubCatCode = dataMaterialRequest.ProductSubCatCode;
-            entity.QualityCode = dataMaterialRequest.QualityCode;
-            entity.SeasonCode = dataMaterialRequest.SeasonCode;
-            entity.SecondaryUomCode = dataMaterialRequest.SecondaryUomCode;
-            entity.StapleCode = dataMaterialRequest.StapleCode;
-            entity.SizeGroupCode = dataMaterialRequest.SizeGroupCode;
-            entity.StockMovementUomCode = dataMaterialRequest.StockMovementUomCode;
-            entity.StoringUomCode = dataMaterialRequest.StoringUomCode;
-            entity.StrengthCode = dataMaterialRequest.StrengthCode;
-            entity.SupplierCode = dataMaterialRequest.SupplierCode;
-            entity.ThemeCode = dataMaterialRequest.ThemeCode;
-            entity.UomCode = dataMaterialRequest.UomCode;
-            entity.BuyerName = dataMaterialRequest.BuyerName;
-            entity.BuyerDivisionSupplierName = dataMaterialRequest.BuyerDivisionSupplierName;
-            entity.BuyingCurrencyName = dataMaterialRequest.BuyingCurrencyName;
-            entity.ColorGroupName = dataMaterialRequest.ColorGroupName;
-            entity.ColorTypeName = dataMaterialRequest.ColorTypeName;
-            entity.ConsUomName = dataMaterialRequest.ConsUomName;
-            entity.ConstructionName = dataMaterialRequest.ConstructionName;
-            entity.CountName = dataMaterialRequest.CountName;
-            entity.CropSeasonName = dataMaterialRequest.CropSeasonName;
-            entity.DivisionName = dataMaterialRequest.DivisionName;
-            entity.FiberTypeName = dataMaterialRequest.FiberTypeName;
-            entity.GenderName = dataMaterialRequest.GenderName;
-            entity.GradeName = dataMaterialRequest.GradeName;
-            entity.MicronaireName = dataMaterialRequest.MicronaireName;
-            entity.OriginName = dataMaterialRequest.OriginName;
-            entity.OurContactName = dataMaterialRequest.OurContactName;
-            entity.PerSizeConsName = dataMaterialRequest.PerSizeConsName;
-            entity.PricePerName = dataMaterialRequest.PricePerName;
-            entity.ProductCatName = dataMaterialRequest.ProductCatName;
-            entity.ProductGroupName = dataMaterialRequest.ProductGroupName;
-            entity.ProductSubCatName = dataMaterialRequest.ProductSubCatName;
-            entity.QualityName = dataMaterialRequest.QualityName;
-            entity.SeasonName = dataMaterialRequest.SeasonName;
-            entity.StapleName = dataMaterialRequest.StapleName;
-            entity.SizeGroupName = dataMaterialRequest.SizeGroupName;
-            entity.StockMovementUomName = dataMaterialRequest.StockMovementUomName;
-            entity.StoringUomName = dataMaterialRequest.StoringUomName;
-            entity.StrengthName = dataMaterialRequest.StrengthName;
-            entity.SupplierName = dataMaterialRequest.SupplierName;
-            entity.ThemeName = dataMaterialRequest.ThemeName;
-            entity.UomName = dataMaterialRequest.UomName;
-            entity.MinimumOrder = dataMaterialRequest.MinimumOrder;
-            entity.CatalogPath = dataMaterialRequest.CatalogPath;
-            entity.DesignAndPattern = dataMaterialRequest.DesignAndPattern;
-            entity.DesignAndPatternName = dataMaterialRequest.DesignAndPatternName;
-            entity.InternalPrice = dataMaterialRequest.InternalPrice;
-            entity.Finish = dataMaterialRequest.Finish;
-            entity.HSNCode = dataMaterialRequest.HSNCode;
-            entity.MinimumQty = dataMaterialRequest.MinimumQty;
-            entity.MaximumQty = dataMaterialRequest.MaximumQty;
-            entity.MinimumOrderQty = dataMaterialRequest.MinimumOrderQty;
-            entity.RequirementMultiple = dataMaterialRequest.RequirementMultiple;
-            entity.HTSCode = dataMaterialRequest.HTSCode;
-            entity.Weight = dataMaterialRequest.Weight;
-            entity.FabricAndMaterial = dataMaterialRequest.FabricAndMaterial;
-            entity.ArticleNameChinese = dataMaterialRequest.ArticleNameChinese;
-
-            #region MoqmsqRoudingOptionItems
-
-            // lay ra Entities can add them
-            var addEntitiesMoqmsqRoudingOptionItems =
-                dataMaterialRequest.MoqmsqRoudingOptionItems.Where(x => x.Id == 0).ToList();
-
-            // lấy ra Entities cần update
-            var updateEntitiesMoqmsqRoudingOptionItems =
-                dataMaterialRequest.MoqmsqRoudingOptionItems.Where(x => x.Id != 0).ToList();
-
-            // lấy ra Entities cần remove
-            var deleteEntitiesMoqmsqRoudingOptionItems =
-                entity.MoqmsqRoudingOptionItems
-                    .Where(x => !updateEntitiesMoqmsqRoudingOptionItems.Any() || updateEntitiesMoqmsqRoudingOptionItems.Any(y => y.Id != x.Id))
-                    .ToList();
-
-            #endregion MoqmsqRoudingOptionItems
-
-            #region SupplierWisePurchaseOptions
-
-            // lay ra Entities can add them
-            var addEntitiesSupplierWisePurchaseOptions =
-                dataMaterialRequest.SupplierWisePurchaseOptions.Where(x => x.Id == 0).ToList();
-
-            // lấy ra Entities cần update
-            var updateEntitiesSupplierWisePurchaseOptions =
-                dataMaterialRequest.SupplierWisePurchaseOptions.Where(x => x.Id != 0).ToList();
-
-            // lấy ra Entities cần remove
-            var deleteEntitiesSupplierWisePurchaseOptions =
-                entity.SupplierWisePurchaseOptions.Where(x => !updateEntitiesSupplierWisePurchaseOptions.Any() || updateEntitiesSupplierWisePurchaseOptions.Any(y => y.Id != x.Id)).ToList();
-
-            #endregion SupplierWisePurchaseOptions
-
-            #region FabricCompositions
-
-            // lay ra Entities can add them
-            var addEntitiesFabricCompositions =
-                dataMaterialRequest.FabricCompositions.Where(x => x.Id == 0).ToList();
-
-            // lấy ra Entities cần update
-            var updateEntitiesFabricCompositions =
-                dataMaterialRequest.FabricCompositions.Where(x => x.Id != 0).ToList();
-
-            // lấy ra Entities cần remove
-            var deleteEntitiesFabricCompositions =
-                entity.FabricCompositions.Where(x => !updateEntitiesFabricCompositions.Any() || updateEntitiesFabricCompositions.Any(y => y.Id != x.Id)).ToList();
-
-            #endregion FabricCompositions
-
-            #region DynamicColumns
-
-            // lay ra Entities can add them
-            var addEntitiesMaterialRequestDynamicColumns =
-                dataMaterialRequest.DynamicColumns.Where(x => x.Id == 0).ToList();
-
-            // lấy ra Entities cần update
-            var updateEntitiesMaterialRequestDynamicColumns =
-                dataMaterialRequest.DynamicColumns.Where(x => x.Id != 0).ToList();
-
-            // lấy ra Entities cần remove
-            var deleteEntitiesMaterialRequestDynamicColumns =
-                entity.DynamicColumns
-                    .Where(x => !updateEntitiesMaterialRequestDynamicColumns.Any() || updateEntitiesMaterialRequestDynamicColumns.Any(y => y.Id != x.Id))
-                    .ToList();
-
-            #endregion DynamicColumns
-
-            entity.MoqmsqRoudingOptionItems = updateEntitiesMoqmsqRoudingOptionItems;
-            entity.SupplierWisePurchaseOptions = updateEntitiesSupplierWisePurchaseOptions;
-            entity.FabricCompositions = updateEntitiesFabricCompositions;
-            entity.DynamicColumns = updateEntitiesMaterialRequestDynamicColumns;
-
-            await _repositoryMaterial.UpdateMaterialRequestAsync(entity, new BaseListCreateDeleteEntity<MOQMSQRoudingOptionItem>
+                return new($"MaterialRequest Not Found.");
+            var ignores = new[]
             {
-                LstDataAdd = addEntitiesMoqmsqRoudingOptionItems,
-                LstDataDelete = deleteEntitiesMoqmsqRoudingOptionItems
-            }, new BaseListCreateDeleteEntity<SupplierWisePurchaseOption>
+                nameof(MaterialRequest.Id),
+                nameof(MaterialRequest.CreatedDate),
+                nameof(MaterialRequest.CreatedUserId),
+                nameof(MaterialRequest.SupplierWisePurchaseOptions),
+                nameof(MaterialRequest.MoqmsqRoudingOptionItems),
+                nameof(MaterialRequest.FabricCompositions),
+                nameof(MaterialRequest.DynamicColumns),
+            };
+            command.TransferProperties(entity, ignores);
+            var dbSupplierWisePurchaseOptions = entity.SupplierWisePurchaseOptions;
+            var dbMoqmsqRoudingOptionItems = entity.MoqmsqRoudingOptionItems;
+            var dbFabricCompositions = entity.FabricCompositions;
+            var dbMaterialRequestDynamicColumns = entity.DynamicColumns;
+            entity.SupplierWisePurchaseOptions = null;
+            entity.MoqmsqRoudingOptionItems = null;
+            entity.FabricCompositions = null;
+            entity.DynamicColumns = null;
+
+            #region SupplierWisePurchaseOption
+            IEnumerable<SupplierWisePurchaseOption> dbSupplierWisePurchaseOptionModifieds = new List<SupplierWisePurchaseOption>();
+            IEnumerable<SupplierWisePurchaseOption> newSupplierWisePurchaseOptionAddeds = new List<SupplierWisePurchaseOption>();
+            IEnumerable<SupplierWisePurchaseOption> dbSupplierWisePurchaseOptionDeletes = new List<SupplierWisePurchaseOption>();
+            if (command.SupplierWisePurchaseOptions != null)
             {
-                LstDataAdd = addEntitiesSupplierWisePurchaseOptions,
-                LstDataDelete = deleteEntitiesSupplierWisePurchaseOptions
+                dbSupplierWisePurchaseOptionModifieds = dbSupplierWisePurchaseOptions.Where(x => command.SupplierWisePurchaseOptions.Any(y => y.Id == x.Id)).Select(x => _mapper.Map(command.SupplierWisePurchaseOptions.First(c => c.Id == x.Id), x));
+
+                newSupplierWisePurchaseOptionAddeds = command.SupplierWisePurchaseOptions.Where(x => x.Id == 0)
+                    .Select(x =>
+                    {
+                        var test = _mapper.Map<SupplierWisePurchaseOption>(x);
+                        return test;
+                    });
+
+                dbSupplierWisePurchaseOptionDeletes =
+                    dbSupplierWisePurchaseOptions.Where(x => dbSupplierWisePurchaseOptionModifieds.All(y => y.Id != x.Id));
+            }
+
+            #endregion SupplierWisePurchaseOption
+
+            #region MoqmsqRoudingOptionItem
+            IEnumerable<MOQMSQRoudingOptionItem> dbMoqmsqRoudingOptionItemModifieds = new List<MOQMSQRoudingOptionItem>();
+            IEnumerable<MOQMSQRoudingOptionItem> newMoqmsqRoudingOptionItemAddeds = new List<MOQMSQRoudingOptionItem>();
+            IEnumerable<MOQMSQRoudingOptionItem> dbMoqmsqRoudingOptionItemDeletes = new List<MOQMSQRoudingOptionItem>();
+            if (command.MoqmsqRoudingOptionItems != null)
+            {
+                dbMoqmsqRoudingOptionItemModifieds = dbMoqmsqRoudingOptionItems.Where(x => command.MoqmsqRoudingOptionItems.Any(y => y.Id == x.Id)).Select(x => _mapper.Map(command.MoqmsqRoudingOptionItems.First(c => c.Id == x.Id), x));
+
+                newMoqmsqRoudingOptionItemAddeds = command.MoqmsqRoudingOptionItems.Where(x => x.Id == 0)
+                    .Select(x => _mapper.Map<MOQMSQRoudingOptionItem>(x));
+
+                dbMoqmsqRoudingOptionItemDeletes =
+                    dbMoqmsqRoudingOptionItems.Where(x => dbMoqmsqRoudingOptionItemModifieds.All(y => y.Id != x.Id));
+            }
+          
+
+            #endregion MoqmsqRoudingOptionItem
+
+            #region FabricComposition
+
+            var dbFabricCompositionModifieds = dbFabricCompositions.Where(x => command.FabricCompositions.Any(y => y.Id == x.Id)).Select(x => _mapper.Map(command.FabricCompositions.First(c => c.Id == x.Id), x));
+
+            var newFabricCompositionAddeds = command.FabricCompositions.Where(x => x.Id == 0)
+                .Select(x => _mapper.Map<FabricComposition>(x));
+
+            var dbFabricCompositionDeletes =
+                dbFabricCompositions.Where(x => dbFabricCompositionModifieds.All(y => y.Id != x.Id));
+
+            #endregion FabricComposition
+
+            #region DynamicColumn
+
+            var dbMaterialRequestDynamicColumnModifieds = dbMaterialRequestDynamicColumns.Where(x => command.DynamicColumns.Any(y => y.Id == x.Id)).Select(x => _mapper.Map(command.DynamicColumns.First(c => c.Id == x.Id), x));
+
+            var newMaterialRequestDynamicColumnAddeds = command.DynamicColumns.Where(x => x.Id == 0)
+                .Select(x => _mapper.Map<MaterialRequestDynamicColumn>(x));
+
+            var dbMaterialRequestDynamicColumnDeletes =
+                dbMaterialRequestDynamicColumns.Where(x => dbMaterialRequestDynamicColumnModifieds.All(y => y.Id != x.Id));
+
+            #endregion DynamicColumn
+
+            bool result = await _repositoryMaterial.UpdateMaterialRequestAsync(entity, new BaseUpdateEntity<MOQMSQRoudingOptionItem>
+            {
+                LstDataUpdate = dbMoqmsqRoudingOptionItemModifieds,
+                LstDataAdd = newMoqmsqRoudingOptionItemAddeds,
+                LstDataDelete = dbMoqmsqRoudingOptionItemDeletes
+            }, new BaseUpdateEntity<SupplierWisePurchaseOption>
+            {
+                LstDataUpdate = dbSupplierWisePurchaseOptionModifieds,
+                LstDataAdd = newSupplierWisePurchaseOptionAddeds,
+                LstDataDelete = dbSupplierWisePurchaseOptionDeletes
             },
-            new BaseListCreateDeleteEntity<FabricComposition>
+            new BaseUpdateEntity<FabricComposition>
             {
-                LstDataAdd = addEntitiesFabricCompositions,
-                LstDataDelete = deleteEntitiesFabricCompositions
+                LstDataUpdate = dbFabricCompositionModifieds,
+                LstDataAdd = newFabricCompositionAddeds,
+                LstDataDelete = dbFabricCompositionDeletes
             },
-            new BaseListCreateDeleteEntity<MaterialRequestDynamicColumn>
+            new BaseUpdateEntity<MaterialRequestDynamicColumn>
             {
-                LstDataAdd = addEntitiesMaterialRequestDynamicColumns,
-                LstDataDelete = deleteEntitiesMaterialRequestDynamicColumns
+                LstDataUpdate = dbMaterialRequestDynamicColumnModifieds,
+                LstDataAdd = newMaterialRequestDynamicColumnAddeds,
+                LstDataDelete = dbMaterialRequestDynamicColumnDeletes
             });
 
-            return new Response<int>(command.Id);
+            return new Response<bool>(result);
         }
     }
 }

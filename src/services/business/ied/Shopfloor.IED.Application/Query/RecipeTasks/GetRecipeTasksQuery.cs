@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.RecipeTasks;
 using Shopfloor.IED.Application.Parameters.RecipeTasks;
@@ -8,17 +7,31 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.RecipeTasks
 {
-    public class GetRecipeTasksQuery : IRequest<PagedResponse<IReadOnlyList<RecipeTaskModel>>>, ICacheableMediatrQuery
+    public class GetRecipeTasksQuery : IRequest<PagedResponse<IReadOnlyList<RecipeTaskModel>>>
     {
         public int? RecipeId { get; set; }
 
-        public string DyeingOpreation { get; set; }
+        public int? DyeingProcessId { get; set; }
 
-        public string MachineType { get; set; }
+        public string DyeingProcessName { get; set; }
 
-        public int? Minutes { get; set; }
+        public int? DyeingOperationId { get; set; }
+
+        public string? DyeingOperationName { get; set; }
+
+        public string DyeingProcessCode { get; set; }
+
+        public string DyeingOperationCode { get; set; }
+
+        public string MachineCode { get; set; }
+
+        public string MachineName { get; set; }
+
+        public decimal? Time { get; set; }
 
         public decimal? Temperature { get; set; }
+
+        public decimal? Ratio { get; set; }
 
         #region Base Properties
 
@@ -31,9 +44,6 @@ namespace Shopfloor.IED.Application.Query.RecipeTasks
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"RecipeTasks";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

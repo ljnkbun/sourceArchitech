@@ -1,20 +1,23 @@
-﻿using Shopfloor.Core.Models.Entities;
-using Shopfloor.IED.Domain.Enums;
-
-namespace Shopfloor.IED.Domain.Entities
+﻿namespace Shopfloor.IED.Domain.Entities
 {
-    public class WeavingIED : BaseEntity
+    public class WeavingIED : DivisionIED
     {
         public WeavingIED()
         {
-            WeavingArticles = new HashSet<WeavingArticle>();
+            WeavingRoutings = new HashSet<WeavingRouting>();
+            WeavingYarns = new HashSet<WeavingYarn>();
+            WeavingDetailStructures = new HashSet<WeavingDetailStructure>();
+            WeavingFiles = new HashSet<WeavingFile>();
         }
-        public int RequestDivisionId { get; set; }
-        public string RequestNo { get; set; }
-        public string Comment { get; set; }
-        public Status Status { get; set; }
-        public bool Deleted { get; set; }
-        public virtual RequestDivision RequestDivision { get; set; }
-        public virtual ICollection<WeavingArticle> WeavingArticles { get; set; }
+        public int? RequestTypeId { get; set; }
+        public virtual RequestArticleOutput RequestArticleOutput { get; set; }
+        public virtual RequestType RequestType { get; set; }
+        public virtual ICollection<WeavingRouting> WeavingRoutings { get; set; }
+        public virtual ICollection<WeavingYarn> WeavingYarns { get; set; }
+        public virtual WeavingRappo WeavingRappo { get; set; }
+        public virtual WeavingRusticFabricSpec WeavingRusticFabricSpec { get; set; }
+        public virtual ICollection<WeavingDetailStructure> WeavingDetailStructures { get; set; }
+        public virtual WeavingReportSetting WeavingReportSetting { get; set; }
+        public virtual ICollection<WeavingFile> WeavingFiles { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace Shopfloor.Master.Api.Controllers.v1
                 ByPassPriceList = filter.ByPassPriceList,
                 DefaultInactiveIndent = filter.DefaultInactiveIndent,
                 ProductGroupId = filter.ProductGroupId,
+                ProductGroupName = filter.ProductGroupName,
                 IsActive = filter.IsActive,
                 BypassCache = filter.BypassCache,
                 SlidingExpiration = filter.SlidingExpiration
@@ -63,6 +64,11 @@ namespace Shopfloor.Master.Api.Controllers.v1
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteSubCategoryCommand { Id = id }));
+        }
+        [HttpGet("wfxsync")]
+        public async Task<IActionResult> WfxSync()
+        {
+            return Ok(await Mediator.Send(new WfxSyncDataCommand()));
         }
     }
 }

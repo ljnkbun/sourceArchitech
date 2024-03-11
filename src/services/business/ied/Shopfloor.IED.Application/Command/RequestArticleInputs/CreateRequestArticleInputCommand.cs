@@ -9,7 +9,7 @@ namespace Shopfloor.IED.Application.Command.RequestArticleInputs
     public class CreateRequestArticleInputCommand : IRequest<Response<int>>
     {
         public int RequestArticleOutputId { get; set; }
-        public int ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
     }

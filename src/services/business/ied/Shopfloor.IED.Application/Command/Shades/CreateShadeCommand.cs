@@ -8,7 +8,6 @@ namespace Shopfloor.IED.Application.Command.Shades
 {
     public class CreateShadeCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
     }
     public class CreateShadeCommandHandler : IRequestHandler<CreateShadeCommand, Response<int>>

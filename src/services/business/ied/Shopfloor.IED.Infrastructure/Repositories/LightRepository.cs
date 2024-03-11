@@ -6,7 +6,7 @@ using Shopfloor.IED.Infrastructure.Contexts;
 
 namespace Shopfloor.IED.Infrastructure.Repositories
 {
-    public class LightRepository : MasterRepositoryAsync<Light>, ILightRepository
+    public class LightRepository : NameRepositoryAsync<Light>, ILightRepository
     {
         public LightRepository(IEDContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {

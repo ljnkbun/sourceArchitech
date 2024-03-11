@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.AccountGroups
         public async Task<Response<AccountGroup>> Handle(GetAccountGroupQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"AccountGroup Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"AccountGroup Not Found (Id:{query.Id}).");
             return new Response<AccountGroup>(entity);
         }
     }

@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.PaymentTerms
         public async Task<Response<PaymentTerm>> Handle(GetPaymentTermQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"PaymentTerm Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"PaymentTerm Not Found (Id:{query.Id}).");
             return new Response<PaymentTerm>(entity);
         }
     }

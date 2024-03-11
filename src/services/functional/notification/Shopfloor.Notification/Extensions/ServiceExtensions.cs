@@ -14,6 +14,13 @@ namespace Shopfloor.Notification.Extensions
             {
                 #region AddConsumer
                 x.AddConsumer<ChatMessageConsumer>();
+
+                x.AddConsumer<UpdateStatusImportsConsumer>();
+                x.AddConsumer<UpdateStatusImportArticlesConsumer>();
+                x.AddConsumer<UpdateStatusImportDetailsConsumer>();
+                x.AddConsumer<UpdateStatusExportsConsumer>();
+                x.AddConsumer<UpdateStatusExportArticlesConsumer>();
+                x.AddConsumer<UpdateStatusExportDetailsConsumer>();
                 #endregion
 
                 #region UsingRabbitMq
@@ -65,6 +72,31 @@ namespace Shopfloor.Notification.Extensions
                     cfg.ReceiveEndpoint(MessageQueueName.ChatMessage, e =>
                     {
                         e.ConfigureConsumer<ChatMessageConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusImportsMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusImportsConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusImportArticlesMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusImportArticlesConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusImportDetailsMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusImportDetailsConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusExportsMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusExportsConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusExportArticlesMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusExportArticlesConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint(MessageQueueName.UpdateStatusExportDetailsMessage, e =>
+                    {
+                        e.ConfigureConsumer<UpdateStatusExportDetailsConsumer>(context);
                     });
                 });
                 #endregion

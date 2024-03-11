@@ -22,6 +22,26 @@ namespace Shopfloor.Master.Infrastructure.Repositories
                 .Include(r => r.FlexFieldList)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
+        public async Task<List<Article>> GetArticlesByIdsAsync(List<int> ids)
+        {
+            return await _dbContext.Set<Article>()
+                .Include(r => r.BaseColorList)
+                .Include(r => r.BaseSizeList)
+                .Include(r => r.FlexFieldList)
+                .Where(r => ids.Contains(r.WFXArticleId))
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<Article>> GetByArticleCodeAsync(ICollection<string> articleCode)
+        {
+            return await _dbContext.Set<Article>()
+                .Include(r => r.BaseColorList)
+                .Include(r => r.BaseSizeList)
+                .Include(r => r.FlexFieldList)
+                .Where(r => r.ArticleCode != null && articleCode.Contains(r.ArticleCode))
+                .ToListAsync();
+        }
+
         public async Task<Article> GetArticleByWFXIdAsync(int wfxId)
         {
             return await _dbContext.Set<Article>()
@@ -38,7 +58,7 @@ namespace Shopfloor.Master.Infrastructure.Repositories
                 .Include(r => r.FlexFieldList)
                 .FirstOrDefaultAsync(r => r.ArticleCode.Equals(code));
         }
-        public async Task<bool> UpdateArticlesAsync(List<Article> articles,
+        public async Task<bool> UpdateArticlesAsync(List<Article> updateList,
           List<ArticleBaseColor> deleteArticleBaseColors,
           List<ArticleBaseSize> deleteArticleBaseSizes,
           List<ArticleFlexField> deleteArticleFlexFields)
@@ -57,7 +77,7 @@ namespace Shopfloor.Master.Infrastructure.Repositories
                     if (deleteArticleFlexFields != null && deleteArticleFlexFields.Count > 0)
                         _dbContext.Set<ArticleFlexField>().RemoveRange(deleteArticleFlexFields);
 
-                    _dbContext.Set<Article>().UpdateRange(articles);
+                    _dbContext.Set<Article>().UpdateRange(updateList);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }

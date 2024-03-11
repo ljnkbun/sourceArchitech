@@ -21,6 +21,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 WeavingRappoId = filter.WeavingRappoId,
+                SlotIndex = filter.SlotIndex,
                 RowIndex = filter.RowIndex,
                 ColumnIndex = filter.ColumnIndex,
                 LoopIndex = filter.LoopIndex,
@@ -30,9 +31,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

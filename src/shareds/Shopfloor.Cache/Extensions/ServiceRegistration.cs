@@ -9,15 +9,15 @@ namespace Shopfloor.Cache.Extensions
     {
         public static void AddDistributedCache(this IServiceCollection services, IConfiguration configuration)
         {
-            _ = bool.TryParse(configuration["CacheSettings:IsMemory"], out bool isMemory);
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                _ = bool.TryParse(configuration["CacheSettings:IsMemory"], out bool isMemory);
 
-            if (isMemory)
-            {
-                services.AddDistributedMemoryCache();
-            }
-            else
-            {
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                if (isMemory)
+                {
+                    services.AddDistributedMemoryCache();
+                }
+                else
                 {
                     _ = bool.TryParse(configuration["RedisSettings:SSL"], out bool ssl);
                     var configurationOptions = new ConfigurationOptions
@@ -27,16 +27,16 @@ namespace Shopfloor.Cache.Extensions
                     };
                     services.AddStackExchangeRedisCache(options => options.ConfigurationOptions = configurationOptions);
                 }
-                else
+            }
+            else
+            {
+                _ = bool.TryParse(Environment.GetEnvironmentVariable("RedisSettings_SSL"), out bool ssl);
+                var configurationOptions = new ConfigurationOptions
                 {
-                    _ = bool.TryParse(Environment.GetEnvironmentVariable("RedisSettings_SSL"), out bool ssl);
-                    var configurationOptions = new ConfigurationOptions
-                    {
-                        EndPoints = { Environment.GetEnvironmentVariable("RedisSettings_Uri") },
-                        Ssl = ssl,
-                    };
-                    services.AddStackExchangeRedisCache(options => options.ConfigurationOptions = configurationOptions);
-                }
+                    EndPoints = { Environment.GetEnvironmentVariable("RedisSettings_Uri") },
+                    Ssl = ssl,
+                };
+                services.AddStackExchangeRedisCache(options => options.ConfigurationOptions = configurationOptions);
             }
 
             services.AddTransient<ICachingService, CachingService>();

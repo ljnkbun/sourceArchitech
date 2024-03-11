@@ -3,7 +3,7 @@ using Shopfloor.IED.Domain.Entities;
 
 namespace Shopfloor.IED.Domain.Interfaces
 {
-    public interface IWeavingBorderStyleRepository : IMasterRepositoryAsync<WeavingBorderStyle>
+    public interface IWeavingBorderStyleRepository : INameRepositoryAsync<WeavingBorderStyle>
     {
     }
 }

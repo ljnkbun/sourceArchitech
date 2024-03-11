@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shopfloor.Core.Behaviours;
+using Shopfloor.Planning.Application.Jobs;
 using System.Reflection;
 
 namespace Shopfloor.Planning.Application.Extensions
@@ -15,6 +16,11 @@ namespace Shopfloor.Planning.Application.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+        }
+    
+        public static void AddJob(this IServiceCollection services)
+        {
+            services.AddHostedService<SyncPorDataJob>();
         }
     }
 }

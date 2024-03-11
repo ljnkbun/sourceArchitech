@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.GroupNames
         public async Task<Response<GroupName>> Handle(GetGroupNameQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"GroupName Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"GroupName Not Found (Id:{query.Id}).");
             return new Response<GroupName>(entity);
         }
     }

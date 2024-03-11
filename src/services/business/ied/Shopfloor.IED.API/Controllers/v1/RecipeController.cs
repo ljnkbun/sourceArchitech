@@ -2,6 +2,7 @@
 using Shopfloor.IED.Application.Command.Recipes;
 using Shopfloor.IED.Application.Parameters.Recipes;
 using Shopfloor.IED.Application.Query.Recipes;
+using Shopfloor.IED.Application.Query.RecipeSyncWFXs;
 
 namespace Shopfloor.IED.Api.Controllers.v1
 {
@@ -14,12 +15,12 @@ namespace Shopfloor.IED.Api.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetRecipesQuery()
             {
-                DyeingTBRequestId = filter.DyeingTBRequestId,
-                DyeingTBRVersionId = filter.DyeingTBRVersionId,
+                DyeingTBRecipeId = filter.DyeingTBRecipeId,
                 RecipeNo = filter.RecipeNo,
                 JobDate = filter.JobDate,
                 TCFNO = filter.TCFNO,
                 Style = filter.Style,
+                Description = filter.Description,
                 FabricCode = filter.FabricCode,
                 FabricName = filter.FabricName,
                 Color = filter.Color,
@@ -39,10 +40,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
                 OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
             }));
         }
 
@@ -51,6 +50,13 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetRecipeQuery { Id = id }));
+        }
+
+        // GET api/v1/<controller>/5
+        [HttpGet("syncwfx/{dyeingRecipeId}")]
+        public async Task<IActionResult> GetRecipeSyncWFX(int dyeingRecipeId)
+        {
+            return Ok(await Mediator.Send(new GetRecipeSyncWFXQuery { DyeingTBRecipeId = dyeingRecipeId }));
         }
 
         // POST api/v1/<controller>

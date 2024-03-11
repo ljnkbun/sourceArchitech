@@ -3,7 +3,8 @@ using Shopfloor.IED.Domain.Entities;
 
 namespace Shopfloor.IED.Domain.Interfaces
 {
-    public interface IRecipeUnitRepository : IMasterRepositoryAsync<RecipeUnit>
+    public interface IRecipeUnitRepository : INameRepositoryAsync<RecipeUnit>
     {
+        
     }
 }

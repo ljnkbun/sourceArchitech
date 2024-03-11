@@ -14,9 +14,6 @@ namespace Shopfloor.Master.Application.Query.MaterialTypes
         public int PageSize { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int? CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string CategoryCode { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -28,22 +25,25 @@ namespace Shopfloor.Master.Application.Query.MaterialTypes
         public string CacheKey => $"MaterialTypes";
         public TimeSpan? SlidingExpiration { get; set; }
     }
+
     public class GetMaterialTypesQueryHandler : IRequestHandler<GetMaterialTypesQuery, PagedResponse<IReadOnlyList<MaterialTypeModel>>>
     {
         private readonly IMapper _mapper;
         private readonly IMaterialTypeRepository _repository;
+        private readonly ICategoryRepository _categoryRepository;
+
         public GetMaterialTypesQueryHandler(IMapper mapper,
-            IMaterialTypeRepository repository)
+            IMaterialTypeRepository repository, ICategoryRepository categoryRepository)
         {
             _mapper = mapper;
             _repository = repository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<PagedResponse<IReadOnlyList<MaterialTypeModel>>> Handle(GetMaterialTypesQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<MaterialTypeParameter>(request);
-            validFilter.SetSearchProps(new string[] { nameof(MaterialTypeParameter.Code), nameof(MaterialTypeParameter.Name), nameof(MaterialTypeParameter.CategoryId) }.ToList());
-            return await _repository.GetModelPagedReponseAsync<MaterialTypeParameter, MaterialTypeModel>(validFilter);
+            return await _repository.GetMaterialTypePagedResponseAsync<MaterialTypeParameter, MaterialTypeModel>(validFilter);
         }
     }
 }

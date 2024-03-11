@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Micronaires
         public async Task<Response<Micronaire>> Handle(GetMicronaireQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Micronaire Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Micronaire Not Found (Id:{query.Id}).");
             return new Response<Micronaire>(entity);
         }
     }

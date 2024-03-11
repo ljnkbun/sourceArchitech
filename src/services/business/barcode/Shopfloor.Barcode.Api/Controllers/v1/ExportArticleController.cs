@@ -52,6 +52,20 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
+        // PUT api/v1/<controller>/5
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusExportArticleCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/5
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> UpdateStatusExportDetails(UpdateStatusExportArticlesCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         // DELETE api/v1/<controller>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

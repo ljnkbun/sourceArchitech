@@ -10,8 +10,10 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
         public override void Configure(EntityTypeBuilder<SewingFeatureLibBOL> builder)
         {
             base.Configure(builder);
-
-            builder.Property(e => e.Freq).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.Code).HasMaxLength(200);
+            builder.Property(e => e.Name).HasMaxLength(500);
+            builder.Property(e => e.MachineName).HasMaxLength(500);
+            builder.Property(e => e.Freq).HasColumnType("varchar(50)");
             builder.Property(e => e.SMV).HasColumnType("decimal(28,8)");
             builder.Property(e => e.AllowedTime).HasColumnType("decimal(28,8)");
             builder.Property(e => e.RPM).HasColumnType("decimal(28,8)");
@@ -24,7 +26,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.HasOne(e => e.SewingFeatureLib)
                 .WithMany(e => e.SewingFeatureLibBOLs)
                 .HasForeignKey(e => e.SewingFeatureLibId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Shopfloor.Material.Domain.Entities
 
         public string Value { get; set; }
 
-        public MaterialRequest MaterialRequest { get; set; }
+        public virtual  MaterialRequest MaterialRequest { get; set; }
 
-        public DynamicColumn DynamicColumn { get; set; }
+        public virtual  DynamicColumn DynamicColumn { get; set; }
     }
 }

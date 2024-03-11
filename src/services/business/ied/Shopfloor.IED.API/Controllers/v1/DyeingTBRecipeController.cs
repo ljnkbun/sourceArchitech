@@ -2,7 +2,6 @@
 using Shopfloor.IED.Application.Command.DyeingTBRecipes;
 using Shopfloor.IED.Application.Parameters.DyeingTBRecipes;
 using Shopfloor.IED.Application.Query.DyeingTBRecipes;
-using Shopfloor.IED.Domain.Enums;
 
 namespace Shopfloor.IED.Api.Controllers.v1
 {
@@ -21,6 +20,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 TemplateName = filter.TemplateName,
                 TCFNo = filter.TCFNo,
                 Comment = filter.Comment,
+                TBRecipeName = filter.TBRecipeName,
                 Buyer = filter.Buyer,
                 BuyerRef = filter.BuyerRef,
                 GarmentStyleRef = filter.GarmentStyleRef,
@@ -29,7 +29,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 Concentration = filter.Concentration,
                 VersionQty = filter.VersionQty,
                 Status = filter.Status,
-                ApproveVersionId = filter.ApproveVersionId,
+                ApproveVersionIndex = filter.ApproveVersionIndex,
                 ApproveDate = filter.ApproveDate,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
@@ -38,10 +38,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 
@@ -50,6 +48,13 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetDyeingTBRecipeQuery { Id = id }));
+        }
+
+        // GET api/v1/<controller>/5
+        [HttpGet("color")]
+        public async Task<IActionResult> GetColor(int dyeingTBMaterialColorId)
+        {
+            return Ok(await Mediator.Send(new GetDyeingTBRecipeByColorIdQuery { DyeingTBMaterialColorId = dyeingTBMaterialColorId }));
         }
 
         // POST api/v1/<controller>
@@ -67,11 +72,25 @@ namespace Shopfloor.IED.Api.Controllers.v1
             return Ok(await Mediator.Send(command));
         }
 
+        // PUT api/v1/<controller>/5
+        [HttpPut("approve")]
+        public async Task<IActionResult> ApproveVersion(ApproveVersionDyeingTBRecipeCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         // DELETE api/v1/<controller>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteDyeingTBRecipeCommand { Id = id }));
+        }
+
+
+        [HttpGet("ExportExcel")]
+        public async Task<IActionResult> ExportExcel(int id)
+        {
+            return await Mediator.Send(new ExportBeakerTestQuery { Id = id });
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.FabricWidths
         public async Task<Response<FabricWidth>> Handle(GetFabricWidthQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"FabricWidth Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"FabricWidth Not Found (Id: {query.Id}).");
             return new Response<FabricWidth>(entity);
         }
     }

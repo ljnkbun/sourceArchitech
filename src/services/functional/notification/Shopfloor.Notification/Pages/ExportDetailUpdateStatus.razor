@@ -1,0 +1,59 @@
+﻿@page "/StatusExportDetail"
+@using MassTransit;
+@using Microsoft.AspNetCore.SignalR.Client
+@using Shopfloor.EventBus.Models.Message;
+@using Shopfloor.EventBus.Definations;
+@using System.Globalization;
+@inject NavigationManager Navigation
+@inject IPublishEndpoint publishEndpoint
+@implements IAsyncDisposable
+
+<PageTitle>StatusExportDetail</PageTitle>
+
+<p>StatusExportDetail</p>
+<ul id="messagesList">
+    @foreach (var message in messages)
+    {
+        <li>@message</li>
+    }
+</ul>
+
+@code {
+    private HubConnection hubConnection;
+    private List<string> messages = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/UpdateStatusExportHub"))
+            .Build();
+
+        hubConnection.On<int, ItemStatus>("ReceiveChangeStatusExportDetail", (exportDetailId, status) =>
+        {
+            var encodedMsg = $"{exportDetailId.ToString()}: {status.ToString()}";
+            messages.Add(encodedMsg);
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<UpdateStatusExportDetailsMessage>("ReceiveChangeStatusExportDetails", (exportDetails) =>
+        {
+            var ids = String.Join(", ", exportDetails.ExportDetailIds.Select(n => n.ToString(CultureInfo.InvariantCulture)));
+            var encodedMsg = $"{ids}: {exportDetails.Status.ToString()}";
+            messages.Add(encodedMsg);
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    public bool IsConnected =>
+        hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

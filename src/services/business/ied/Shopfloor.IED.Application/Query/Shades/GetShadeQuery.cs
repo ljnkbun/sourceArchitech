@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.Shades
         public async Task<Response<Shade>> Handle(GetShadeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Shade Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Shade Not Found (Id:{query.Id}).");
             return new Response<Shade>(entity);
         }
     }

@@ -9,11 +9,12 @@ namespace Shopfloor.IED.Application.Command.DCTemplateDetail
     {
         public int Id { get; set; }
         public int DCTemplateTaskId { get; set; }
+        public int ChemicalId { get; set; }
+        public string ChemicalSubCategory { get; set; }
         public string ChemicalCode { get; set; }
         public string ChemicalName { get; set; }
         public string Unit { get; set; }
         public decimal Value { get; set; }
-        public int LineNumber { get; set; }
         public bool IsActive { get; set; }
     }
 
@@ -30,14 +31,15 @@ namespace Shopfloor.IED.Application.Command.DCTemplateDetail
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"DCTemplateDetail Not Found.");
+            if (entity == null) return new($"DCTemplateDetail Not Found.");
 
             entity.DCTemplateTaskId = command.DCTemplateTaskId;
+            entity.ChemicalId = command.ChemicalId;
+            entity.ChemicalSubCategory = command.ChemicalSubCategory;
             entity.Value = command.Value;
             entity.ChemicalCode = command.ChemicalCode;
             entity.ChemicalName = command.ChemicalName;
             entity.Unit = command.Unit;
-            entity.LineNumber = command.LineNumber;
             entity.IsActive = command.IsActive;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

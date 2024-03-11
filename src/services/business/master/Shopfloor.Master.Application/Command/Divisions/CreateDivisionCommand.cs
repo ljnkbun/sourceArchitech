@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.Master.Application.Command.Processes;
 using Shopfloor.Master.Domain.Entities;
 using Shopfloor.Master.Domain.Interfaces;
 
@@ -10,6 +11,7 @@ namespace Shopfloor.Master.Application.Command.Divisions
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public ICollection<CreateProcessCommand> Processes { get; set; }
     }
     public class CreateDivisionCommandHandler : IRequestHandler<CreateDivisionCommand, Response<int>>
     {

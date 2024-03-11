@@ -20,7 +20,7 @@ namespace Shopfloor.Barcode.Application.Query.BarcodeLocations
         public async Task<Response<BarcodeLocation>> Handle(GetBarcodeLocationQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"BarcodeLocations Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"BarcodeLocations Not Found (Id:{query.Id}).");
             return new Response<BarcodeLocation>(entity);
         }
     }

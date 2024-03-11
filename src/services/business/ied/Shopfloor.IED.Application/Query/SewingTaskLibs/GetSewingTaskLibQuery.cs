@@ -19,8 +19,8 @@ namespace Shopfloor.IED.Application.Query.SewingTaskLibs
         }
         public async Task<Response<SewingTaskLib>> Handle(GetSewingTaskLibQuery query, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SewingTaskLib Not Found (Id:{query.Id}).");
+            var entity = await _repository.GetSewingTaskLibByIdAsync(query.Id);
+            if (entity == null) return new($"SewingTaskLib Not Found (Id:{query.Id}).");
             return new Response<SewingTaskLib>(entity);
         }
     }

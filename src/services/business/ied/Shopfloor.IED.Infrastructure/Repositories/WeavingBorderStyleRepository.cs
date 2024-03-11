@@ -6,7 +6,7 @@ using Shopfloor.IED.Infrastructure.Contexts;
 
 namespace Shopfloor.IED.Infrastructure.Repositories
 {
-    public class WeavingBorderStyleRepository : MasterRepositoryAsync<WeavingBorderStyle>, IWeavingBorderStyleRepository
+    public class WeavingBorderStyleRepository : NameRepositoryAsync<WeavingBorderStyle>, IWeavingBorderStyleRepository
     {
         public WeavingBorderStyleRepository(IEDContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {

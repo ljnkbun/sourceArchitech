@@ -12,12 +12,23 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.Code).HasMaxLength(200);
             builder.Property(e => e.Name).HasMaxLength(500);
-            builder.Property(e => e.Freq).HasMaxLength(50);
+            builder.Property(e => e.MachineName).HasMaxLength(250);
             builder.Property(e => e.BundleTMU).HasColumnType("decimal(28,8)");
             builder.Property(e => e.MachineTMU).HasColumnType("decimal(28,8)");
             builder.Property(e => e.ManualTMU).HasColumnType("decimal(28,8)");
             builder.Property(e => e.TotalTMU).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.BundleTime).HasColumnType("decimal(28,8)");
             builder.Property(e => e.Deleted).HasDefaultValueSql("((0))");
+
+            builder.HasOne(e => e.SewingMachineEfficiencyProfile)
+               .WithMany(e => e.SewingTaskLibs)
+               .HasForeignKey(e => e.SewingMachineEfficiencyProfileId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(e => e.SewingBundle)
+               .WithMany(e => e.SewingTaskLibs)
+               .HasForeignKey(e => e.SewingBundleId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

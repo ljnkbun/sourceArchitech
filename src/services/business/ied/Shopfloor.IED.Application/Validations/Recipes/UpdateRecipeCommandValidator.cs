@@ -6,14 +6,17 @@ namespace Shopfloor.IED.Application.Validations.Recipes
 {
     public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeCommand>
     {
-        private readonly IDyeingTBRequestRepository _dyeingTbRequest;
+           private readonly IDyeingTBRecipeRepository _dyeingTbRecipe;
 
-        private readonly IDyeingTBRVersionRepository _dyeingTbrVersion;
-
-        public UpdateRecipeCommandValidator(IDyeingTBRequestRepository dyeingTbRequest, IDyeingTBRVersionRepository dyeingTbrVersion)
+        public UpdateRecipeCommandValidator(IDyeingTBRecipeRepository dyeingTbRecipe)
         {
-            _dyeingTbRequest = dyeingTbRequest;
-            _dyeingTbrVersion = dyeingTbrVersion;
+            _dyeingTbRecipe = dyeingTbRecipe;
+
+            RuleFor(p => p.JobDate)
+                .GreaterThan(new DateTime(1970, 1, 1, 12, 0, 0, DateTimeKind.Local));
+
+            RuleFor(p => p.Description)
+           .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
             RuleFor(p => p.TCFNO)
              .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
@@ -57,23 +60,14 @@ namespace Shopfloor.IED.Application.Validations.Recipes
             RuleFor(p => p.Manager)
                 .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
 
-            RuleFor(p => p.DyeingTBRequestId)
-                .MustAsync(IsExistDyeingTBRequestAsync)
+            RuleFor(p => p.DyeingTBRecipeId)
+                .MustAsync(IsExistDyeingTBRecipeAsync)
                 .WithMessage("{PropertyName} not found.");
+          }
 
-            RuleFor(p => p.DyeingTBRVersionId)
-                .MustAsync(IsExistDyeingTBRVersionAsync)
-                .WithMessage("{PropertyName} not found.");
-        }
-
-        private async Task<bool> IsExistDyeingTBRequestAsync(int dyeingTbRequestId, CancellationToken token)
+        private async Task<bool> IsExistDyeingTBRecipeAsync(int dyeingTBRecipeId, CancellationToken token)
         {
-            return await _dyeingTbRequest.IsExistAsync(dyeingTbRequestId);
-        }
-
-        private async Task<bool> IsExistDyeingTBRVersionAsync(int dyeingTBRVersionId, CancellationToken token)
-        {
-            return await _dyeingTbrVersion.IsExistAsync(dyeingTBRVersionId);
+            return await _dyeingTbRecipe.IsExistAsync(dyeingTBRecipeId);
         }
     }
 }

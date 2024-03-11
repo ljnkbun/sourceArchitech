@@ -19,7 +19,8 @@ namespace Shopfloor.IED.Infrastructure.Repositories
         }
 
         public async Task<DCTemplate> GetWithIncludeByIdAsync(int id) => await _dbContext.Set<DCTemplate>()
-            .Include(x => x.DCTemplateTasks)
+            .Include(x => x.DCTemplateTasks.OrderBy(t => t.LineNumber))
+                .ThenInclude(t => t.DcTemplateDetails)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }

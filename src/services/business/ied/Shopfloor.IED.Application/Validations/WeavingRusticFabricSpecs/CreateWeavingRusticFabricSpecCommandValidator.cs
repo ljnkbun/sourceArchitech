@@ -7,12 +7,12 @@ namespace Shopfloor.IED.Application.Validations.WeavingRusticFabricSpecs
     {
         public CreateWeavingRusticFabricSpecCommandValidator()
         {
-            RuleFor(p => p.BackgroundType)
+            RuleFor(p => p.ContentWeaveStyle)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
 
-            RuleFor(p => p.BorderType)
+            RuleFor(p => p.MarginWeaveStyle)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");

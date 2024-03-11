@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.DeliveryTerms
         public async Task<Response<DeliveryTerm>> Handle(GetDeliveryTermQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DeliveryTerm Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DeliveryTerm Not Found (Id:{query.Id}).");
             return new Response<DeliveryTerm>(entity);
         }
     }

@@ -3,6 +3,7 @@
 using MediatR;
 
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.Material.Application.Command.BuyerFiles;
 using Shopfloor.Material.Application.Models.Buyers;
 using Shopfloor.Material.Domain.Entities;
 using Shopfloor.Material.Domain.Enums;
@@ -139,6 +140,8 @@ namespace Shopfloor.Material.Application.Command.Buyers
         #region List
 
         public ICollection<BuyerProductCategoryModel> ProductCategories { get; set; }
+
+        public ICollection<CreateBuyerFileCommand> BuyerFiles { get; set; }
 
         #endregion List
     }

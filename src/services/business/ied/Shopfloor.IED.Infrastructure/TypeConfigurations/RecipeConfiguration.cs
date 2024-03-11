@@ -25,6 +25,12 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.Property(e => e.LAB).HasMaxLength(250);
             builder.Property(e => e.InCharge).HasMaxLength(250);
             builder.Property(e => e.Manager).HasMaxLength(250);
+            builder.Property(e => e.Description).HasMaxLength(500);
+            builder.HasOne(s => s.DyeingTBRecipe)
+                .WithOne(g => g.Recipe)
+                .HasForeignKey<Recipe>(s => s.DyeingTBRecipeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

@@ -45,6 +45,8 @@ namespace Shopfloor.Barcode.Application.Query.ExportArticles
         public async Task<PagedResponse<IReadOnlyList<ExportArticleModel>>> Handle(GetExportArticlesQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<ExportArticleParameter>(request);
+
+            validFilter.OrderBy = string.IsNullOrEmpty(validFilter.OrderBy) ? " ModifiedDate DESC " : validFilter.OrderBy;
             return await _repository.GetModelPagedReponseAsync<ExportArticleParameter, ExportArticleModel>(validFilter);
         }
     }

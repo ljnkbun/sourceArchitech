@@ -1,33 +1,38 @@
 ﻿using FluentValidation;
 using Shopfloor.IED.Application.Command.SewingMacroLibs;
-using Shopfloor.IED.Application.Command.Zones;
-using Shopfloor.IED.Domain.Interfaces;
+using Shopfloor.IED.Domain.Enums;
 
 namespace Shopfloor.IED.Application.Validations.SewingMacroLibs
 {
     public class UpdateSewingMacroLibCommandValidator : AbstractValidator<UpdateSewingMacroLibCommand>
     {
-        private readonly ISewingMacroLibRepository _sewingMacroLibRepository;
-        public UpdateSewingMacroLibCommandValidator(ISewingMacroLibRepository sewingMacroLibRepository)
+        public UpdateSewingMacroLibCommandValidator()
         {
-            _sewingMacroLibRepository = sewingMacroLibRepository;
-
-            RuleFor(p => p.Code)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
-                .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.");
-
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p).MustAsync(IsUniqueAsync).WithMessage("Code must unique.");
-        }
+            RuleFor(p => p).Must(IsLineNumberUnique).WithMessage("LineNumber must unique.");
+            RuleFor(p => p).Must(IsValid).WithMessage("Data invalid.");
 
-        private async Task<bool> IsUniqueAsync(UpdateSewingMacroLibCommand command, CancellationToken token)
+            RuleForEach(x => x.SewingMacroLibBOLs).ChildRules(child =>
+            {
+                child.RuleFor(p => p.Code).MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.");
+                child.RuleFor(p => p.Name).MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
+                child.RuleFor(p => p.Freq).MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
+                child.RuleFor(p => p.Type).IsInEnum().WithMessage("Type out of range.");
+                child.RuleFor(p => p).Must(p => p.LineNumber >= 1).WithMessage("LineNumber must greater than or equal 1.");
+            });
+        }
+        private bool IsLineNumberUnique(UpdateSewingMacroLibCommand command)
         {
-            return await _sewingMacroLibRepository.IsUniqueAsync(command.Code, command.Id);
+            return command?.SewingMacroLibBOLs.DistinctBy(m => m.LineNumber).Count() == command?.SewingMacroLibBOLs.Count;
+        }
+        private bool IsValid(UpdateSewingMacroLibCommand command)
+        {
+            return command?.SewingMacroLibBOLs.All(b => (b.Type == MacroBOLType.CM && b.SewingTaskLibId == null)
+                                                         || (b.Type != MacroBOLType.CM && b.SewingTaskLibId != null)) ?? true;
         }
     }
 }

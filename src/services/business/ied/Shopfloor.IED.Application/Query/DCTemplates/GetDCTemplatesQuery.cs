@@ -8,7 +8,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DCTemplates
 {
-    public class GetDCTemplatesQuery : IRequest<PagedResponse<IReadOnlyList<DCTemplateModel>>>, ICacheableMediatrQuery
+    public class GetDCTemplatesQuery : IRequest<PagedResponse<IReadOnlyList<DCTemplateModel>>>
     {
         public string Code { get; set; }
         public string Name { get; set; }
@@ -24,9 +24,6 @@ namespace Shopfloor.IED.Application.Query.DCTemplates
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"DCTemplates";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

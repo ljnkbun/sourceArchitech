@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Models.Responses;
 using Shopfloor.Barcode.Domain.Entities;
-using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Barcode.Domain.Enums.LevelLocations;
+using Shopfloor.Barcode.Domain.Interfaces;
+using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.Locations
 {
     public class CreateLocationCommand : IRequest<Response<int>>
     {
-        public string Code { get; set; }
         public string Name { get; set; }
-        public int ParentLocationId { get; set; }
-        public string Barcode { get; set; }
-        public LevelLocation LevelLocation { get; set; }
+        public int? ParentLocationId { get; set; }
+        public LevelLocation? LevelLocation { get; set; }
     }
     public class CreateLocationCommandHandler : IRequestHandler<CreateLocationCommand, Response<int>>
     {

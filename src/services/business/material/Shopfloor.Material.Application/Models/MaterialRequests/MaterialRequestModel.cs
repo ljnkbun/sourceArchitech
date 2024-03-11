@@ -6,6 +6,7 @@ namespace Shopfloor.Material.Application.Models.MaterialRequests
     public class MaterialRequestModel : BaseModel
     {
         public string RequestNo { get; set; }
+        public string HSCode { get; set; }
 
         public string ProductCatCode { get; set; }
 

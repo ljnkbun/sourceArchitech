@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DCTemplateDetails
         public async Task<Response<Domain.Entities.DCTemplateDetail>> Handle(GetDCTemplateDetailQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DCTemplateDetail Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DCTemplateDetail Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DCTemplateDetail>(entity);
         }
     }

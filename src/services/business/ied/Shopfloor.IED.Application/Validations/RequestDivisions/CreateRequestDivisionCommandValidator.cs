@@ -16,6 +16,10 @@ namespace Shopfloor.IED.Application.Validations.RequestDivisions
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+
+            RuleFor(p => p.ExpectedDate)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
         }
     }
 }

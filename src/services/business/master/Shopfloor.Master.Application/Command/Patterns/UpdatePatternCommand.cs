@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Patterns
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Patterns Not Found.");
+            if (entity == null) return new($"Patterns Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

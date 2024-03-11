@@ -5,7 +5,7 @@
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
-        public int TotalPage => (TotalCount / (PageSize == 0 ? 1 : PageSize)) + 1;
+        public int TotalPage => ((TotalCount - 1) / (PageSize == 0 ? 1 : PageSize)) + 1;
 
         public PagedResponse()
         {

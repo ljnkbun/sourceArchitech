@@ -6,12 +6,9 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
 {
     public class DataExportDetailCommandValidator : AbstractValidator<ExportDetailExcelModel>
     {
-        private readonly IExportDetailRepository _repository;
 
         public DataExportDetailCommandValidator(IExportDetailRepository repository)
         {
-            _repository = repository;
-
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
@@ -42,9 +39,6 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
                .MaximumLength(1000).WithMessage("{PropertyName} must not exceed 1000 characters.");
         }
 
-        private async Task<bool> IsUniqueAsync(string code, CancellationToken token)
-        {
-            return await _repository.IsUniqueAsync(code);
-        }
+      
     }
 }

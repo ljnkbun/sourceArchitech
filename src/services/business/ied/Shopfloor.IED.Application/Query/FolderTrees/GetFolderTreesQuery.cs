@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.FolderTrees;
 using Shopfloor.IED.Application.Parameters.FolderTrees;
@@ -9,7 +8,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.FolderTrees
 {
-    public class GetFolderTreesQuery : IRequest<PagedResponse<IReadOnlyList<FolderTreeModel>>>, ICacheableMediatrQuery
+    public class GetFolderTreesQuery : IRequest<PagedResponse<IReadOnlyList<FolderTreeModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -25,9 +24,6 @@ namespace Shopfloor.IED.Application.Query.FolderTrees
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"FolderTrees";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetFolderTreesQueryHandler : IRequestHandler<GetFolderTreesQuery, PagedResponse<IReadOnlyList<FolderTreeModel>>>
     {

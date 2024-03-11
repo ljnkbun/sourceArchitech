@@ -18,9 +18,14 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             builder.Property(e => e.BundleTMU).HasColumnType("decimal(28,8)");
             builder.Property(e => e.TotalBasicMinutes).HasColumnType("decimal(28,8)");
             builder.Property(e => e.NoneMachineTime).HasColumnType("decimal(28,8)");
+
             builder.HasOne(e => e.FolderTree)
                 .WithMany(e => e.SewingMacroLibs)
                 .HasForeignKey(e => e.FolderTreeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.SewingComponentGroup)
+                .WithMany(e => e.SewingMacroLibs)
+                .HasForeignKey(e => e.SewingComponentGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -1,0 +1,15 @@
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\bin\Debug\net7.0\Shopfloor.FileStorage.Domain.deps.json
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\bin\Debug\net7.0\Shopfloor.FileStorage.Domain.dll
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\bin\Debug\net7.0\Shopfloor.FileStorage.Domain.pdb
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\bin\Debug\net7.0\Shopfloor.Core.dll
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\bin\Debug\net7.0\Shopfloor.Core.pdb
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.csproj.AssemblyReference.cache
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.AssemblyInfoInputs.cache
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.AssemblyInfo.cs
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.csproj.CoreCompileInputs.cache
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.csproj.CopyComplete
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.dll
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\refint\Shopfloor.FileStorage.Domain.dll
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\Shopfloor.FileStorage.Domain.pdb
+D:\work\DetTCNew\src\services\functional\filestorage\Shopfloor.FileStorage.Domain\obj\Debug\net7.0\ref\Shopfloor.FileStorage.Domain.dll

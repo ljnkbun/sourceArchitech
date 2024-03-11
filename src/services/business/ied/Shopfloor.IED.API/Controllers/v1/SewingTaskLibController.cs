@@ -23,17 +23,20 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 Code = filter.Code,
                 Name = filter.Name,
                 Description = filter.Description,
-                Freq = filter.Freq,
+                MachineId = filter.MachineId,
+                MachineName = filter.MachineName,
                 ManualTMU = filter.ManualTMU,
                 MachineTMU = filter.MachineTMU,
-                BundelTMU = filter.BundelTMU,
+                BundleTMU = filter.BundleTMU,
                 TotalTMU = filter.TotalTMU,
+                BundleTime = filter.BundleTime,
+                TaskType = filter.TaskType,
+                SewingMachineEfficiencyProfileId = filter.SewingMachineEfficiencyProfileId,
+                SewingBundleId = filter.SewingBundleId,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

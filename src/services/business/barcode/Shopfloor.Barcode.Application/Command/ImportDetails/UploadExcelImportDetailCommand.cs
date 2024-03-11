@@ -18,56 +18,44 @@ namespace Shopfloor.Barcode.Application.Command.ImportDetails
 
     public class UploadExcelImportDetailCommandHandler : IRequestHandler<UploadExcelImportDetailCommand, Response<List<UploadExcelImportDetailModel>>>
     {
-        private readonly ILocationRepository _locationRepository;
-        public IArticleBarcodeRepository _articleBarcodeRepository;
+        private readonly IArticleBarcodeRepository _articleBarcodeRepository;
 
         public UploadExcelImportDetailCommandHandler(ILocationRepository locationRepository,
              IArticleBarcodeRepository articleBarcodeRepository)
         {
             _articleBarcodeRepository = articleBarcodeRepository;
-            _locationRepository = locationRepository;
         }
 
         public async Task<Response<List<UploadExcelImportDetailModel>>> Handle(UploadExcelImportDetailCommand request, CancellationToken cancellationToken)
         {
             var input = new ImportExcelModel(0, 2, FieldMaps.ImportDetails);
             var data = ImportExcelHelper.ReadExcel<UploadExcelImportDetailModel>(request.File, input);
-            var locationItems = data.Where(x => !string.IsNullOrEmpty(x.Location));
-            string[] locationCodes = locationItems.Select(x => x.Location).ToArray();
-            var dicLocation = await _locationRepository.GetByCodesAsync(locationCodes);
-            var notValidLocations = data.Where(x => !string.IsNullOrEmpty(x.Location) && !dicLocation.ContainsKey(x.Location)).ToList();
-            if (notValidLocations.Any())
+            if (data == null || !data.Any())
+                return new Response<List<UploadExcelImportDetailModel>>(null, "No data import");
+            foreach (var item in data)
             {
-                var errors = notValidLocations.Select(x => new Error { Message = x.Location + " is not valid" }).ToList();
-                return new Response<List<UploadExcelImportDetailModel>>() { Errors = errors, Succeeded = false, Message = "Locations are not valid" };
+                if (item.QuantityMeter.HasValue) item.UOM = "METER";
+                else if (item.QuantityYard.HasValue) item.UOM = "YARD";
+                item.WeightPerCone = null;
+                item.NumberOfCone = null;
             }
-            else
-                foreach (var item in locationItems)
-                {
-                    if (dicLocation.ContainsKey(item.Location))
-                    {
-                        item.LocationId = dicLocation[item.Location];
-                    }
-                };
             if (request.ImportType == ImportType.ImportTransferToSite)
             {
                 var barcodeItems = data.Where(x => !string.IsNullOrEmpty(x.BarCode));
-                var barCodes = barcodeItems.Select(x => x.BarCode).ToArray();
-                var dicArticleBarCode = await _articleBarcodeRepository.GetByBarCodesAsync(barCodes);
+                var dicArticleBarCode = await _articleBarcodeRepository.GetByBarCodesAsync(barcodeItems.Select(x => x.BarCode).ToArray());
                 var notValidBarCodes = data.Where(x => !string.IsNullOrEmpty(x.BarCode) && !dicArticleBarCode.ContainsKey(x.BarCode)).ToList();
                 if (notValidBarCodes.Any())
                 {
-                    var errors = notValidLocations.Select(x => new Error { Message = x.BarCode + " is not valid" }).ToList();
+                    var errors = notValidBarCodes.Select(x => new Error { Message = x.BarCode + " is not valid" }).ToList();
                     return new Response<List<UploadExcelImportDetailModel>>() { Errors = errors, Succeeded = false, Message = "BarCodes are not valid" };
                 }
-                else
-                    foreach (var item in barcodeItems)
+                foreach (var item in barcodeItems)
+                {
+                    if (dicArticleBarCode.TryGetValue(item.BarCode, out var barCode))
                     {
-                        if (dicArticleBarCode.ContainsKey(item.BarCode))
-                        {
-                            item.ArticleBarCodeId = dicArticleBarCode[item.BarCode].Id;
-                        }
-                    };
+                        item.ArticleBarCodeId = barCode.Id;
+                    }
+                };
             }
 
             return new Response<List<UploadExcelImportDetailModel>>(data);

@@ -6,13 +6,15 @@ namespace Shopfloor.IED.Application.Parameters.DyeingTBMaterials
     {
         public int? DyeingTBRequestId { get; set; }
 
-        public string ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
 
         public string ArticleCode { get; set; }
 
         public string ArticleName { get; set; }
 
         public string MaterialType { get; set; }
+
+        public string FabricStyleRef { get; set; }
 
         public string FabricContent { get; set; }
 

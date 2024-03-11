@@ -11,9 +11,9 @@ namespace Shopfloor.Master.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.Code).HasMaxLength(200);
             builder.Property(e => e.Name).HasMaxLength(500);
-            builder.HasOne(e => e.ProcessLibrary)
+            builder.HasOne(e => e.Process)
                 .WithMany(e => e.OperationLibraries)
-                .HasForeignKey(e => e.ProcessLibraryId)
+                .HasForeignKey(e => e.ProcessId)
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
         }
     }

@@ -21,7 +21,7 @@ namespace Shopfloor.IED.Application.Command.FolderTrees
         public async Task<Response<int>> Handle(UpdateFolderTreeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Folder Not Found.");
+            if (entity == null) return new($"Folder Not Found.");
 
             entity.Name = command.Name;
             entity.IsActive = command.IsActive;

@@ -23,7 +23,7 @@ namespace Shopfloor.IED.Application.Command.Concentrates
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Concentrate Not Found.");
+            if (entity == null) return new($"Concentrate Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.IED.Application.Command.DyeingTBRChemicalValues;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.DyeingTBRChemicals
@@ -11,7 +12,9 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRChemicals
         public int ChemicalId { get; set; }
         public string ChemicalCode { get; set; }
         public string ChemicalName { get; set; }
+        public string ChemicalSubCategory { get; set; }
         public string Unit { get; set; }
+        public ICollection<CreateDyeingTBRChemicalValueCommand> DyeingTBRChemicalValues { get; set; }
     }
 
     public class CreateDyeingTBRChemicalCommandHandler : IRequestHandler<CreateDyeingTBRChemicalCommand, Response<int>>

@@ -11,7 +11,10 @@ namespace Shopfloor.Barcode.Application.Mappings
     {
         public ExportProfile()
         {
-            CreateMap<Export, ExportModel>().ReverseMap();
+            CreateMap<Export, ExportModel>()
+                .ForMember(x => x.ExportArticleModels, d => d.MapFrom(o => o.ExportArticles))
+                .ForMember(x => x.Type, d => d.MapFrom(o => o.GDIType))
+                .ReverseMap();
             CreateMap<GetExportsQuery, ExportParameter>();
             CreateMap<CreateExportCommand, Export>();
         }

@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NPOI.Util;
+using Serilog;
 using Shopfloor.Barcode.Application.Settings;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Barcode.Infrastructure.Contexts;
+using Shopfloor.Core.Extensions.Objects;
+using Shopfloor.Core.Models.Parameters;
+using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
 
 namespace Shopfloor.Barcode.Infrastructure.Repositories
@@ -49,7 +54,7 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             try
             {
                 _articleBarCodeSet.Update(articleBarcode);
-                _barCodeLocation.Add(barcodeLocation);
+                await _barCodeLocation.AddAsync(barcodeLocation);
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             }
@@ -65,33 +70,32 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             return await _articleBarCodeSet.Include(x => x.ImportDetails).Include(x => x.ExportDetails).Where(x => ids.Contains(x.Id)).ToListAsync();
         }
 
-        public async Task SplitImportBarcodeDetail(ArticleBarcode entity, List<ArticleBarcode> splitBarcodes)
+        public async Task<int[]> SplitImportBarcodeDetail(ArticleBarcode entity, List<ArticleBarcode> splitBarcodes)
         {
             var trans = await _dbContext.Database.BeginTransactionAsync();
             try
             {
-                var checkExisted = await _articleBarCodeSet.AnyAsync();
-                var lastId = 0;
-                if (checkExisted)
-                {
-                    lastId = await _articleBarCodeSet.MaxAsync(x => x.Id);
-                }
-
+                var count = 1;
+                var dbBarcodesByUOM = await _articleBarCodeSet.Where(x => x.Barcode.Contains(entity.Barcode)).ToListAsync();
                 var splitHis = new List<ArticleBarcodeHistory>();
+
+                var rs = entity.Barcode + $"/" + count;
+                while (dbBarcodesByUOM.Any(x => x.Barcode == rs))
+                {
+                    rs = entity.Barcode + $"/" + count++;
+                }
 
                 foreach (var splitBarcode in splitBarcodes)
                 {
-                    var nextId = (lastId++).ToString();
                     var lengthId = _barcodeConfig.BarcodeLength;
-                    var rs = $"{splitBarcode.UOM}{DateTime.Now:yyyyMMdd}/{nextId.PadLeft(lengthId - nextId.Length, '0')}";
+                    rs = entity.Barcode + $"/" + count++;
                     splitBarcode.Barcode = rs;
+                    splitBarcode.Quantity = splitBarcode.Quantity;
                     splitBarcode.RemainQuantity = splitBarcode.Quantity;
+                    splitBarcode.FromId = entity.Id.ToString();
                 }
 
-                entity.RemainQuantity = entity.Quantity - splitBarcodes.FirstOrDefault().Quantity;
-                await UpdateAsync(entity);
 
-                splitBarcodes.RemoveAt(0);
                 await _articleBarCodeSet.AddRangeAsync(splitBarcodes);
 
                 foreach (var splitBarcode in splitBarcodes)
@@ -102,7 +106,17 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
                 await _barCodeHistory.AddRangeAsync(splitHis);
 
                 await _dbContext.SaveChangesAsync();
+
+                if (string.IsNullOrEmpty(entity.ToId))
+                    entity.ToId = String.Join(", ", splitBarcodes.Select(x => x.Id));
+                else
+                    entity.ToId += ", " + String.Join(", ", splitBarcodes.Select(x => x.Id));
+
+                await UpdateAsync(entity);
+
+                await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
+                return splitBarcodes.Select(x => x.Id).ToArray();
             }
             catch (Exception)
             {
@@ -111,13 +125,14 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
             }
         }
 
-        public async Task MergeImportBarcodeDetail(ICollection<ArticleBarcode> splitBarcodes)
+        public async Task<ArticleBarcode> MergeImportBarcodeDetail(ICollection<ArticleBarcode> mergeBarcodes)
         {
             var trans = await _dbContext.Database.BeginTransactionAsync();
             try
             {
-                var entity = splitBarcodes.FirstOrDefault().Copy();
+                var entity = mergeBarcodes.FirstOrDefault().Copy();
                 entity.Id = 0;
+                entity.ToId = null;
                 entity.ImportDetails = null;
                 entity.ExportDetails = null;
 
@@ -128,45 +143,120 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
                     lastId = await _articleBarCodeSet.MaxAsync(x => x.Id);
                 }
 
+                var str = $@"{mergeBarcodes.FirstOrDefault().BarcodeUOM}{DateTime.Now:yyyyMMdd}/";
+
                 var nextId = (lastId++).ToString();
                 var lengthId = _barcodeConfig.BarcodeLength;
-                var rs = $"{splitBarcodes.FirstOrDefault().UOM}{DateTime.Now:yyyyMMdd}/{nextId.PadLeft(lengthId - nextId.Length, '0')}";
+                var rs = str + $"{nextId.PadLeft(lengthId - nextId.Length, '0')}";
+
+                var dbBarcodesByUOM = await _articleBarCodeSet.Where(x => x.Barcode.Contains(str)).ToListAsync();
+
+                while (dbBarcodesByUOM.Any(x => x.Barcode == rs))
+                {
+                    nextId = (lastId++).ToString();
+                    rs = str + $"{nextId.PadLeft(lengthId - nextId.Length, '0')}";
+                }
+
                 entity.Barcode = rs;
 
-                entity.Quantity = splitBarcodes.Sum(x => x.Quantity);
-                entity.RemainQuantity = splitBarcodes.Sum(x => x.RemainQuantity);
-                entity.NumberOfCone = splitBarcodes.Sum(x => x.NumberOfCone);
-                entity.WeightPerCone = splitBarcodes.Sum(x => x.WeightPerCone);
+                entity.Quantity = mergeBarcodes.Sum(x => x.Quantity);
+                entity.RemainQuantity = mergeBarcodes.Sum(x => x.RemainQuantity);
+                entity.NumberOfCone = mergeBarcodes.Sum(x => x.NumberOfCone);
+                entity.WeightPerCone = mergeBarcodes.Sum(x => x.WeightPerCone);
+                entity.FromId = String.Join(", ", mergeBarcodes.Select(x => x.Id));
 
                 entity = await AddAsync(entity);
 
                 var splitHis = new List<ArticleBarcodeHistory>();
 
-                foreach (var splitBarcode in splitBarcodes)
+                foreach (var mergeBarcode in mergeBarcodes)
                 {
-                    splitHis.Add(new() { MergeSplitType = MergeSplitType.Merge, FromId = splitBarcode.Id, ToId = entity.Id });
+                    splitHis.Add(new() { MergeSplitType = MergeSplitType.Merge, FromId = mergeBarcode.Id, ToId = entity.Id });
+
+                    mergeBarcode.RemainQuantity = 0;
+                    mergeBarcode.ToId = entity.Id.ToString();
                 }
 
+                _articleBarCodeSet.UpdateRange(mergeBarcodes);
                 await _barCodeHistory.AddRangeAsync(splitHis);
 
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
+                return entity;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e.Message);
                 await trans.RollbackAsync();
                 throw;
             }
         }
 
-        public Task<Dictionary<string, ArticleBarcode>> GetByBarCodesAsync(string[] barCodes)
+        public async Task<Dictionary<string, ArticleBarcode>> GetByBarCodesAsync(string[] barCodes)
         {
-            throw new NotImplementedException();
+            return await _articleBarCodeSet.Include(x => x.ImportDetails).Include(x => x.ExportDetails).Where(x => barCodes.Contains(x.Barcode)).ToDictionaryAsync(x => x.Barcode);
         }
 
-        public Task<Dictionary<int, ArticleBarcode>> GetByBarIdsAsync(int[] ids)
+        public async Task<ICollection<ArticleBarcode>> GetAllByBarcodesAsync(string[] barCodes)
         {
-            throw new NotImplementedException();
+            return await _articleBarCodeSet
+                .Include(x => x.ImportDetails)
+                .Include(x => x.ExportDetails)
+                .Include(x => x.BarcodeLocations)
+                .Where(x => barCodes.Contains(x.Barcode)).ToListAsync();
+        }
+
+        public async Task<Dictionary<int, ArticleBarcode>> GetByBarIdsAsync(int[] ids)
+        {
+            return await _articleBarCodeSet.Include(x => x.ImportDetails).Include(x => x.ExportDetails).Where(x => ids.Contains(x.Id)).ToDictionaryAsync(x => x.Id);
+        }
+
+
+        public async Task<PagedResponse<IReadOnlyList<TModel>>> GetModelPagedCustomReponseAsync<TParam, TModel>(TParam parameter, string barcodes, string articleCodes) where TParam : RequestParameter where TModel : class
+        {
+            var response = new PagedResponse<IReadOnlyList<TModel>>(parameter.PageNumber, parameter.PageSize);
+
+            var query = _articleBarCodeSet.Filter(parameter);
+            query = query.Where(x => x.IsActive == true);
+            query = query.Where(x => x.RemainQuantity > 0);
+            if (!string.IsNullOrEmpty(barcodes))
+            {
+                var barcodeArr = barcodes.Split(',').Select(x => x.Trim());
+                query = query.Where(x => barcodeArr.Contains(x.Barcode));
+            }
+            if (!string.IsNullOrEmpty(articleCodes))
+            {
+                var articleCodeAr = articleCodes.Split(',').Select(x => x.Trim());
+                query = query.Where(x => articleCodeAr.Contains(x.ArticleCode));
+            }
+
+            response.TotalCount = await query.CountAsync();
+            response.Data = await query.AsNoTracking()
+                    .OrderBy(parameter.OrderBy)
+                    .SearchTerm(parameter.SearchTerm, parameter.GetSearchProps())
+                    .Paged(parameter.PageSize, parameter.PageNumber)
+                    .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+            return response;
+        }
+
+        public async Task<bool> UpdateArticleBarcodesLocationAsync(ICollection<ArticleBarcode> entities, ICollection<BarcodeLocation> newBarcodeLocations)
+        {
+            var rs = false;
+            var trans = await _dbContext.Database.BeginTransactionAsync();
+            try
+            {
+                _articleBarCodeSet.UpdateRange(entities);
+                await _barCodeLocation.AddRangeAsync(newBarcodeLocations);
+                await _dbContext.SaveChangesAsync();
+                await trans.CommitAsync();
+                return rs=true;
+            }
+            catch (Exception)
+            {
+                await trans.RollbackAsync();
+                return rs;
+            }
         }
     }
 }

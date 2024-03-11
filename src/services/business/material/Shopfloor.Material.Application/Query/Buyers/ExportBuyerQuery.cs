@@ -28,11 +28,8 @@ namespace Shopfloor.Material.Application.Query.Buyers
         {
             if (request.Ids == null || request.Ids.Length == 0)
                 throw new ArgumentNullException(nameof(request.Ids));
-            var data = new List<Dictionary<string, object>>();
             var buyers = await _repository.GetBuyerByIdsAsync(request.Ids);
-            foreach (var buyer in buyers)
-                data.Add(CellData(buyer));
-
+            var data = buyers.Select(CellData).ToList();
             if (data.Count == 0)
                 throw new Exception("Not found data");
             var fname = "BuyerMaster.xls";

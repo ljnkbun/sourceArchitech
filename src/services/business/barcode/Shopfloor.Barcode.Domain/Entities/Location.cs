@@ -9,9 +9,9 @@ namespace Shopfloor.Barcode.Domain.Entities
         {
             BarcodeLocations = new HashSet<BarcodeLocation>();
         }
-        public int ParentLocationId { get; set; }
+        public int? ParentLocationId { get; set; }
         public string Barcode { get; set; }
-        public LevelLocation LevelLocation { get; set; }
+        public LevelLocation? LevelLocation { get; set; }
         public virtual ICollection<BarcodeLocation> BarcodeLocations { get; set; }
     }
 }

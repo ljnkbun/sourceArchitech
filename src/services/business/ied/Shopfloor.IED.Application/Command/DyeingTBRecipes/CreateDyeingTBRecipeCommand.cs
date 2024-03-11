@@ -2,7 +2,6 @@
 using MediatR;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Command.DyeingTBRTasks;
-using Shopfloor.IED.Application.Command.DyeingTBRVersions;
 using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
@@ -14,13 +13,15 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRecipes
 
         public int TemplateId { get; set; }
 
+        public string TBRecipeName { get; set; }
+
         public string TemplateName { get; set; }
 
         public string TCFNo { get; set; }
 
-        public int ApproveVersionId { get; set; }
+        public int ApproveVersionIndex { get; set; }
 
-        public DateTime ApproveDate { get; set; }
+        public DateTime? ApproveDate { get; set; }
 
         public string Comment { get; set; }
 
@@ -40,9 +41,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRecipes
 
         public TBRecipeStatus Status { get; set; }
 
-        public virtual ICollection<CreateDyeingTBRVersionCommand> DyeingTBRVersions { get; set; }
-
-        public virtual ICollection<CreateDyeingTBRTaskCommand> DyeingTBRTasks { get; set; }
+        public ICollection<CreateDyeingTBRTaskCommand> DyeingTBRTasks { get; set; }
     }
 
     public class CreateDyeingTBRecipeCommandHandler : IRequestHandler<CreateDyeingTBRecipeCommand, Response<int>>

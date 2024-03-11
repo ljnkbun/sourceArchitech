@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.CropSeasons
         public async Task<Response<CropSeason>> Handle(GetCropSeasonQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"CropSeason Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"CropSeason Not Found (Id:{query.Id}).");
             return new Response<CropSeason>(entity);
         }
     }

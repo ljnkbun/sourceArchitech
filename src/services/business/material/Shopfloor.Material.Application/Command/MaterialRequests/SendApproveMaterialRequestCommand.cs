@@ -24,7 +24,7 @@ namespace Shopfloor.Material.Application.Command.MaterialRequests
         public async Task<Response<int>> Handle(SendApproveMaterialRequestCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"MaterialRequest Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"MaterialRequest Not Found (Id:{command.Id}).");
             entity.Status = ProcessStatus.Confirmed;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

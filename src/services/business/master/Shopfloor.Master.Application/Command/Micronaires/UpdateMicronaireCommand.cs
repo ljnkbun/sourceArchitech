@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Micronaires
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Micronaire Not Found.");
+            if (entity == null) return new($"Micronaire Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

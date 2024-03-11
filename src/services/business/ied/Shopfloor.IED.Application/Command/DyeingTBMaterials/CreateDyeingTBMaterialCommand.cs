@@ -10,7 +10,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBMaterials
     {
         public int DyeingTBRequestId { get; set; }
 
-        public string ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
 
         public string ArticleCode { get; set; }
 
@@ -18,11 +18,13 @@ namespace Shopfloor.IED.Application.Command.DyeingTBMaterials
 
         public string MaterialType { get; set; }
 
+        public string FabricStyleRef { get; set; }
+
         public string FabricContent { get; set; }
 
         public string Lights { get; set; }
 
-        public virtual ICollection<CreateDyeingTBMaterialColorCommand> DyeingTBMaterialColors { get; set; }
+        public ICollection<CreateDyeingTBMaterialColorCommand> DyeingTBMaterialColors { get; set; }
     }
 
     public class CreateDyeingTBMaterialCommandHandler : IRequestHandler<CreateDyeingTBMaterialCommand, Response<int>>

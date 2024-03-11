@@ -20,8 +20,12 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
+                Code = filter.Code,
+                Name = filter.Name,
+                Types = filter.Types,
+                Statuses = filter.Statuses,
+                WfxStatuses = filter.WfxStatuses,
                 IsActive = filter.IsActive,
-                Status = filter.Status,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
             }));
@@ -46,6 +50,20 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         public async Task<IActionResult> Put(int id, UpdateExportCommand command)
         {
             if (id != command.Id) return BadRequest();
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/5
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusExportCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/5
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> Put(UpdateStatusExportsCommand command)
+        {
             return Ok(await Mediator.Send(command));
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shopfloor.Barcode.Application.Parameters.WfxPOArticles;
+using Shopfloor.Barcode.Application.Query.Locations;
 using Shopfloor.Barcode.Application.Query.WfxPOArticles;
 
 namespace Shopfloor.Barcode.Api.Controllers.v1
@@ -26,7 +27,7 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 OrderType = filter.OrderTypes,
                 SupplierName = filter.SupplierName,
                 ToOrderDate = filter.ToOrderDate,
-                WFXArticleCode = filter.WFXArticleCode,
+                ArticleCode = filter.ArticleCode,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
             }));
@@ -37,6 +38,13 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetWfxPOArticleQuery { Id = id }));
+        }
+
+        // GET api/v1/<controller>/5
+        [HttpGet("ByArticleCodeOrderRef")]
+        public async Task<IActionResult> GetByArticleCodeOrderRef(string articleCode, string orderRefNum)
+        {
+            return Ok(await Mediator.Send(new GetWfxPOArticleByArticleCodeOrderRefQuery { ArticleCode = articleCode, OrderRefNum = orderRefNum }));
         }
 
     }

@@ -45,7 +45,7 @@ namespace Shopfloor.Master.Application.Query.Factories
         {
             var validFilter = _mapper.Map<FactoryParameter>(request);
             validFilter.SetSearchProps(new string[] { nameof(FactoryParameter.Code), nameof(FactoryParameter.Name) }.ToList());
-            return await _repository.GetModelPagedReponseAsync<FactoryParameter, FactoryModel>(validFilter);
+            return await _repository.GetModelSingleQueryPagedReponseAsync<FactoryParameter, FactoryModel>(validFilter);
         }
     }
 }

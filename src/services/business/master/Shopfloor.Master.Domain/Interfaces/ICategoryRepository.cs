@@ -5,5 +5,6 @@ namespace Shopfloor.Master.Domain.Interfaces
 {
     public interface ICategoryRepository : IMasterRepositoryAsync<Category>
     {
+        Task<bool> IsExistAsync(int id);
     }
 }

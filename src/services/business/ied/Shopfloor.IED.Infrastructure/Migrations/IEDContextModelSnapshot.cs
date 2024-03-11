@@ -31,7 +31,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
@@ -40,29 +42,33 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IndexFormat")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("InputValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Separate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AutoIncrements");
+                    b.ToTable("AutoIncrement", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.Concentrate", b =>
@@ -163,7 +169,14 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<string>("ChemicalCode")
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int>("ChemicalId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ChemicalName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ChemicalSubCategory")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -182,9 +195,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -227,10 +237,37 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<int>("DCTemplateId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DyeingOpreationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DyeingOpreationName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DyeingProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DyeingProcessName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MachineName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("Minute")
                         .HasColumnType("int");
@@ -243,16 +280,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TaskCode")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TaskName")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<string>("Temperature")
                         .HasColumnType("varchar(50)");
 
@@ -261,6 +288,313 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasIndex("DCTemplateId");
 
                     b.ToTable("DCTemplateTask", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("DyeingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DyeingIEDId");
+
+                    b.ToTable("DyeingFile", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingIED", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AnalysisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AnalysisUser")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Buyer")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ColorRef")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InputMaterialName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductGroup")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestArticleOutputId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestNo")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int?>("RequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("SubCategory")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("TCFNo")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("WFXArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WFXInputMaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("RequestArticleOutputId")
+                        .IsUnique();
+
+                    b.HasIndex("RequestTypeId");
+
+                    b.ToTable("DyeingIED", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingProcessChemical", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChemicalCode")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ChemicalName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DyeingRoutingId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("SubCategoryCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubCategoryName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DyeingProcessChemical", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingRouting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DyeingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DyeingOperation")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DyeingOperationCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DyeingProcess")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DyeingProcessCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<decimal>("Efficiency")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineCode")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("MachineName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal>("MachineTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("OperationTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("Temperature")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DyeingIEDId");
+
+                    b.ToTable("DyeingRouting", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBMaterial", b =>
@@ -273,10 +607,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<string>("ArticleCode")
                         .HasColumnType("varchar(50)");
-
-                    b.Property<string>("ArticleId")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ArticleName")
                         .HasMaxLength(500)
@@ -294,6 +624,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FabricContent")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FabricStyleRef")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -317,6 +651,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WFXArticleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -375,51 +712,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.ToTable("DyeingTBMaterialColor", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRCValue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("DyeingTBRChemicalId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DyeingTBRVersionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DyeingTBRVersionId");
-
-                    b.ToTable("DyeingTBRCValue", (string)null);
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRChemical", b =>
                 {
                     b.Property<int>("Id")
@@ -429,7 +721,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ChemicalCode")
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("ChemicalId")
                         .HasColumnType("int");
@@ -437,6 +729,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<string>("ChemicalName")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ChemicalSubCategory")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -470,6 +766,51 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasIndex("DyeingTBRTaskId");
 
                     b.ToTable("DyeingTBRChemical", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRChemicalValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DyeingTBRChemicalId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("VersionIndex")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DyeingTBRChemicalId");
+
+                    b.ToTable("DyeingTBRChemicalValue", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRTask", b =>
@@ -510,6 +851,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("MachineCode")
                         .HasColumnType("varchar(50)");
 
@@ -528,6 +872,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Ratio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(28,8)")
+                        .HasDefaultValue(0m);
+
                     b.Property<decimal>("Temperature")
                         .HasColumnType("decimal(28,8)");
 
@@ -538,54 +887,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.ToTable("DyeingTBRTask", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRVersion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DoTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DyeingTBRecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DyeingTBRecipeId");
-
-                    b.ToTable("DyeingTBRVersion", (string)null);
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", b =>
                 {
                     b.Property<int>("Id")
@@ -594,10 +895,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ApproveDate")
+                    b.Property<DateTime?>("ApproveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ApproveVersionId")
+                    b.Property<int>("ApproveVersionIndex")
                         .HasColumnType("int");
 
                     b.Property<string>("Buyer")
@@ -653,6 +954,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("TBRecipeName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("TBRecipeNo")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -673,7 +978,8 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DyeingTBMaterialColorId");
+                    b.HasIndex("DyeingTBMaterialColorId")
+                        .IsUnique();
 
                     b.ToTable("DyeingTBRecipe", (string)null);
                 });
@@ -705,6 +1011,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("DyeingIEDId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ExpiredDate")
                         .HasColumnType("datetime2");
 
@@ -721,6 +1030,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("RecipeCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Remark")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -730,9 +1042,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<string>("RequestNo")
                         .HasColumnType("varchar(50)");
-
-                    b.Property<int>("RequestType")
-                        .HasColumnType("int");
 
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint");
@@ -953,6 +1262,588 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.ToTable("FormulaField", (string)null);
                 });
 
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingBodyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KnittingBodyType", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingFeeder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KnittingFeeder", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("KnittingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnittingIEDId");
+
+                    b.ToTable("KnittingFile", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingGreige", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Feeder")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("Gauge")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("HorizontalDensity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("HorizontalDensityLossRate")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("KnittingBodyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KnittingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KnittingShrinkageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KnittingTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MachineDiameter")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Needle")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("RappoLength")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("UsedFeeder")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("VerticalDensity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("VerticalDensityLossRate")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WeftShrinkage")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WeightGM")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WeightGMLossRate")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WeightKg")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("Width")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WidthLossRate")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WrapShrinkage")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnittingBodyTypeId");
+
+                    b.HasIndex("KnittingIEDId");
+
+                    b.HasIndex("KnittingShrinkageId");
+
+                    b.HasIndex("KnittingTypeId");
+
+                    b.ToTable("KnittingGreige", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingIED", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AnalysisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AnalysisUser")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Buyer")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductGroup")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestArticleOutputId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestNo")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("SubCategory")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("WFXArticleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestArticleOutputId")
+                        .IsUnique();
+
+                    b.ToTable("KnittingIED", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingMachineDiameter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KnittingMachineDiameter", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingRouting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("KnittingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KnittingOperation")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("KnittingOperationCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("KnittingProcess")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("KnittingProcessCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MachineTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineTypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnittingIEDId");
+
+                    b.ToTable("KnittingRouting", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingShrinkage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KnittingShrinkage", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KnittingType", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingYarn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("KnittingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WFXYarnId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Wastage")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("YarnCode")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("YarnName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal>("YarnRatio")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnittingIEDId");
+
+                    b.ToTable("KnittingYarn", (string)null);
+                });
+
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.LabourSkill", b =>
                 {
                     b.Property<int>("Id")
@@ -1007,11 +1898,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -1034,15 +1920,53 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("Light", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.LiquorRatio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LiquorRatio", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.ProcessTask", b =>
@@ -1213,10 +2137,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("DyeingTBRVersionId")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("DyeingTBRequestId")
+                    b.Property<int>("DyeingTBRecipeId")
                         .HasColumnType("int");
 
                     b.Property<string>("FabricCode")
@@ -1292,7 +2217,56 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DyeingTBRecipeId")
+                        .IsUnique();
+
                     b.ToTable("Recipe", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RecipeCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("RecipeCategory", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RecipeChemical", b =>
@@ -1307,6 +2281,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("ChemicalName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ChemicalSubcategory")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -1364,7 +2342,23 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DyeingOpreation")
+                    b.Property<string>("DyeingOperationCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("DyeingOperationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DyeingOperationName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DyeingProcessCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("DyeingProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DyeingProcessName")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -1373,12 +2367,12 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<string>("MachineType")
+                    b.Property<string>("MachineCode")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MachineName")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("Minutes")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -1388,10 +2382,18 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Ratio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(28,8)")
+                        .HasDefaultValue(0m);
+
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Temperature")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("Time")
                         .HasColumnType("decimal(28,8)");
 
                     b.HasKey("Id");
@@ -1408,11 +2410,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -1441,9 +2438,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.ToTable("RecipeUnit", (string)null);
                 });
 
@@ -1470,6 +2464,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ExpectedQty")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -1517,9 +2514,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ArticleName")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -1549,6 +2543,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<int>("RequestArticleOutputId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WFXArticleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RequestArticleOutputId");
@@ -1569,13 +2566,15 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ArticleName")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("BaseColorList")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -1604,6 +2603,12 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RequestDivisionProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("WFXArticleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1642,6 +2647,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime>("ExpectedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1658,11 +2666,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("RequestId")
                         .HasColumnType("int");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -1770,11 +2778,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("RequestDivisionId")
                         .HasColumnType("int");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -1791,6 +2799,247 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("RequestType", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingBundle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SewingBundle", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingComponent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("SewingComponent", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingComponentGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("SewingComponentGroup", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingEfficiencyProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Contingency")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<bool?>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MachineDelay")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal>("PersonalAllowance")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SewingEfficiencyProfile", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLib", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AllowedTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("BuyerCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("BuyerName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -1804,54 +3053,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("RequestType", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeature", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("AllowedTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1860,151 +3061,56 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<decimal>("LabourCost")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("LineCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<decimal>("TotalSMV")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SewingFeature", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureBOL", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("AllowedTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MachineName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("RPM")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("SMV")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<int>("SewingFeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SewingOperationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SewingFeatureId");
-
-                    b.HasIndex("SewingOperationId");
-
-                    b.ToTable("SewingFeatureBOL", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLib", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("AllowedTime")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("FolderTreeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<decimal>("LabourCost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("SewingComponentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubCategoryCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubCategoryName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<decimal>("TotalSMV")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(28,8)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.HasIndex("FolderTreeId");
 
-                    b.ToTable("SewingFeatureLibs");
+                    b.HasIndex("SewingComponentId");
+
+                    b.ToTable("SewingFeatureLib", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLibBOL", b =>
@@ -2016,43 +3122,64 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AllowedTime")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Freq")
+                        .HasColumnType("varchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<int>("LineNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("MachineName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("RPM")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<decimal>("SMV")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<int>("SewingFeatureLibId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SewingOperationLibId")
+                    b.Property<int?>("SewingOperationLibId")
                         .HasColumnType("int");
+
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -2060,23 +3187,16 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasIndex("SewingOperationLibId");
 
-                    b.ToTable("SewingFeatureLibBOLs");
+                    b.ToTable("SewingFeatureLibBOL", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacro", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BundleTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -2086,469 +3206,45 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<decimal>("MachineTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("ManualTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal>("NoneMachineTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("TotalBasicMinutes")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SewingMacro", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroBOL", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SewingMacroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SewingTaskId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SewingMacroId");
-
-                    b.HasIndex("SewingTaskId");
-
-                    b.ToTable("SewingMacroBOL", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLib", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BundleTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FolderTreeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<decimal>("MachineTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("ManualTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<decimal>("NoneMachineTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("TotalBasicMinutes")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FolderTreeId");
-
-                    b.ToTable("SewingMacroLib", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLibBOL", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SewingMacroLibId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SewingTaskLibId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SewingMacroLibId");
-
-                    b.HasIndex("SewingTaskLibId");
-
-                    b.ToTable("SewingMacroLibBOLs");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BundleTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<decimal>("LabourCost")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("LineCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MachineTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("ManualTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<decimal>("NoneMachineTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SewingOperation", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationBOL", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("SewingMacroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SewingOperationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SewingTaskId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<byte>("Type")
+                    b.Property<string>("FileId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
                         .HasColumnType("tinyint");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SewingMacroId");
-
-                    b.HasIndex("SewingOperationId");
-
-                    b.HasIndex("SewingTaskId");
-
-                    b.ToTable("SewingOperationBOL", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLib", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BundleTMU")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FolderTreeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("LabourCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("MachineTMU")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ManualTMU")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("NoneMachineTime")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("SewingIEDId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FolderTreeId");
+                    b.HasIndex("SewingIEDId");
 
-                    b.ToTable("SewingOperationLibs");
+                    b.ToTable("SewingFile", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLibBOL", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Freq")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("SewingMacroLibId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SewingOperationLibId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SewingTaskLibId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalTMU")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SewingMacroLibId");
-
-                    b.HasIndex("SewingOperationLibId");
-
-                    b.HasIndex("SewingTaskLibId");
-
-                    b.ToTable("SewingOperationLibBOLs");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFX", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingIED", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2559,12 +3255,16 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("AllowedTime")
                         .HasColumnType("decimal(28,8)");
 
+                    b.Property<DateTime>("AnalysisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AnalysisUser")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("ArticleCode")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ArticleName")
                         .HasMaxLength(500)
@@ -2574,7 +3274,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("Comments")
+                    b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -2584,9 +3284,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("CurrentVersionId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -2628,12 +3325,14 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("ProductSubCategory")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestDivisionProcessId")
+                    b.Property<int>("RequestArticleOutputId")
                         .HasColumnType("int");
+
+                    b.Property<string>("RequestNo")
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("SMV")
                         .HasColumnType("decimal(28,8)");
@@ -2641,22 +3340,26 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("WFXProcessCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("WFXProcessName")
+                    b.Property<string>("StyleRef")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<string>("SubCategory")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("WFXArticleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("RequestDivisionProcessId");
+                    b.HasIndex("RequestArticleOutputId")
+                        .IsUnique();
 
-                    b.ToTable("SewingOperationWFX", (string)null);
+                    b.ToTable("SewingIED", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFXVersion", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMachineEfficiencyProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2677,6 +3380,13 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
+                    b.Property<int>("MachineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -2685,21 +3395,17 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SewingOperationWFXId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Version")
+                    b.Property<int>("SewingEfficiencyProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SewingOperationWFXId", "Version")
-                        .IsUnique();
+                    b.HasIndex("SewingEfficiencyProfileId");
 
-                    b.ToTable("SewingOperationWFXVersion", (string)null);
+                    b.ToTable("SewingMachineEfficiencyProfile", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFX", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLib", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2707,10 +3413,166 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("AllowedTime")
+                    b.Property<decimal?>("BundleTMU")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("BundleTMU")
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FolderTreeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<decimal?>("MachineTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("ManualTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("NoneMachineTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int?>("SewingComponentGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalBasicMinutes")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FolderTreeId");
+
+                    b.HasIndex("SewingComponentGroupId");
+
+                    b.ToTable("SewingMacroLib", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLibBOL", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("BundleTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Freq")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("MachineTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("ManualTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("SewingMacroLibId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SewingTaskLibId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SewingMacroLibId");
+
+                    b.HasIndex("SewingTaskLibId");
+
+                    b.ToTable("SewingMacroLibBOL", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLib", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("BundleTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("Contingency")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -2729,12 +3591,8 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Effort")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Freq")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("FolderTreeId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -2744,16 +3602,13 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("LabourCost")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<string>("LineCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LineNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MachineTMU")
+                    b.Property<decimal>("MachineDelay")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("ManualTMU")
+                    b.Property<decimal?>("MachineTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("ManualTMU")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -2764,47 +3619,65 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("NonMachineTime")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("QualityComments")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("QuatityPoints")
+                    b.Property<decimal>("NoneMachineTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("PersonalAllowance")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("SewingComponentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubCategoryCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubCategoryName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("SewingOperationWFXVersionId")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalSMV")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<string>("WFXProcessCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("WFXProcessName")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SewingOperationWFXVersionId");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
-                    b.ToTable("SewingSubOperationWFX", (string)null);
+                    b.HasIndex("FolderTreeId");
+
+                    b.HasIndex("SewingComponentId");
+
+                    b.ToTable("SewingOperationLib", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFXBOL", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLibBOL", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Allowance")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("BundleTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("BundleTime")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -2814,6 +3687,12 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Freq")
+                        .HasColumnType("varchar(50)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -2821,6 +3700,12 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<int>("LineNumber")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("MachineTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("ManualTMU")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -2830,30 +3715,37 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("SewingFeatureId")
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("SewingMacroLibId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SewingOperationId")
+                    b.Property<int>("SewingOperationLibId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SewingSubOperationWFXId")
+                    b.Property<int?>("SewingTaskLibId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalTMU")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SewingFeatureId");
+                    b.HasIndex("SewingMacroLibId");
 
-                    b.HasIndex("SewingOperationId");
+                    b.HasIndex("SewingOperationLibId");
 
-                    b.HasIndex("SewingSubOperationWFXId");
+                    b.HasIndex("SewingTaskLibId");
 
-                    b.ToTable("SewingSubOperationWFXBOL", (string)null);
+                    b.ToTable("SewingOperationLibBOL", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFXResult", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLibResult", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2861,7 +3753,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("BasicMunite")
+                    b.Property<decimal>("BasicMinute")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<decimal>("Contingency")
@@ -2886,7 +3778,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<decimal>("MachineDelay")
+                    b.Property<decimal?>("MachineDelay")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -2900,30 +3792,30 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("PersonalAllowance")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("SMV")
+                    b.Property<decimal?>("SMV")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<int>("SewingSubOperationWFXId")
+                    b.Property<int>("SewingOperationLibId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TMU")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<byte>("TMUType")
-                        .HasColumnType("tinyint");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(28,8)");
 
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SewingSubOperationWFXId", "TMUType")
+                    b.HasIndex("SewingOperationLibId", "Type")
                         .IsUnique();
 
-                    b.ToTable("SewingSubOperationWFXResult", (string)null);
+                    b.ToTable("SewingOperationLibResult", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingTask", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2931,12 +3823,54 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("BundleTMU")
+                    b.Property<decimal>("CMRate")
+                        .HasColumnType("decimal(28,9)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("EfficiencyRate")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<decimal>("ExpectedQtyFrom")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("ExpectedQtyTo")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SewingRate", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRouting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -2951,25 +3885,95 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((0))");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("SMV")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("SewingIEDId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("WFXOperationCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("WFXOperationName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("WFXProcessCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("WFXProcessName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SewingIEDId");
+
+                    b.ToTable("SewingRouting", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRoutingBOL", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("BundleTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Freq")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<string>("LineCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("MachineTMU")
+                    b.Property<decimal?>("MachineTMU")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("ManualTMU")
+                    b.Property<decimal?>("ManualTMU")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -2984,12 +3988,78 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal>("SMV")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int?>("SewingFeatureLibId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SewingOperationLibId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SewingRoutingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalSMV")
+                        .HasColumnType("decimal(28,8)");
+
                     b.Property<decimal>("TotalTMU")
                         .HasColumnType("decimal(28,8)");
 
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
-                    b.ToTable("SewingTask", (string)null);
+                    b.HasIndex("SewingFeatureLibId");
+
+                    b.HasIndex("SewingOperationLibId");
+
+                    b.HasIndex("SewingRoutingId");
+
+                    b.ToTable("SewingRoutingBOL", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubcategoryEfficiency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SewingEfficiencyProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubCategory")
+                        .HasColumnType("varchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SewingEfficiencyProfileId");
+
+                    b.ToTable("SewingSubcategoryEfficiency", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingTaskLib", b =>
@@ -3000,7 +4070,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("BundleTMU")
+                    b.Property<decimal?>("BundleTMU")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("BundleTime")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<string>("Code")
@@ -3023,19 +4096,22 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Freq")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<decimal>("MachineTMU")
+                    b.Property<int>("MachineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal?>("MachineTMU")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("ManualTMU")
+                    b.Property<decimal?>("ManualTMU")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -3050,10 +4126,23 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("SewingBundleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SewingMachineEfficiencyProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("TaskType")
+                        .HasColumnType("tinyint");
+
                     b.Property<decimal>("TotalTMU")
                         .HasColumnType("decimal(28,8)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SewingBundleId");
+
+                    b.HasIndex("SewingMachineEfficiencyProfileId");
 
                     b.ToTable("SewingTaskLib", (string)null);
                 });
@@ -3066,11 +4155,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -3098,13 +4182,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.ToTable("Shade", (string)null);
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingArticle", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingBackgroundStyle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3112,18 +4193,89 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ArticleCode")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int>("ArticleId")
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("WeavingBackgroundStyle", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingBorderStyle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ArticleName")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("WeavingBorderStyle", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingDetailStructure", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -3134,9 +4286,76 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DentSplit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Denting")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int?>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("StructureType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeavingIEDId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeavingIEDId");
+
+                    b.ToTable("WeavingDetailStructure", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte>("FileType")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -3158,153 +4377,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasIndex("WeavingIEDId");
 
-                    b.ToTable("WeavingArticle", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingBackgrounStyle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("WeavingBackgrounStyle", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingBorderStyle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("WeavingBorderStyle", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingDetailStructure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CombString")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SlotNumber")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("StructureType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WeavingArticleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WeavingArticleId");
-
-                    b.ToTable("WeavingDetailStructure", (string)null);
+                    b.ToTable("WeavingFile", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingIED", b =>
@@ -3315,7 +4388,106 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("AnalysisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AnalysisUser")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Buyer")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductGroup")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestArticleOutputId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestNo")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int?>("RequestTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("SubCategory")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("WFXArticleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestArticleOutputId")
+                        .IsUnique();
+
+                    b.HasIndex("RequestTypeId");
+
+                    b.ToTable("WeavingIED", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingOperation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ArticleName")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -3327,10 +4499,73 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Operation")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WFXArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeavingRoutingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeavingRoutingId");
+
+                    b.ToTable("WeavingOperation", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingOperationInputArticle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ArticleCode")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ArticleName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -3345,21 +4580,17 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RequestDivisionId")
+                    b.Property<int>("WFXArticleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RequestNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("WeavingOperationId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RequestDivisionId");
+                    b.HasIndex("WeavingOperationId");
 
-                    b.ToTable("WeavingIED", (string)null);
+                    b.ToTable("WeavingOperationInputArticle", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRappo", b =>
@@ -3369,6 +4600,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdditionYarn")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -3383,6 +4617,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((0))");
 
+                    b.Property<string>("DrawingComment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HorizontalRappoComment")
                         .HasColumnType("nvarchar(max)");
 
@@ -3390,6 +4627,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
+
+                    b.Property<int>("Line")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3399,27 +4639,25 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("NumOfLine")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumOfRappo")
+                    b.Property<int>("TotalRappo")
                         .HasColumnType("int");
 
                     b.Property<string>("VerticalRappoComment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WeavingArticleId")
+                    b.Property<int>("WarpPerContentDentSplit")
                         .HasColumnType("int");
 
-                    b.Property<int>("YarnOfBackground")
+                    b.Property<int>("WarpPerMarginDentSplit")
                         .HasColumnType("int");
 
-                    b.Property<int>("YarnOfBorder")
+                    b.Property<int>("WeavingIEDId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WeavingArticleId");
+                    b.HasIndex("WeavingIEDId")
+                        .IsUnique();
 
                     b.ToTable("WeavingRappo", (string)null);
                 });
@@ -3458,6 +4696,9 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<int>("PatternIndex")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Type")
+                        .HasColumnType("bit");
 
                     b.Property<int>("WeavingRappoId")
                         .HasColumnType("int");
@@ -3518,7 +4759,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<int>("RowIndex")
                         .HasColumnType("int");
 
-                    b.Property<int>("VerticleYarnId")
+                    b.Property<int>("SlotIndex")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VerticleYarnId")
                         .HasColumnType("int");
 
                     b.Property<int>("WeavingRappoId")
@@ -3533,6 +4777,106 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasIndex("WeavingRappoId");
 
                     b.ToTable("WeavingRappoMatric", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingReportSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<bool>("Locked")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NumberOfSplit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Repeat")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("SettingType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("WeavingIEDId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeavingIEDId")
+                        .IsUnique();
+
+                    b.ToTable("WeavingReportSetting", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingReportSettingDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("GroupIndex")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Repeat")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Split")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("WeavingReportSettingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeavingReportSettingId");
+
+                    b.ToTable("WeavingReportSettingDetail", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRouting", b =>
@@ -3551,11 +4895,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((0))");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -3563,11 +4902,6 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.Property<int>("LineNumber")
                         .HasColumnType("int");
-
-                    b.Property<string>("MachineType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3577,22 +4911,20 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("WeavingArticleId")
+                    b.Property<int>("WeavingIEDId")
                         .HasColumnType("int");
-
-                    b.Property<string>("WeavingOperation")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("WeavingProcess")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("WeavingProcessCode")
+                        .HasColumnType("varchar(100)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("WeavingArticleId");
+                    b.HasIndex("WeavingIEDId");
 
                     b.ToTable("WeavingRouting", (string)null);
                 });
@@ -3605,27 +4937,10 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("BackgroundLoomFrame")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("BackgroundType")
+                    b.Property<string>("ContentWeaveStyle")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("BorderLoomFrame")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("BorderType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("CombNum")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<decimal>("CombSize")
-                        .HasColumnType("decimal(28,8)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -3640,13 +4955,13 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<decimal>("HorizontalDensity")
+                    b.Property<decimal>("GreigeWidth")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("HorizontalDensitySetting")
+                    b.Property<decimal>("HarnessFrameCWS")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("HorizontalShrinkage")
+                    b.Property<decimal>("HarnessFrameMWS")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<bool>("IsActive")
@@ -3662,6 +4977,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<string>("MarginWeaveStyle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -3673,17 +4993,29 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("RPM")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("RusticSize")
+                    b.Property<decimal>("ReedCount")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("VerticalDensity")
+                    b.Property<decimal>("ReedWidth")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<decimal>("VerticalShrinkage")
+                    b.Property<decimal>("SettingWeftDensity")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<int>("WeavingArticleId")
+                    b.Property<decimal>("WarpDensity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WarpShrinkage")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("WeavingIEDId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("WeftDensity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal>("WeftShrinkage")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<decimal>("WeightGM")
                         .HasColumnType("decimal(28,8)");
@@ -3693,7 +5025,8 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WeavingArticleId");
+                    b.HasIndex("WeavingIEDId")
+                        .IsUnique();
 
                     b.ToTable("WeavingRusticFabricSpec", (string)null);
                 });
@@ -3744,10 +5077,13 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("SizingRatio")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<int>("WeavingArticleId")
+                    b.Property<int>("WFXYarnId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WeavingRappoId")
+                    b.Property<decimal>("WastageRatio")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int>("WeavingIEDId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
@@ -3769,14 +5105,15 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Property<decimal>("YarnRatio")
                         .HasColumnType("decimal(28,8)");
 
+                    b.Property<decimal?>("YarnTotal")
+                        .HasColumnType("decimal(28,8)");
+
                     b.Property<byte>("YarnType")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WeavingArticleId");
-
-                    b.HasIndex("WeavingRappoId");
+                    b.HasIndex("WeavingIEDId");
 
                     b.ToTable("WeavingYarn", (string)null);
                 });
@@ -3852,6 +5189,53 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("DCTemplate");
                 });
 
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingFile", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingIED", "DyeingIED")
+                        .WithMany("DyeingFiles")
+                        .HasForeignKey("DyeingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DyeingIED");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingIED", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.Recipe", "Recipe")
+                        .WithMany("DyeingIEDs")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestArticleOutput", "RequestArticleOutput")
+                        .WithOne("DyeingIED")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.DyeingIED", "RequestArticleOutputId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestType", "RequestType")
+                        .WithMany("DyeingIEDs")
+                        .HasForeignKey("RequestTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("RequestArticleOutput");
+
+                    b.Navigation("RequestType");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingRouting", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingIED", "DyeingIED")
+                        .WithMany("DyeingRoutings")
+                        .HasForeignKey("DyeingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DyeingIED");
+                });
+
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBMaterial", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRequest", "DyeingTBRequest")
@@ -3874,26 +5258,26 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("DyeingTBMaterial");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRCValue", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRVersion", "DyeingTBRVersion")
-                        .WithMany("DyeingTBRCValues")
-                        .HasForeignKey("DyeingTBRVersionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DyeingTBRVersion");
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRChemical", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRTask", "DyeingTBRTask")
-                        .WithMany("DyeingTBTaskChemicals")
+                        .WithMany("DyeingTBRChemicals")
                         .HasForeignKey("DyeingTBRTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("DyeingTBRTask");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRChemicalValue", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRChemical", "DyeingTbrChemical")
+                        .WithMany("DyeingTBRChemicalValues")
+                        .HasForeignKey("DyeingTBRChemicalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DyeingTbrChemical");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRTask", b =>
@@ -3907,22 +5291,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("DyeingTBRecipe");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRVersion", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", "DyeingTBRecipe")
-                        .WithMany("DyeingTBRVersions")
-                        .HasForeignKey("DyeingTBRecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DyeingTBRecipe");
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBMaterialColor", "DyeingTBMaterialColor")
-                        .WithMany("DyeingTBRecipes")
-                        .HasForeignKey("DyeingTBMaterialColorId")
+                        .WithOne("DyeingTBRecipe")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", "DyeingTBMaterialColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3950,6 +5323,85 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("ParentFolder");
                 });
 
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingFile", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingIED", "KnittingIED")
+                        .WithMany("KnittingFiles")
+                        .HasForeignKey("KnittingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KnittingIED");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingGreige", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingBodyType", "KnittingBodyType")
+                        .WithMany("KnittingGreiges")
+                        .HasForeignKey("KnittingBodyTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingIED", "KnittingIED")
+                        .WithMany("KnittingGreiges")
+                        .HasForeignKey("KnittingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingShrinkage", "KnittingShrinkage")
+                        .WithMany("KnittingGreiges")
+                        .HasForeignKey("KnittingShrinkageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingType", "KnittingType")
+                        .WithMany("KnittingGreiges")
+                        .HasForeignKey("KnittingTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("KnittingBodyType");
+
+                    b.Navigation("KnittingIED");
+
+                    b.Navigation("KnittingShrinkage");
+
+                    b.Navigation("KnittingType");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingIED", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestArticleOutput", "RequestArticleOutput")
+                        .WithOne("KnittingIED")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.KnittingIED", "RequestArticleOutputId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("RequestArticleOutput");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingRouting", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingIED", "KnittingIED")
+                        .WithMany("KnittingRoutings")
+                        .HasForeignKey("KnittingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KnittingIED");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingYarn", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.KnittingIED", "KnittingIED")
+                        .WithMany("KnittingYarns")
+                        .HasForeignKey("KnittingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KnittingIED");
+                });
+
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.ProcessTemplateItem", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.ProcessTemplate", "ProcessTemplate")
@@ -3959,6 +5411,17 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProcessTemplate");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.Recipe", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", "DyeingTBRecipe")
+                        .WithOne("Recipe")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.Recipe", "DyeingTBRecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DyeingTBRecipe");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RecipeChemical", b =>
@@ -4049,34 +5512,23 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("RequestDivision");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureBOL", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingFeature", "SewingFeature")
-                        .WithMany("SewingFeatureBOLs")
-                        .HasForeignKey("SewingFeatureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperation", "SewingOperation")
-                        .WithMany("SewingFeatureBOLs")
-                        .HasForeignKey("SewingOperationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("SewingFeature");
-
-                    b.Navigation("SewingOperation");
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLib", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.FolderTree", "FolderTree")
                         .WithMany("SewingFeatureLibs")
                         .HasForeignKey("FolderTreeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingComponent", "SewingComponent")
+                        .WithMany("SewingFeatureLibs")
+                        .HasForeignKey("SewingComponentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FolderTree");
+
+                    b.Navigation("SewingComponent");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLibBOL", b =>
@@ -4090,31 +5542,44 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperationLib", "SewingOperationLib")
                         .WithMany("SewingFeatureLibBOLs")
                         .HasForeignKey("SewingOperationLibId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("SewingFeatureLib");
 
                     b.Navigation("SewingOperationLib");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroBOL", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFile", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingMacro", "SewingMacro")
-                        .WithMany("SewingMacroBOLs")
-                        .HasForeignKey("SewingMacroId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingIED", "SewingIED")
+                        .WithMany("SewingFiles")
+                        .HasForeignKey("SewingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SewingIED");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingIED", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestArticleOutput", "RequestArticleOutput")
+                        .WithOne("SewingIED")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.SewingIED", "RequestArticleOutputId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingTask", "SewingTask")
-                        .WithMany("SewingMacroBOLs")
-                        .HasForeignKey("SewingTaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.Navigation("RequestArticleOutput");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMachineEfficiencyProfile", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingEfficiencyProfile", "SewingEfficiencyProfile")
+                        .WithMany("SewingMachineEfficiencyProfiles")
+                        .HasForeignKey("SewingEfficiencyProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SewingMacro");
-
-                    b.Navigation("SewingTask");
+                    b.Navigation("SewingEfficiencyProfile");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLib", b =>
@@ -4125,7 +5590,14 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingComponentGroup", "SewingComponentGroup")
+                        .WithMany("SewingMacroLibs")
+                        .HasForeignKey("SewingComponentGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("FolderTree");
+
+                    b.Navigation("SewingComponentGroup");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLibBOL", b =>
@@ -4139,36 +5611,11 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasOne("Shopfloor.IED.Domain.Entities.SewingTaskLib", "SewingTaskLib")
                         .WithMany("SewingMacroLibBOLs")
                         .HasForeignKey("SewingTaskLibId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("SewingMacroLib");
 
                     b.Navigation("SewingTaskLib");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationBOL", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingMacro", "SewingMacro")
-                        .WithMany()
-                        .HasForeignKey("SewingMacroId");
-
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperation", "SewingOperation")
-                        .WithMany("SewingOperationBOLs")
-                        .HasForeignKey("SewingOperationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingTask", "SewingTask")
-                        .WithMany("SewingOperationBOLs")
-                        .HasForeignKey("SewingTaskId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("SewingMacro");
-
-                    b.Navigation("SewingOperation");
-
-                    b.Navigation("SewingTask");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLib", b =>
@@ -4176,10 +5623,18 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasOne("Shopfloor.IED.Domain.Entities.FolderTree", "FolderTree")
                         .WithMany("SewingOperationLibs")
                         .HasForeignKey("FolderTreeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingComponent", "SewingComponent")
+                        .WithMany("SewingOperationLibs")
+                        .HasForeignKey("SewingComponentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FolderTree");
+
+                    b.Navigation("SewingComponent");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLibBOL", b =>
@@ -4196,7 +5651,8 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
                     b.HasOne("Shopfloor.IED.Domain.Entities.SewingTaskLib", "SewingTaskLib")
                         .WithMany("SewingOperationLibBOLs")
-                        .HasForeignKey("SewingTaskLibId");
+                        .HasForeignKey("SewingTaskLibId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("SewingMacroLib");
 
@@ -4205,77 +5661,85 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("SewingTaskLib");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFX", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLibResult", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestDivisionProcess", "RequestDivisionProcess")
-                        .WithMany("SewingOperationWFXs")
-                        .HasForeignKey("RequestDivisionProcessId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("RequestDivisionProcess");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFXVersion", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperationWFX", "SewingOperationWFX")
-                        .WithMany("SewingOperationWFXVersions")
-                        .HasForeignKey("SewingOperationWFXId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("SewingOperationWFX");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFX", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperationWFXVersion", "SewingOperationWFXVersion")
-                        .WithMany("SewingSubOperationWFXs")
-                        .HasForeignKey("SewingOperationWFXVersionId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperationLib", "SewingOperationLib")
+                        .WithMany("SewingOperationLibResults")
+                        .HasForeignKey("SewingOperationLibId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SewingOperationWFXVersion");
+                    b.Navigation("SewingOperationLib");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFXBOL", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRouting", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingFeature", "SewingFeature")
-                        .WithMany()
-                        .HasForeignKey("SewingFeatureId");
-
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperation", "SewingOperation")
-                        .WithMany()
-                        .HasForeignKey("SewingOperationId");
-
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingSubOperationWFX", "SewingSubOperationWFX")
-                        .WithMany("SewingSubOperationWFXBOLs")
-                        .HasForeignKey("SewingSubOperationWFXId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("SewingFeature");
-
-                    b.Navigation("SewingOperation");
-
-                    b.Navigation("SewingSubOperationWFX");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFXResult", b =>
-                {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingSubOperationWFX", "SewingSubOperationWFX")
-                        .WithMany()
-                        .HasForeignKey("SewingSubOperationWFXId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingIED", "SewingIED")
+                        .WithMany("SewingRoutings")
+                        .HasForeignKey("SewingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SewingSubOperationWFX");
+                    b.Navigation("SewingIED");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingArticle", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRoutingBOL", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingFeatureLib", "SewingFeatureLib")
+                        .WithMany("SewingRoutingBOLs")
+                        .HasForeignKey("SewingFeatureLibId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingOperationLib", "SewingOperationLib")
+                        .WithMany("SewingRoutingBOLs")
+                        .HasForeignKey("SewingOperationLibId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingRouting", "SewingRouting")
+                        .WithMany("SewingRoutingBOLs")
+                        .HasForeignKey("SewingRoutingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SewingFeatureLib");
+
+                    b.Navigation("SewingOperationLib");
+
+                    b.Navigation("SewingRouting");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubcategoryEfficiency", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingEfficiencyProfile", "SewingEfficiencyProfile")
+                        .WithMany("SewingSubcategoryEfficiencies")
+                        .HasForeignKey("SewingEfficiencyProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SewingEfficiencyProfile");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingTaskLib", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingBundle", "SewingBundle")
+                        .WithMany("SewingTaskLibs")
+                        .HasForeignKey("SewingBundleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.SewingMachineEfficiencyProfile", "SewingMachineEfficiencyProfile")
+                        .WithMany("SewingTaskLibs")
+                        .HasForeignKey("SewingMachineEfficiencyProfileId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("SewingBundle");
+
+                    b.Navigation("SewingMachineEfficiencyProfile");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingDetailStructure", b =>
                 {
                     b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
-                        .WithMany("WeavingArticles")
+                        .WithMany("WeavingDetailStructures")
                         .HasForeignKey("WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4283,37 +5747,66 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("WeavingIED");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingDetailStructure", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingFile", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingArticle", "WeavingArticle")
-                        .WithMany("WeavingDetailStructures")
-                        .HasForeignKey("WeavingArticleId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
+                        .WithMany("WeavingFiles")
+                        .HasForeignKey("WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WeavingArticle");
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingIED", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestDivision", "RequestDivision")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestArticleOutput", "RequestArticleOutput")
+                        .WithOne("WeavingIED")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.WeavingIED", "RequestArticleOutputId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shopfloor.IED.Domain.Entities.RequestType", "RequestType")
                         .WithMany("WeavingIEDs")
-                        .HasForeignKey("RequestDivisionId")
+                        .HasForeignKey("RequestTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("RequestArticleOutput");
+
+                    b.Navigation("RequestType");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingOperation", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingRouting", "WeavingRouting")
+                        .WithMany("WeavingOperations")
+                        .HasForeignKey("WeavingRoutingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RequestDivision");
+                    b.Navigation("WeavingRouting");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingOperationInputArticle", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingOperation", "WeavingOperation")
+                        .WithMany("WeavingOperationInputArticles")
+                        .HasForeignKey("WeavingOperationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WeavingOperation");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRappo", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingArticle", "WeavingArticle")
-                        .WithMany("WeavingRappos")
-                        .HasForeignKey("WeavingArticleId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
+                        .WithOne("WeavingRappo")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.WeavingRappo", "WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WeavingArticle");
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRappoMark", b =>
@@ -4338,8 +5831,7 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.HasOne("Shopfloor.IED.Domain.Entities.WeavingYarn", "VerticleYarn")
                         .WithMany("WeavingVerticleRappoMatrics")
                         .HasForeignKey("VerticleYarnId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Shopfloor.IED.Domain.Entities.WeavingRappo", "WeavingRappo")
                         .WithMany("WeavingRappoMatrics")
@@ -4354,41 +5846,59 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("WeavingRappo");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRouting", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingReportSetting", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingArticle", "WeavingArticle")
-                        .WithMany("WeavingRoutings")
-                        .HasForeignKey("WeavingArticleId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
+                        .WithOne("WeavingReportSetting")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.WeavingReportSetting", "WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WeavingArticle");
+                    b.Navigation("WeavingIED");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingReportSettingDetail", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingReportSetting", "WeavingReportSetting")
+                        .WithMany("WeavingReportSettingDetails")
+                        .HasForeignKey("WeavingReportSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WeavingReportSetting");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRouting", b =>
+                {
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
+                        .WithMany("WeavingRoutings")
+                        .HasForeignKey("WeavingIEDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRusticFabricSpec", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingArticle", "WeavingArticle")
-                        .WithMany("WeavingRusticFabricSpecs")
-                        .HasForeignKey("WeavingArticleId")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
+                        .WithOne("WeavingRusticFabricSpec")
+                        .HasForeignKey("Shopfloor.IED.Domain.Entities.WeavingRusticFabricSpec", "WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WeavingArticle");
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingYarn", b =>
                 {
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingArticle", "WeavingArticle")
+                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingIED", "WeavingIED")
                         .WithMany("WeavingYarns")
-                        .HasForeignKey("WeavingArticleId")
+                        .HasForeignKey("WeavingIEDId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopfloor.IED.Domain.Entities.WeavingRappo", null)
-                        .WithMany("WeavingYarns")
-                        .HasForeignKey("WeavingRappoId");
-
-                    b.Navigation("WeavingArticle");
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DCTemplate", b =>
@@ -4401,6 +5911,13 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("DcTemplateDetails");
                 });
 
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingIED", b =>
+                {
+                    b.Navigation("DyeingFiles");
+
+                    b.Navigation("DyeingRoutings");
+                });
+
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBMaterial", b =>
                 {
                     b.Navigation("DyeingTBMaterialColors");
@@ -4408,24 +5925,24 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBMaterialColor", b =>
                 {
-                    b.Navigation("DyeingTBRecipes");
+                    b.Navigation("DyeingTBRecipe");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRChemical", b =>
+                {
+                    b.Navigation("DyeingTBRChemicalValues");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRTask", b =>
                 {
-                    b.Navigation("DyeingTBTaskChemicals");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRVersion", b =>
-                {
-                    b.Navigation("DyeingTBRCValues");
+                    b.Navigation("DyeingTBRChemicals");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRecipe", b =>
                 {
                     b.Navigation("DyeingTBRTasks");
 
-                    b.Navigation("DyeingTBRVersions");
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.DyeingTBRequest", b =>
@@ -4446,6 +5963,32 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("SubFolders");
                 });
 
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingBodyType", b =>
+                {
+                    b.Navigation("KnittingGreiges");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingIED", b =>
+                {
+                    b.Navigation("KnittingFiles");
+
+                    b.Navigation("KnittingGreiges");
+
+                    b.Navigation("KnittingRoutings");
+
+                    b.Navigation("KnittingYarns");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingShrinkage", b =>
+                {
+                    b.Navigation("KnittingGreiges");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.KnittingType", b =>
+                {
+                    b.Navigation("KnittingGreiges");
+                });
+
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.ProcessTemplate", b =>
                 {
                     b.Navigation("ProcessTemplateItems");
@@ -4453,6 +5996,8 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.Recipe", b =>
                 {
+                    b.Navigation("DyeingIEDs");
+
                     b.Navigation("RecipeTasks");
                 });
 
@@ -4468,7 +6013,15 @@ namespace Shopfloor.IED.Infrastructure.Migrations
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RequestArticleOutput", b =>
                 {
+                    b.Navigation("DyeingIED");
+
+                    b.Navigation("KnittingIED");
+
                     b.Navigation("RequestArticleInputs");
+
+                    b.Navigation("SewingIED");
+
+                    b.Navigation("WeavingIED");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RequestDivision", b =>
@@ -4476,35 +6029,63 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("RequestDivisionFiles");
 
                     b.Navigation("RequestDivisionProcesses");
-
-                    b.Navigation("WeavingIEDs");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RequestDivisionProcess", b =>
                 {
                     b.Navigation("RequestArticleOutputs");
-
-                    b.Navigation("SewingOperationWFXs");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.RequestType", b =>
                 {
+                    b.Navigation("DyeingIEDs");
+
                     b.Navigation("Requests");
+
+                    b.Navigation("WeavingIEDs");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeature", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingBundle", b =>
                 {
-                    b.Navigation("SewingFeatureBOLs");
+                    b.Navigation("SewingTaskLibs");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingComponent", b =>
+                {
+                    b.Navigation("SewingFeatureLibs");
+
+                    b.Navigation("SewingOperationLibs");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingComponentGroup", b =>
+                {
+                    b.Navigation("SewingMacroLibs");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingEfficiencyProfile", b =>
+                {
+                    b.Navigation("SewingMachineEfficiencyProfiles");
+
+                    b.Navigation("SewingSubcategoryEfficiencies");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingFeatureLib", b =>
                 {
                     b.Navigation("SewingFeatureLibBOLs");
+
+                    b.Navigation("SewingRoutingBOLs");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacro", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingIED", b =>
                 {
-                    b.Navigation("SewingMacroBOLs");
+                    b.Navigation("SewingFiles");
+
+                    b.Navigation("SewingRoutings");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMachineEfficiencyProfile", b =>
+                {
+                    b.Navigation("SewingTaskLibs");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingMacroLib", b =>
@@ -4512,40 +6093,20 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("SewingMacroLibBOLs");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperation", b =>
-                {
-                    b.Navigation("SewingFeatureBOLs");
-
-                    b.Navigation("SewingOperationBOLs");
-                });
-
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationLib", b =>
                 {
                     b.Navigation("SewingFeatureLibBOLs");
 
                     b.Navigation("SewingOperationLibBOLs");
+
+                    b.Navigation("SewingOperationLibResults");
+
+                    b.Navigation("SewingRoutingBOLs");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFX", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingRouting", b =>
                 {
-                    b.Navigation("SewingOperationWFXVersions");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingOperationWFXVersion", b =>
-                {
-                    b.Navigation("SewingSubOperationWFXs");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingSubOperationWFX", b =>
-                {
-                    b.Navigation("SewingSubOperationWFXBOLs");
-                });
-
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingTask", b =>
-                {
-                    b.Navigation("SewingMacroBOLs");
-
-                    b.Navigation("SewingOperationBOLs");
+                    b.Navigation("SewingRoutingBOLs");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.SewingTaskLib", b =>
@@ -4555,22 +6116,26 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("SewingOperationLibBOLs");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingArticle", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingIED", b =>
                 {
                     b.Navigation("WeavingDetailStructures");
 
-                    b.Navigation("WeavingRappos");
+                    b.Navigation("WeavingFiles");
+
+                    b.Navigation("WeavingRappo");
+
+                    b.Navigation("WeavingReportSetting");
 
                     b.Navigation("WeavingRoutings");
 
-                    b.Navigation("WeavingRusticFabricSpecs");
+                    b.Navigation("WeavingRusticFabricSpec");
 
                     b.Navigation("WeavingYarns");
                 });
 
-            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingIED", b =>
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingOperation", b =>
                 {
-                    b.Navigation("WeavingArticles");
+                    b.Navigation("WeavingOperationInputArticles");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRappo", b =>
@@ -4578,8 +6143,16 @@ namespace Shopfloor.IED.Infrastructure.Migrations
                     b.Navigation("WeavingRappoMarks");
 
                     b.Navigation("WeavingRappoMatrics");
+                });
 
-                    b.Navigation("WeavingYarns");
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingReportSetting", b =>
+                {
+                    b.Navigation("WeavingReportSettingDetails");
+                });
+
+            modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingRouting", b =>
+                {
+                    b.Navigation("WeavingOperations");
                 });
 
             modelBuilder.Entity("Shopfloor.IED.Domain.Entities.WeavingYarn", b =>

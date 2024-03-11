@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-
-namespace Shopfloor.Core.Extensions.Objects
+﻿namespace Shopfloor.Core.Extensions.Objects
 {
     public static class NumberExtension
     {
@@ -33,6 +28,7 @@ namespace Shopfloor.Core.Extensions.Objects
 
             return true;
         }
+
         public static bool IsContainNumeric(this string str)
         {
             if (str == null || str.Length == 0)
@@ -90,13 +86,25 @@ namespace Shopfloor.Core.Extensions.Objects
                 return null;
             }
         }
+
         public static decimal? Format(this decimal? value, int digits = 0)
         {
             return value != null ? Math.Round(value.Value, digits) : null;
         }
+
         public static decimal Format(this decimal value, int digits = 0)
         {
             return Math.Round(value, digits);
+        }
+
+        public static string ToAlphabet(this int number)
+        {
+            if (number is < 1 or > 26)
+            {
+                return number.ToString();
+            }
+            char alphabetChar = (char)('A' + number - 1);
+            return alphabetChar.ToString();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Shopfloor.Master.Application.Command.CompanyCurrencies
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"CompanyCurrency Not Found.");
+            if (entity == null) return new($"CompanyCurrency Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

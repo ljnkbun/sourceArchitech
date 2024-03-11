@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Shopfloor.Core.Definations;
 using Shopfloor.Core.Models.Responses;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Command.DyeingTBRequestFiles

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shopfloor.Cache.Extensions;
@@ -12,6 +11,7 @@ using Shopfloor.Master.Application.Settings;
 using Shopfloor.Master.Infrastructure.Contexts;
 using Shopfloor.Master.Infrastructure.Extensions;
 using Shopfloor.Master.Infrastructure.SeedDatas;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +32,10 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddDistributedCache(configuration);
 builder.Services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
 builder.Services.Configure<WfxApiSettings>(configuration.GetSection("WfxApiSettings"));
+builder.Services.Configure<WfxBuyerApiSettings>(configuration.GetSection("WfxApiBuyerSettings"));
+builder.Services.Configure<WfxSupplierApiSettings>(configuration.GetSection("WfxApiSupplierSettings"));
 builder.Services.Configure<WfxArticleApiSettings>(configuration.GetSection("WfxApiArticleSettings"));
+builder.Services.Configure<CalculateFactoryCapacityApiSettings>(configuration.GetSection("CalculateFactoryCapacityApiSettings"));
 builder.Services.AddSharedInfrastructure();
 builder.Services.AddApiVersioningExtension();
 
@@ -83,6 +86,7 @@ using (var scope = app.Services.CreateScope())
     if (configuration["IsSeedData"] == "True")
     {
         await SeedCategory.SeedAsync(db);
+        await SeedDivision.SeedAsync(db);
         Log.Information("Finished Seeding Default Data");
     }
     Log.Information("Application Starting");

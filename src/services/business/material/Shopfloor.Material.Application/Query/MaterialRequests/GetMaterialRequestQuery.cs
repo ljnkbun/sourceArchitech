@@ -23,7 +23,7 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
         public async Task<Response<Domain.Entities.MaterialRequest>> Handle(GetMaterialRequestQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"MaterialRequest Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"MaterialRequest Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.MaterialRequest>(entity);
         }
     }

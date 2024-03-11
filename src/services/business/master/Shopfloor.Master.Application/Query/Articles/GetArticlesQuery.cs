@@ -56,6 +56,8 @@ namespace Shopfloor.Master.Application.Query.Articles
         public decimal? MinimumOrderQty { get; set; }
         public decimal? RequirementMultiple { get; set; }
         public bool? UseForIED { get; set; }
+        public string ServiceCode { get; set; }
+        public string ServiceName { get; set; }
         #region Default
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

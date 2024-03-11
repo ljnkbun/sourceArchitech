@@ -11,8 +11,8 @@ namespace Shopfloor.Barcode.Application.Query.Locations
 {
     public class GetLocationsQuery : IRequest<PagedResponse<IReadOnlyList<LocationModel>>>, ICacheableMediatrQuery
     {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
+        public int? PageNumber { get; set; }
+        public int? PageSize { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public int? ParentLocationId { get; set; }
@@ -26,7 +26,7 @@ namespace Shopfloor.Barcode.Application.Query.Locations
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
         public bool BypassCache { get; set; }
-        public string CacheKey => $"Location";
+        public string CacheKey => $"Locations";
         public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetLocationsQueryHandler : IRequestHandler<GetLocationsQuery, PagedResponse<IReadOnlyList<LocationModel>>>
@@ -43,8 +43,6 @@ namespace Shopfloor.Barcode.Application.Query.Locations
         public async Task<PagedResponse<IReadOnlyList<LocationModel>>> Handle(GetLocationsQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<LocationParameter>(request);
-            validFilter.SetSearchProps(new string[] { nameof(LocationParameter.Code), nameof(LocationParameter.Name) 
-                , nameof(LocationParameter.ParentLocationId) , nameof(LocationParameter.Barcode) , nameof(LocationParameter.LevelLocation) }.ToList());
             return await _repository.GetModelPagedReponseAsync<LocationParameter, LocationModel>(validFilter);
         }
     }

@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.ProcessTemplateItems
         public async Task<Response<ProcessTemplateItem>> Handle(GetProcessTemplateItemQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"ProcessTemplateItem Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"ProcessTemplateItem Not Found (Id:{query.Id}).");
             return new Response<ProcessTemplateItem>(entity);
         }
     }

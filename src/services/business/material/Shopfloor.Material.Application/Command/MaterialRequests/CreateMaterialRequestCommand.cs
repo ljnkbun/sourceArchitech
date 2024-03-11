@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.Material.Application.Command.BuyerFiles;
+using Shopfloor.Material.Application.Command.MaterialRequestFiles;
 using Shopfloor.Material.Application.Models.FabricCompositions;
 using Shopfloor.Material.Application.Models.MaterialRequests;
 using Shopfloor.Material.Application.Models.MOQMSQRoudingOptionItems;
@@ -17,6 +19,7 @@ namespace Shopfloor.Material.Application.Command.MaterialRequests
 {
     public class CreateMaterialRequestCommand : IRequest<Response<int>>
     {
+        public string HSCode { get; set; }
         public string ProductCatCode { get; set; }
 
         public string ProductCatName { get; set; }
@@ -224,6 +227,8 @@ namespace Shopfloor.Material.Application.Command.MaterialRequests
         public ICollection<FabricCompositionModel> FabricCompositions { get; set; }
 
         public ICollection<MaterialRequestDynamicColumnModel> DynamicColumns { get; set; }
+
+        public ICollection<CreateMaterialRequestFileCommand> MaterialRequestFiles { get; set; }
     }
 
     public class CreateMaterialRequestCommandHandler : IRequestHandler<CreateMaterialRequestCommand, Response<int>>

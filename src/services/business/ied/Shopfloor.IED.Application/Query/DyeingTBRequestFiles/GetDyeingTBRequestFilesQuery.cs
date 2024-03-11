@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
+using Shopfloor.Core.Definations;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.DyeingTBRequestFiles;
 using Shopfloor.IED.Application.Parameters.DyeingTBRequestFiles;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DyeingTBRequestFiles
 {
-    public class GetDyeingTBRequestFilesQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRequestFileModel>>>, ICacheableMediatrQuery
+    public class GetDyeingTBRequestFilesQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBRequestFileModel>>>
     {
         public int? DyeingTBRequestId { get; set; }
 
@@ -40,12 +39,6 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRequestFiles
         public Guid? ModifiedUserId { get; set; }
 
         public bool? IsActive { get; set; }
-
-        public bool BypassCache { get; set; }
-
-        public string CacheKey => $"DyeingTBRequestFiles";
-
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

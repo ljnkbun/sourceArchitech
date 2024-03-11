@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Origins
         public async Task<Response<int>> Handle(DeleteOriginCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Origin Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Origin Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

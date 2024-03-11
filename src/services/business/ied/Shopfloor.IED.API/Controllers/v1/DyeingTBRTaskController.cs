@@ -14,6 +14,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetDyeingTBRTasksQuery()
             {
+                LineNumber = filter.LineNumber,
                 MachineCode = filter.MachineCode,
                 MachineName = filter.MachineName,
                 Temperature = filter.Temperature,
@@ -23,6 +24,7 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 DyeingOperationName = filter.DyeingOperationName,
                 DyeingProcessId = filter.DyeingProcessId,
                 DyeingProcessName = filter.DyeingProcessName,
+                Ratio = filter.Ratio,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
                 CreatedDate = filter.CreatedDate,
@@ -30,10 +32,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 

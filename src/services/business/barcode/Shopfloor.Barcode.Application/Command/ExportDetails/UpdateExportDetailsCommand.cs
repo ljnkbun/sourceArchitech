@@ -2,7 +2,6 @@
 using MediatR;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ExportDetails
@@ -26,11 +25,12 @@ namespace Shopfloor.Barcode.Application.Command.ExportDetails
 
         public async Task<Response<bool>> Handle(UpdateExportDetailsCommand command, CancellationToken cancellationToken)
         {
-            var entities = await _repository.GetByIdsAsync(command.ExportDetails.Select(x => x.Id).ToArray()) ?? throw new ApiException($"ExportDetail Not Found.");
+            var entities = await _repository.GetByIdsAsync(command.ExportDetails.Select(x => x.Id).ToArray());
+            if (entities == null || !entities.Any()) return new($"ExportDetail Not Found.");
             var updateEntities = _mapper.Map<List<ExportDetail>>(command.ExportDetails);
             foreach (var entity in entities)
             {
-                var updateEntity = updateEntities.FirstOrDefault(x => x.Id == entity.Id);
+                var updateEntity = updateEntities.Find(x => x.Id == entity.Id);
                 if (updateEntity == null) continue;
 
                 entity.Status = updateEntity.Status;

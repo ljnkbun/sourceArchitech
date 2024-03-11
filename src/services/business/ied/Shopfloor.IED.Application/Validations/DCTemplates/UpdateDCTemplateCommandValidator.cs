@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shopfloor.IED.Application.Command.DCTemplate;
+using Shopfloor.IED.Application.Command.DCTemplates;
 
 namespace Shopfloor.IED.Application.Validations.DCTemplates
 {

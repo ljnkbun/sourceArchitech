@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.SubCategoryGroups
         public async Task<Response<SubCategoryGroup>> Handle(GetSubCategoryGroupQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SubCategoryGroup Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"SubCategoryGroup Not Found (Id:{query.Id}).");
             return new Response<SubCategoryGroup>(entity);
         }
     }

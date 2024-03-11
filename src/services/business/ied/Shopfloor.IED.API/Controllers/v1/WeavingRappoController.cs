@@ -20,18 +20,18 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedDate = filter.ModifiedDate,
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
-                WeavingArticleId = filter.WeavingArticleId,
-                YarnOfBorder = filter.YarnOfBorder,
-                YarnOfBackground = filter.YarnOfBackground,
-                NumOfRappo = filter.NumOfRappo,
+                WeavingIEDId = filter.WeavingIEDId,
+                Line = filter.Line,
+                WarpPerMarginDentSplit = filter.WarpPerMarginDentSplit,
+                WarpPerContentDentSplit = filter.WarpPerContentDentSplit,
+                TotalRappo = filter.TotalRappo,
                 VerticalRappoComment = filter.VerticalRappoComment,
                 HorizontalRappoComment = filter.HorizontalRappoComment,
+                DrawingComment = filter.DrawingComment,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

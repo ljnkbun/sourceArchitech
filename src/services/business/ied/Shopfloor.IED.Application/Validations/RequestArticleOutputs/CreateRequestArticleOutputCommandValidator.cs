@@ -15,6 +15,9 @@ namespace Shopfloor.IED.Application.Validations.RequestArticleOutputs
 
             RuleFor(p => p.Color)
                 .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.");
+
+            RuleFor(p => p.BaseColorList)
+                .MaximumLength(2000).WithMessage("{PropertyName} must not exceed 2000 characters.");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Shopfloor.Material.Domain.Interfaces
             where TParam : RequestParameter;
 
         Task<bool> UpdatePriceListAsync(PriceList dataUpdate
-            , BaseListCreateDeleteEntity<PriceListDetail> dataPriceListDetail);
+            , BaseUpdateEntity<PriceListDetail> dataPriceListDetail);
 
         Task<bool> IsExistAsync(int id);
 

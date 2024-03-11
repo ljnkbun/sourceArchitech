@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Structures
         public async Task<Response<Structure>> Handle(GetStructureQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Structure Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Structure Not Found (Id:{query.Id}).");
             return new Response<Structure>(entity);
         }
     }

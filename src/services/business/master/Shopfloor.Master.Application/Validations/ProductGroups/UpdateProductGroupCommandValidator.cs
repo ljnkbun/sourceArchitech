@@ -7,8 +7,7 @@ namespace Shopfloor.Master.Application.Validations.ProductGroups
     public class UpdateProductGroupCommandValidator : AbstractValidator<UpdateProductGroupCommand>
     {
         private readonly IProductGroupRepository _repository;
-        private readonly IMaterialTypeRepository _materialTypeRepository;
-        public UpdateProductGroupCommandValidator(IProductGroupRepository repository, IMaterialTypeRepository materialTypeRepository)
+        public UpdateProductGroupCommandValidator(IProductGroupRepository repository)
         {
             _repository = repository;
 
@@ -26,20 +25,10 @@ namespace Shopfloor.Master.Application.Validations.ProductGroups
                 .NotNull()
                 .WithMessage("{PropertyName} must not Null.");
 
-            RuleFor(p => p.MaterialTypeId)
-            .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-            .MustAsync(IsExistMaterialType).WithMessage("{PropertyName} not exists.");
-            _materialTypeRepository = materialTypeRepository;
-
             #region Check existed code
             RuleFor(p => p)
                 .MustAsync(IsUniqueAsync).WithMessage("{PropertyName} must unique.");
             #endregion
-        }
-
-        private async Task<bool> IsExistMaterialType(int id, CancellationToken cancellationToken)
-        {
-            return await _materialTypeRepository.GetByIdAsync(id) != null;
         }
 
         private async Task<bool> IsUniqueAsync(UpdateProductGroupCommand command, CancellationToken cancellationToken)

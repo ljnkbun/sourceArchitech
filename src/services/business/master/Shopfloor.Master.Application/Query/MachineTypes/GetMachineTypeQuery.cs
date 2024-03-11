@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.MachineTypes
         public async Task<Response<MachineType>> Handle(GetMachineTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"MachineType Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"MachineType Not Found (Id:{query.Id}).");
             return new Response<MachineType>(entity);
         }
     }

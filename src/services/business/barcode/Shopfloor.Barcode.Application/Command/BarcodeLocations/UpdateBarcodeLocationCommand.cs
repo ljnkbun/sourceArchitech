@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.BarcodeLocations
@@ -23,7 +22,7 @@ namespace Shopfloor.Barcode.Application.Command.BarcodeLocations
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"BarcodeLocation Not Found.");
+            if (entity == null) return new($"BarcodeLocation Not Found.");
 
 
             entity.LocationId = command.LocationId;

@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.WeavingYarns
         public async Task<Response<int>> Handle(DeleteWeavingYarnCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"WeavingYarn Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"WeavingYarn Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

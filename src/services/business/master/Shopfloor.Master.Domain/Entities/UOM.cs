@@ -11,9 +11,11 @@ namespace Shopfloor.Master.Domain.Entities
         {
             FromUOMConversions = new HashSet<UOMConversion>();
             ToUOMConversions = new HashSet<UOMConversion>();
+            ProductGroupUOMs = new HashSet<ProductGroupUOM>();
         }
         public virtual ICollection<UOMConversion> FromUOMConversions { get; set; }
         public virtual ICollection<UOMConversion> ToUOMConversions { get; set; }
+        public virtual ICollection<ProductGroupUOM> ProductGroupUOMs { get; set; }
 
     }
 }

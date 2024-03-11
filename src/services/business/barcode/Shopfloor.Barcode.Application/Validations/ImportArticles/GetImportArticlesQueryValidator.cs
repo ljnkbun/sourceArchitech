@@ -31,10 +31,10 @@ namespace Shopfloor.Barcode.Application.Validations.ImportArticles
                 .MaximumLength(50).WithMessage("{PropertyName} must not exceed 50 characters.");
             RuleFor(p => p.CreatedDate)
                 .LessThan(DateTime.Now.AddDays(1))
-                .GreaterThan(new DateTime(1970, 1, 1));
+                .GreaterThan(new DateTime(1970, 1, 1,0,0,0, DateTimeKind.Local));
             RuleFor(p => p.ModifiedDate)
                 .LessThan(DateTime.Now.AddDays(1))
-                .GreaterThan(new DateTime(1970, 1, 1));
+                .GreaterThan(new DateTime(1970, 1, 1,0,0,0, DateTimeKind.Local));
 
         }
     }

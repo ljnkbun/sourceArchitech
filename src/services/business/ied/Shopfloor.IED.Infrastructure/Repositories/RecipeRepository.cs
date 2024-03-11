@@ -24,6 +24,11 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             return await _dbContext.Set<Recipe>().AnyAsync(x => x.Id == id && !x.Deleted);
         }
 
+        public async Task<bool> IsExistByRecipeIdAsync(int recipeId)
+        {
+            return await _dbContext.Set<Recipe>().AnyAsync(x => x.DyeingTBRecipeId == recipeId && !x.Deleted);
+        }
+
         public async Task<PagedResponse<IReadOnlyList<TModel>>> GetRecipePagedResponseAsync<TParam, TModel>(TParam parameter) where TParam : RequestParameter where TModel : class
         {
             var response = new PagedResponse<IReadOnlyList<TModel>>(parameter.PageNumber, parameter.PageSize);
@@ -40,8 +45,14 @@ namespace Shopfloor.IED.Infrastructure.Repositories
 
         public async Task<Recipe> GetWithIncludeByIdAsync(int id) => await _dbContext.Set<Recipe>()
             .Include(x => x.RecipeTasks)
+            .ThenInclude(x => x.RecipeChemicals)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+        public async Task<Recipe> GetWithIncludeByDyeingTBRecipeIdAsync(int dyeingTBRecipeId) => await _dbContext.Set<Recipe>()
+            .Include(x => x.RecipeTasks)
+            .ThenInclude(x => x.RecipeChemicals)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.DyeingTBRecipeId == dyeingTBRecipeId && !x.Deleted);
 
         public async Task<Recipe> AddRecipeAsync(Recipe entity)
         {
@@ -49,7 +60,7 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             {
                 try
                 {
-                    entity.RecipeNo = await GetNewRequestNoAsync();
+                    entity.RecipeNo = _dbContext.Set<DyeingTBRecipe>().FirstOrDefault(x => x.Id == entity.DyeingTBRecipeId)?.TBRecipeNo;
                     await _dbContext.AddAsync(entity);
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
@@ -61,28 +72,9 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             }
             return entity;
         }
-
-        private async Task<string> GetNewRequestNoAsync()
+        public async Task<Recipe> GetByTBRecipeIdAsync(int id)
         {
-            var autoIncrement = await _dbContext.Set<AutoIncrement>().FirstOrDefaultAsync(x => x.Type == AutoIncrementType.RCP);
-            string inputValue = $"{AutoIncrementType.RCP}{autoIncrement.Separate}{DateTime.Now:yyyyMM}";
-            if (inputValue != autoIncrement.InputValue)
-            {
-                autoIncrement.Index = 1;
-                autoIncrement.InputValue = inputValue;
-            }
-            string recipeNo;
-            bool isUnique;
-            int count = 0;
-            do
-            {
-                recipeNo = AutoIncrementHelper.GetNewRequestNo(inputValue, autoIncrement);
-                isUnique = await _dbContext.Set<Recipe>().AllAsync(x => x.RecipeNo != recipeNo);
-                autoIncrement.Index++;
-                count++;
-            } while (!isUnique && count < 3);
-            _dbContext.Set<AutoIncrement>().Update(autoIncrement);
-            return recipeNo;
+            return await _dbContext.Set<Recipe>().FirstOrDefaultAsync(r => r.DyeingTBRecipeId == id);
         }
     }
 }

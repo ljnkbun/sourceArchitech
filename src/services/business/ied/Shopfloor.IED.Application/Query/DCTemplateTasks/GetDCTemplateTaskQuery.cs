@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DCTemplateTasks
         public async Task<Response<Domain.Entities.DCTemplateTask>> Handle(GetDCTemplateTaskQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DCTemplateTask Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DCTemplateTask Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DCTemplateTask>(entity);
         }
     }

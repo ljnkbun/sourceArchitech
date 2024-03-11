@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.IED.Application.Command.WeavingRappoMarks;
+using Shopfloor.IED.Application.Command.WeavingRappoMatrics;
 using Shopfloor.IED.Domain.Entities;
 using Shopfloor.IED.Domain.Interfaces;
 
@@ -8,13 +10,17 @@ namespace Shopfloor.IED.Application.Command.WeavingRappos
 {
     public class CreateWeavingRappoCommand : IRequest<Response<int>>
     {
-        public int WeavingArticleId { get; set; }
-        public int NumOfLine { get; set; }
-        public int YarnOfBorder { get; set; }
-        public int YarnOfBackground { get; set; }
-        public int NumOfRappo { get; set; }
+        public int WeavingIEDId { get; set; }
+        public int Line { get; set; }
+        public int WarpPerMarginDentSplit { get; set; }
+        public int WarpPerContentDentSplit { get; set; }
+        public int TotalRappo { get; set; }
+        public int AdditionYarn { get; set; }
         public string VerticalRappoComment { get; set; }
         public string HorizontalRappoComment { get; set; }
+        public string DrawingComment { get; set; }
+        public ICollection<CreateWeavingRappoMarkCommand> WeavingRappoMarks { get; set; }
+        public ICollection<CreateWeavingRappoMatricCommand> WeavingRappoMatrics { get; set; }
     }
     public class CreateWeavingRappoCommandHandler : IRequestHandler<CreateWeavingRappoCommand, Response<int>>
     {

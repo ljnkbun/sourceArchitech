@@ -50,12 +50,18 @@ namespace Shopfloor.IED.Infrastructure.SeedDatas
 
             foreach (var item in FolderTrees)
             {
-                context.FolderTrees.Add(item);
+                bool isDuplicate = context.FolderTrees.Any(c => c.Name == item.Name);
+                if (!isDuplicate)
+                {
+                    context.FolderTrees.Add(item);
+                }
+                else
+                {
+                    Console.WriteLine($"FolderTrees with Type {item.Name} is a duplicate and not inserted.");
+                }
             }
 
             await context.SaveChangesAsync();
-
-
         }
     }
 }

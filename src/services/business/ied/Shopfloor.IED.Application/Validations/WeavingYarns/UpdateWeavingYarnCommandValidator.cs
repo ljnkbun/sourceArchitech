@@ -16,6 +16,10 @@ namespace Shopfloor.IED.Application.Validations.WeavingYarns
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
+            RuleFor(p => p.WFXYarnId)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
         }
     }
 }

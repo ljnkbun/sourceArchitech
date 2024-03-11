@@ -13,5 +13,8 @@
         public string Size { get; set; }
         public string Color { get; set; }
         public string Note { get; set; }
+        public int LocationId { get; set; }
+        public int ArticleBarcCodeId { get; set; }
+        public string Location { get; set; }
     }
 }

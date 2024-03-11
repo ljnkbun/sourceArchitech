@@ -15,6 +15,8 @@ namespace Shopfloor.IED.Application.Command.RecipeChemicals
 
         public string ChemicalName { get; set; }
 
+        public string ChemicalSubcategory { get; set; }
+
         public string Unit { get; set; }
 
         public decimal Value { get; set; }
@@ -35,11 +37,12 @@ namespace Shopfloor.IED.Application.Command.RecipeChemicals
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"RecipeChemical Not Found.");
+            if (entity == null) return new($"RecipeChemical Not Found.");
 
             entity.RecipeTaskId = command.RecipeTaskId;
             entity.ChemicalCode = command.ChemicalCode;
             entity.ChemicalName = command.ChemicalName;
+            entity.ChemicalSubcategory = command.ChemicalSubcategory;
             entity.Unit = command.Unit;
             entity.Value = command.Value;
             entity.IsActive = command.IsActive;

@@ -20,6 +20,16 @@ Log.Logger = new LoggerConfiguration()
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(configurePolicy =>
+    {
+        configurePolicy.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -38,6 +48,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseResponseCompression();
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapHub();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Shopfloor.Core.Models.Responses;
+using Shopfloor.Master.Application.Command.ProductGroupUOMs;
 using Shopfloor.Master.Domain.Entities;
 using Shopfloor.Master.Domain.Interfaces;
 
@@ -13,11 +14,14 @@ namespace Shopfloor.Master.Application.Command.UOMs
         public int DecimalPlaces { get; set; }
         public int OrderDecimalPlaces { get; set; }
         public string Action { get; set; }
+        public ICollection<CreateProductGroupUOMCommand> ProductGroupUOMs { get; set; }
     }
+
     public class CreateUOMCommandHandler : IRequestHandler<CreateUOMCommand, Response<int>>
     {
         private readonly IMapper _mapper;
         private readonly IUOMRepository _repository;
+
         public CreateUOMCommandHandler(IMapper mapper,
             IUOMRepository repository)
         {

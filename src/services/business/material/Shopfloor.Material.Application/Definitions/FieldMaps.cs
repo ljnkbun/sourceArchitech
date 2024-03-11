@@ -206,7 +206,8 @@ namespace Shopfloor.Material.Application.Definitions
                 { "AQ", nameof(MaterialImportExcelModel.StitchLength) },
                 { "AR", nameof(MaterialImportExcelModel.YarnComposition) },
                 { "AS", nameof(MaterialImportExcelModel.CutWidth) },
-                { "AT", nameof(MaterialImportExcelModel.Structure) }
+                { "AT", nameof(MaterialImportExcelModel.Structure) },
+                { "AU", nameof(MaterialImportExcelModel.HSCode) }
             };
 
         public static Dictionary<string, string> YarnsRequest =>

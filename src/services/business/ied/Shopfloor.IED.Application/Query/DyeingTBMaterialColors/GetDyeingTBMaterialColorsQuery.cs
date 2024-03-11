@@ -51,8 +51,8 @@ namespace Shopfloor.IED.Application.Query.DyeingTBMaterialColors
 
         public async Task<PagedResponse<IReadOnlyList<DyeingTBMaterialColorModel>>> Handle(GetDyeingTBMaterialColorsQuery request, CancellationToken cancellationToken)
         {
-            var validFilter = _mapper.Map<DyeingTBMaterialColorSearchParameter>(request);
-            return await _repository.GetModelPagedReponseAsync<DyeingTBMaterialColorSearchParameter, DyeingTBMaterialColorModel>(validFilter);
+            var validFilter = _mapper.Map<DyeingTBMaterialColorParameter>(request);
+            return await _repository.GetModelPagedReponseAsync<DyeingTBMaterialColorParameter, DyeingTBMaterialColorModel>(validFilter);
         }
     }
 }

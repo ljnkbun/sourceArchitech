@@ -1,4 +1,5 @@
 using Shopfloor.Barcode.Domain.Constants;
+using Shopfloor.Barcode.Domain.Enums;
 using Shopfloor.Core.Models.Entities;
 
 namespace Shopfloor.Barcode.Domain.Entities
@@ -12,6 +13,8 @@ namespace Shopfloor.Barcode.Domain.Entities
         public string Note { get; set; }
         public ImportStatus? Status { get; set; }
         public ImportType? Type { get; set; }
+        public WfxStatus? WfxStatus { get; set; }
+
         public virtual ICollection<ImportArticle> ImportArticles { get; set; }
 
     }

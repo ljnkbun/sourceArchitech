@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using System.Security.Authentication;
+using MassTransit;
+using Shopfloor.EventBus.Definations;
 using Shopfloor.EventBus.Extensions;
 using Shopfloor.EventBus.Models.Requests;
-using System.Security.Authentication;
 using Shopfloor.EventBus.Models.Requests.Divisions;
+using Shopfloor.Material.Api.Consumers.Requests.DynamicColumns;
 
 namespace Shopfloor.Material.Api.Extensions
 {
@@ -33,6 +35,14 @@ namespace Shopfloor.Material.Api.Extensions
                 x.AddRequestClient<GetSupplierTypesRequest>();
                 x.AddRequestClient<GetDivisionsRequest>();
                 x.AddRequestClient<GetCompanyCurrenciesRequest>();
+                #endregion
+
+                #region AddConsumer
+
+                //DynamicColumn
+                x.AddConsumer<GetDynamicColumnByIdRequestConsumer>();
+                x.AddConsumer<GetDynamicColumnsRequestConsumer>();
+
                 #endregion
 
                 #region UsingRabbitMq
@@ -79,6 +89,17 @@ namespace Shopfloor.Material.Api.Extensions
                             }
                         });
                     }
+
+                    //DynamicColumn
+                    cfg.ReceiveEndpoint(RequestQueueName.GetDynamicColumnByIdRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetDynamicColumnByIdRequestConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RequestQueueName.GetDynamicColumnsRequest, e =>
+                    {
+                        e.ConfigureConsumer<GetDynamicColumnsRequestConsumer>(context);
+                    });
                 });
                 #endregion
             });

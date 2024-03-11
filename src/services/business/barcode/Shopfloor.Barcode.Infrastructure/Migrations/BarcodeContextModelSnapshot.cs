@@ -22,17 +22,13 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.Article", b =>
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.AppVersion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -41,6 +37,9 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
 
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FileId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -59,9 +58,12 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Article", (string)null);
+                    b.ToTable("AppVersion", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.ArticleBarcode", b =>
@@ -80,9 +82,27 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("ArticleUOM")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("BGroupQty")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("Balance")
+                        .HasColumnType("decimal(28,8)");
+
                     b.Property<string>("Barcode")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("BarcodeUOM")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Color")
                         .HasMaxLength(100)
@@ -99,12 +119,39 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<int?>("CurrentLocationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FPPOOCNUm")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("FPPOQty")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("FromId")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("GDINum")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GroupCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Location")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("LotNo")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -127,10 +174,24 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal?>("OKQty")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("OrderRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PONo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int?>("PreLocationId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("RejectQty")
                         .HasColumnType("decimal(28,8)");
 
                     b.Property<decimal?>("RemainQuantity")
@@ -140,17 +201,28 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Site")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Size")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("UOM")
+                    b.Property<string>("SubCategory")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Unit")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("SupplierName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ToId")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<decimal?>("UpdatedToDate")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<decimal?>("WeightPerCone")
                         .HasColumnType("decimal(28,8)");
@@ -272,8 +344,8 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("GDIType")
-                        .HasColumnType("int");
+                    b.Property<byte?>("GDIType")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -299,6 +371,9 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<byte?>("Status")
                         .HasColumnType("tinyint");
 
+                    b.Property<byte?>("WfxStatus")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
@@ -315,8 +390,16 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Buyer")
                         .HasMaxLength(500)
@@ -327,7 +410,7 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Color")
+                    b.Property<string>("ColorCode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -350,22 +433,25 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("GDINo")
+                    b.Property<string>("GDINum")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("GDIType")
+                    b.Property<byte?>("GDIType")
                         .HasMaxLength(100)
-                        .HasColumnType("int");
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<string>("LotNo")
+                    b.Property<string>("Location")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -383,10 +469,14 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("OrderRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal?>("Quantity")
                         .HasColumnType("decimal(28,8)");
 
-                    b.Property<string>("Size")
+                    b.Property<string>("SizeCode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -400,6 +490,10 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<string>("UOM")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WareHouse")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -422,13 +516,30 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<int?>("ArticleBarcodeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Barcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("BuyerStyleRef")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -441,17 +552,33 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<int?>("ExportArticleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FPPOOCNUm")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("InternalShade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<string>("LotNo")
+                    b.Property<string>("Location")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal?>("Meter")
-                        .HasColumnType("decimal(28,8)");
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LotNo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -465,20 +592,42 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("No")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Note")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<decimal?>("NumberOfCone")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<string>("OC")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("OCRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ParentBarcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("RemainQuantity")
+                        .HasColumnType("decimal(28,8)");
+
                     b.Property<string>("Shade")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("SizeCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte?>("Status")
                         .HasColumnType("tinyint");
@@ -487,10 +636,11 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal?>("Unit")
-                        .HasColumnType("decimal(28,8)");
+                    b.Property<string>("WareHouse")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal?>("Yard")
+                    b.Property<decimal?>("WeightPerCone")
                         .HasColumnType("decimal(28,8)");
 
                     b.HasKey("Id");
@@ -553,6 +703,9 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<byte?>("Type")
                         .HasColumnType("tinyint");
 
+                    b.Property<byte?>("WfxStatus")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
@@ -601,6 +754,10 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("GDNType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("ImportId")
                         .HasColumnType("int");
 
@@ -625,9 +782,19 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PONo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
                     b.Property<string>("SizeCode")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte?>("Status")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("SupplierName")
                         .HasMaxLength(100)
@@ -641,8 +808,9 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal?>("Units")
-                        .HasColumnType("decimal(28,8)");
+                    b.Property<string>("Warehouse")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -659,7 +827,7 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AriticleBarcodeId")
+                    b.Property<int?>("AriticleBarcodeId")
                         .HasColumnType("int");
 
                     b.Property<string>("ArticleCode")
@@ -682,7 +850,11 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ImportArticleId")
+                    b.Property<string>("Grade")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ImportArticleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -691,8 +863,15 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Location")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LotNo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -706,12 +885,14 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int?>("NumberOfCone")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                    b.Property<decimal?>("NumberOfCone")
+                        .HasColumnType("decimal(28,8)");
 
                     b.Property<string>("OC")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PONo")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -721,6 +902,10 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<string>("Shade")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Site")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Size")
                         .HasMaxLength(50)
@@ -747,87 +932,6 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.HasIndex("ImportArticleId");
 
                     b.ToTable("ImportDetail", (string)null);
-                });
-
-            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.ImportTransferToSiteSync", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ArticleCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ArticleName")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FromSite")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("GDNNo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<string>("LotNo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid?>("ModifiedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OC")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal?>("Qty")
-                        .HasColumnType("decimal(28,8)");
-
-                    b.Property<string>("Size")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("StoringUOM")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ToSite")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("UOM")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ImportTransferToSiteSync", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.Location", b =>
@@ -860,7 +964,7 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<byte>("LevelLocation")
+                    b.Property<byte?>("LevelLocation")
                         .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -875,7 +979,7 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("ParentLocationId")
+                    b.Property<int?>("ParentLocationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -884,6 +988,364 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Location", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDI", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ArticleName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("BuyerStyleRef")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ColorName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FPPOOCNUm")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("GDICreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("GDINum")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("GDIPendingUnits")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("GDIType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("InternalShade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("OrderCreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("OrderRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ParentRollBarcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RollBarcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RollNo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("RollOCRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal?>("RollUnits")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Shade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SizeCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("UOM")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WareHouse")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WfxGDI", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDIHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ExportDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("RemainQuantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int?>("WfxGDIId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExportDetailId");
+
+                    b.HasIndex("WfxGDIId");
+
+                    b.ToTable("WfxGDIHistory", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ColorName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FPPOOCNUm")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("GDINum")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("GDNCreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("GDNNum")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GDNType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("InternalShade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrderRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ParentRollBarcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RollBarcode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RollNo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("RollOCRefNum")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal?>("RollUnits")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("Shade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SizeCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("UOM")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WFXArticleCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WFXArticleName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("WareHouse")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WfxGDN", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDNHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ExportDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("RemainQuantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int?>("WfxGDNId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExportDetailId");
+
+                    b.HasIndex("WfxGDNId");
+
+                    b.ToTable("WfxGDNHistory", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxPOArticle", b =>
@@ -902,10 +1364,6 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("BuyerStyleNum")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("ColorCode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -922,22 +1380,40 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ExecutionType")
+                    b.Property<string>("DeliveryTerms")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("InternalLotNo")
+                    b.Property<string>("ETA")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ETD")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FactorySite")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("InHouseDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<string>("MaterialType")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime?>("LastRevisedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("MemberCompanyName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -947,68 +1423,139 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Property<Guid?>("ModifiedUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OCNum")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("OrderCompany")
+                    b.Property<string>("OCFactory")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("OrderCreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
+                    b.Property<string>("OrderID")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("OrderRefNum")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("OrderType")
+                    b.Property<DateTime?>("POCreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("PONo")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ProductGroup")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SizeCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StyleCode")
+                    b.Property<string>("POStatus")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("StyleName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("PPYDGDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("SupplierCompanyID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PaymentTerm")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("SupplierName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SupplierRef")
+                    b.Property<string>("ProductSubCat")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("SupplierShortName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PurchaseOfficer")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<string>("RMPOCreationMonth")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("RMPOCreationYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShipToAddress")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ShipmentTerm")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SizeCode")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SizeName")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Supplier")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Traceable")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UOM")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Units")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("WashColorCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WashColorName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
                     b.ToTable("WfxPOArticle", (string)null);
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxPOArticleHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("CreatedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ImportDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((1))");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<Guid?>("ModifiedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<decimal?>("RemainQuantity")
+                        .HasColumnType("decimal(28,8)");
+
+                    b.Property<int?>("WfxPOArticlelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImportDetailId");
+
+                    b.HasIndex("WfxPOArticlelId");
+
+                    b.ToTable("WfxPOArticleHistory", (string)null);
                 });
 
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.BarcodeLocation", b =>
@@ -1074,18 +1621,67 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.HasOne("Shopfloor.Barcode.Domain.Entities.ArticleBarcode", "ArticleBarcode")
                         .WithMany("ImportDetails")
                         .HasForeignKey("AriticleBarcodeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Shopfloor.Barcode.Domain.Entities.ImportArticle", "ImportArticle")
                         .WithMany("ImportDetails")
                         .HasForeignKey("ImportArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ArticleBarcode");
 
                     b.Navigation("ImportArticle");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDIHistory", b =>
+                {
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.ExportDetail", "ExportDetail")
+                        .WithMany("WfxGDIHistories")
+                        .HasForeignKey("ExportDetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.WfxGDI", "WfxGDI")
+                        .WithMany("WfxGDIHistories")
+                        .HasForeignKey("WfxGDIId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ExportDetail");
+
+                    b.Navigation("WfxGDI");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDNHistory", b =>
+                {
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.ExportDetail", "ExportDetail")
+                        .WithMany("WfxGDNHistories")
+                        .HasForeignKey("ExportDetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.WfxGDN", "WfxGDN")
+                        .WithMany("WfxGDNHistories")
+                        .HasForeignKey("WfxGDNId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ExportDetail");
+
+                    b.Navigation("WfxGDN");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxPOArticleHistory", b =>
+                {
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.ImportDetail", "ImportDetail")
+                        .WithMany("WfxPOArticleHistories")
+                        .HasForeignKey("ImportDetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shopfloor.Barcode.Domain.Entities.WfxPOArticle", "WfxPOArticle")
+                        .WithMany("WfxPOArticleHistories")
+                        .HasForeignKey("WfxPOArticlelId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ImportDetail");
+
+                    b.Navigation("WfxPOArticle");
                 });
 
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.ArticleBarcode", b =>
@@ -1107,6 +1703,13 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Navigation("ExportDetails");
                 });
 
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.ExportDetail", b =>
+                {
+                    b.Navigation("WfxGDIHistories");
+
+                    b.Navigation("WfxGDNHistories");
+                });
+
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.Import", b =>
                 {
                     b.Navigation("ImportArticles");
@@ -1117,9 +1720,29 @@ namespace Shopfloor.Barcode.Infrastructure.Migrations
                     b.Navigation("ImportDetails");
                 });
 
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.ImportDetail", b =>
+                {
+                    b.Navigation("WfxPOArticleHistories");
+                });
+
             modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.Location", b =>
                 {
                     b.Navigation("BarcodeLocations");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDI", b =>
+                {
+                    b.Navigation("WfxGDIHistories");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxGDN", b =>
+                {
+                    b.Navigation("WfxGDNHistories");
+                });
+
+            modelBuilder.Entity("Shopfloor.Barcode.Domain.Entities.WfxPOArticle", b =>
+                {
+                    b.Navigation("WfxPOArticleHistories");
                 });
 #pragma warning restore 612, 618
         }

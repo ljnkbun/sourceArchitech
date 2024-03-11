@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.FormulaFields;
 using Shopfloor.IED.Application.Parameters.FormulaFields;
@@ -8,7 +7,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.FormulaFields
 {
-    public class GetFormulaFieldsQuery : IRequest<PagedResponse<IReadOnlyList<FormulaFieldModel>>>, ICacheableMediatrQuery
+    public class GetFormulaFieldsQuery : IRequest<PagedResponse<IReadOnlyList<FormulaFieldModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -22,9 +21,6 @@ namespace Shopfloor.IED.Application.Query.FormulaFields
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"FormulaFields";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetFormulaFieldsQueryHandler : IRequestHandler<GetFormulaFieldsQuery, PagedResponse<IReadOnlyList<FormulaFieldModel>>>
     {

@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.EventBus.Models.Responses;
 using Shopfloor.Master.Domain.Entities;
@@ -14,14 +14,13 @@ namespace Shopfloor.Master.Application.Command.Articles
     }
     public class SyncArticleCommandHandler : IRequestHandler<SyncArticleCommand, Response<bool>>
     {
-        private readonly IMapper _mapper;
         private readonly IArticleRepository _repository;
-        public SyncArticleCommandHandler(IMapper mapper,
-            IArticleRepository repository
-            )
+        private readonly IProcessRepository _processRepository;
+        public SyncArticleCommandHandler(IServiceProvider serviceProvider)
         {
-            _mapper = mapper;
-            _repository = repository;
+            var scope = serviceProvider.CreateScope();
+            _repository = scope.ServiceProvider.GetRequiredService<IArticleRepository>();
+            _processRepository = scope.ServiceProvider.GetRequiredService<IProcessRepository>();
         }
         public async Task<Response<bool>> Handle(SyncArticleCommand command, CancellationToken cancellationToken)
         {
@@ -31,7 +30,7 @@ namespace Shopfloor.Master.Application.Command.Articles
             var listDeleteArticleBaseColor = new List<ArticleBaseColor>();
             var listDeleteArticleBaseSize = new List<ArticleBaseSize>();
             var listDeleteArticleFlexField = new List<ArticleFlexField>();
-            var updateEntities = GetUpdateEntities(entities.ToList(), command.Data, listDeleteArticleBaseColor, listDeleteArticleBaseSize, listDeleteArticleFlexField);
+            var updateEntities = GetUpdateEntities(entities, command.Data, listDeleteArticleBaseColor, listDeleteArticleBaseSize, listDeleteArticleFlexField);
 
             if (newEntities.Count > 0) { await _repository.AddRangeAsync(newEntities); }
             if (updateEntities.Count > 0)
@@ -39,7 +38,28 @@ namespace Shopfloor.Master.Application.Command.Articles
                 await _repository.UpdateArticlesAsync(updateEntities, listDeleteArticleBaseColor,
                 listDeleteArticleBaseSize, listDeleteArticleFlexField);
             }
-
+            //if category is Services - Update or insert process
+            if (command.Category == "Services")
+            {
+                var allProcess = await _processRepository.GetAllAsync();
+                var modProcess = allProcess
+                    .Where(x => (x.WFXProcessId == null || x.WFXProcessId == 0) && command.Data.Any(y => y.ServiceCode == x.Code)).ToList();
+                modProcess.ForEach(x =>
+                {
+                    x.WFXProcessId = command.Data.FirstOrDefault(y => y.ServiceCode == x.Code)?.ArticleID;
+                });
+                var newProcess = command.Data
+                    .Where(x => !allProcess.Any(y => y.Code == x.ServiceCode))
+                    .Select(x => new Process
+                    {
+                        WFXProcessId = x.ArticleID,
+                        Name = x.ServiceName,
+                        Code = x.ServiceCode,
+                        IsActive = true
+                    }).ToList();
+                if (newProcess.Any() || modProcess.Any())
+                    await _processRepository.UpdateWFXProcess(newProcess, modProcess);
+            }
             return new Response<bool>(true);
         }
 
@@ -50,13 +70,13 @@ namespace Shopfloor.Master.Application.Command.Articles
         }
 
         private List<Article> GetUpdateEntities(List<Article> entities,
-            List<WfxArticleDto> input,
+            List<WfxArticleDto> datas,
               List<ArticleBaseColor> articleBaseColors,
               List<ArticleBaseSize> articleBaseSizes,
               List<ArticleFlexField> articleFlexFields
             )
         {
-            var changeds = entities.Where(x => input.Any(r => r.ArticleID == x.WFXArticleId && IsChanged(x, r)));
+            var changeds = entities.Where(x => datas.Any(r => r.ArticleID == x.WFXArticleId && IsChanged(x, r)));
             var entites = new List<Article>();
             foreach (var r in changeds)
             {
@@ -64,7 +84,7 @@ namespace Shopfloor.Master.Application.Command.Articles
                 articleFlexFields.AddRange(r.FlexFieldList);
                 articleBaseSizes.AddRange(r.BaseSizeList);
 
-                var ent = input.FirstOrDefault(x => x.ArticleID == r.WFXArticleId);
+                var ent = datas.FirstOrDefault(x => x.ArticleID == r.WFXArticleId);
                 var entityChanged = PrepareArticle(ent, r);
                 entites.Add(r);
             }
@@ -140,7 +160,9 @@ namespace Shopfloor.Master.Application.Command.Articles
                     StyleType = r.StyleType,
                     Supplier = r.Supplier,
                     UseForIED = true,
-                    WFXArticleId = r.ArticleID
+                    WFXArticleId = r.ArticleID,
+                    ServiceCode = r.ServiceCode,
+                    ServiceName = r.ServiceName,
                 };
             }
             else
@@ -192,6 +214,8 @@ namespace Shopfloor.Master.Application.Command.Articles
                 entity.Supplier = r.Supplier;
                 entity.UseForIED = true;
                 entity.WFXArticleId = r.ArticleID;
+                entity.ServiceName = r.ServiceName;
+                entity.ServiceCode = r.ServiceCode;
                 entity.BaseColorList = r.BaseColorList?.Select(x => new ArticleBaseColor
                 {
                     ColorCode = x.ColorCode,
@@ -216,9 +240,10 @@ namespace Shopfloor.Master.Application.Command.Articles
             }
             return entity;
         }
+
         bool IsChanged(Article article, WfxArticleDto wfxArticle)
         {
-            var properties = new string[] {
+            string[] _properties = new string[] {
               nameof(Article.Category),
               nameof(Article.MaterialType),
               nameof(Article.ArticleCode),
@@ -263,8 +288,10 @@ namespace Shopfloor.Master.Application.Command.Articles
               nameof(Article.ReOrderLevel),
               nameof(Article.MinimumOrderQty),
               nameof(Article.RequirementMultiple),
+              nameof(Article.ServiceName),
+              nameof(Article.ServiceCode),
             };
-            foreach (var pt in properties)
+            foreach (var pt in _properties)
             {
                 var val = article.GetType().GetProperty(pt)?.GetValue(article);
                 var valCompare = wfxArticle.GetType().GetProperty(pt)?.GetValue(wfxArticle);
@@ -275,20 +302,31 @@ namespace Shopfloor.Master.Application.Command.Articles
                 if (val?.Equals(valCompare) != true)
                     return true;
             }
-            if (wfxArticle.BaseColorList.Count() != article.BaseColorList.Count())
+            if (IsBaseColorListChanged(wfxArticle.BaseColorList, article.BaseColorList))
                 return true;
-            if (wfxArticle.BaseSizeList.Count() != article.BaseSizeList.Count())
+            if (IsBaseSizeListChanged(wfxArticle.BaseSizeList, article.BaseSizeList))
                 return true;
-            if (wfxArticle.FlexFieldList.Count() != article.FlexFieldList.Count())
-                return true;
-
-            if (wfxArticle.BaseColorList.Any(x => !article.BaseColorList.Any(v => v.WFXColorId == x.ColorID && (v.ColorName == x.ColorName && v.ColorCode == x.ColorCode))))
-                return true;
-            if (wfxArticle.BaseSizeList.Any(x => !article.BaseSizeList.Any(v => v.SizeName == x.SizeName && v.SizeCode == x.SizeCode)))
-                return true;
-            if (wfxArticle.FlexFieldList.Any(x => !article.FlexFieldList.Any(v => v.AttributeName == x.AttributeName && x.AttributeValue != null && v.AttributeValue?.Equals(x.AttributeValue) == true)))
+            if (IsFlexFieldListChanged(wfxArticle.FlexFieldList, article.FlexFieldList))
                 return true;
             return false;
+        }
+        bool IsBaseColorListChanged(List<WfxArticleBaseColorDto> wfxBaseColorList, ICollection<ArticleBaseColor> baseColorList)
+        {
+            if (wfxBaseColorList.Count() != baseColorList.Count())
+                return true;
+            return wfxBaseColorList.Any(x => !baseColorList.Any(v => v.WFXColorId == x.ColorID && (v.ColorName == x.ColorName && v.ColorCode == x.ColorCode)));
+        }
+        bool IsBaseSizeListChanged(List<WfxArticleBaseSizeDto> wfxBaseSizeList, ICollection<ArticleBaseSize> baseSizeList)
+        {
+            if (wfxBaseSizeList.Count() != baseSizeList.Count())
+                return true;
+            return wfxBaseSizeList.Any(x => !baseSizeList.Any(v => v.SizeName == x.SizeName && v.SizeCode == x.SizeCode));
+        }
+        bool IsFlexFieldListChanged(List<WfxArticleFlexFieldDto> wfxFlexFieldList, ICollection<ArticleFlexField> flexFieldList)
+        {
+            if (wfxFlexFieldList.Count() != flexFieldList.Count())
+                return true;
+            return wfxFlexFieldList.Any(x => !flexFieldList.Any(v => v.AttributeName == x.AttributeName && x.AttributeValue != null && v.AttributeValue?.Equals(x.AttributeValue) == true));
         }
     }
 }

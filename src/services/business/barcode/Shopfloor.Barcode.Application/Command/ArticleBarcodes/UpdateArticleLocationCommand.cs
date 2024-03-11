@@ -2,7 +2,6 @@
 using MediatR;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.BarcodeLocations
@@ -25,7 +24,8 @@ namespace Shopfloor.Barcode.Application.Command.BarcodeLocations
         public async Task<Response<int>> Handle(UpdateArticleLocationCommand command, CancellationToken cancellationToken)
         {
             int articleBarcodeId = command.UpdateBarcodeLocationCommand.ArticleBarcodeId;
-            var entity = await _repositoryArticleBarcode.GetByIdAsync(articleBarcodeId) ?? throw new ApiException($"ArticleBarcode Not Found.(Id:{articleBarcodeId})");
+            var entity = await _repositoryArticleBarcode.GetByIdAsync(articleBarcodeId);
+            if (entity == null) return new($"ArticleBarcode Not Found.(Id:{articleBarcodeId})");
             var oldLocationId = entity.CurrentLocationId;
             entity.PreLocationId = oldLocationId;
             entity.CurrentLocationId = command.UpdateBarcodeLocationCommand.LocationId;

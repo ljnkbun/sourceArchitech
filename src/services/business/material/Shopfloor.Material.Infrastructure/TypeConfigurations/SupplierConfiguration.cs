@@ -94,6 +94,8 @@ namespace Shopfloor.Material.Infrastructure.TypeConfigurations
             builder.Property(e => e.CategoryName).HasMaxLength(500);
             builder.Property(e => e.SwiftCode).HasColumnType("varchar(100)");
             builder.Property(e => e.MaximumOutAmount).HasColumnType("decimal(28,8)");
+            builder.Property(e => e.ApproveName).HasMaxLength(500);
+            builder.Property(e => e.SegmentOther).HasMaxLength(500);
         }
     }
 }

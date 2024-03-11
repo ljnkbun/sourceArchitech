@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.Formulas
         public async Task<Response<Formula>> Handle(GetFormulaQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Formula Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Formula Not Found (Id:{query.Id}).");
             return new Response<Formula>(entity);
         }
     }

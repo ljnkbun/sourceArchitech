@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Shopfloor.Core.Extensions.Objects
 {
@@ -51,12 +53,58 @@ namespace Shopfloor.Core.Extensions.Objects
             }
             return mainExpression == null ? query : query.Where(Expression.Lambda<Func<TEntity, bool>>(mainExpression, entityParameter));
         }
+        public static IQueryable<TEntity> Filters<TEntity, TParams>(this IQueryable<TEntity> query, List<TParams> requestParameters)
+        {
+            Type paramsType = typeof(TParams);
+            Type entityType = typeof(TEntity);
+
+            PropertyInfo[] paramPropArr = paramsType.GetProperties();
+            PropertyInfo[] entityPropArr = entityType.GetProperties();
+
+            Expression mainExpression = null;
+            var entityParameter = Expression.Parameter(entityType, entityType.Name.ToLower());
+            foreach (var requestParameter in requestParameters)
+            {
+                Expression groupExpresion = null;
+                foreach (PropertyInfo paramProp in paramPropArr)
+                {
+                    object paramValue = paramProp.GetValue(requestParameter);
+                    PropertyInfo entityProp = entityPropArr.FirstOrDefault(n => n.Name.Equals(paramProp.Name));
+                    if (entityProp == null || IsNullable(paramProp, paramValue))
+                    {
+                        continue;
+                    }
+
+                    ConstantExpression constantExpression = Expression.Constant(paramValue, entityProp.PropertyType);
+                    Expression entityMemberExpression = Expression.Property(entityParameter, entityProp);
+                    Expression subExpression = null;
+
+                    if (paramProp.PropertyType != typeof(string))
+                    {
+                        subExpression = Expression.Equal(entityMemberExpression, constantExpression);
+                    }
+                    else
+                    {
+                        subExpression = Expression.Call(entityMemberExpression, containsMethod, constantExpression);
+                    }
+
+                    if (subExpression != null)
+                    {
+                        groupExpresion = groupExpresion == null ? subExpression : Expression.And(groupExpresion, subExpression);
+                    }
+                }
+                mainExpression = mainExpression == null ? groupExpresion : Expression.Or(mainExpression, groupExpresion);
+            }
+
+            return mainExpression == null ? query : query.Where(Expression.Lambda<Func<TEntity, bool>>(mainExpression, entityParameter));
+        }
         public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, string orderBy)
         {
             foreach (OrderByInfo orderByInfo in ParseOrderBy(orderBy))
                 query = ApplyOrderBy(query, orderByInfo);
             return query;
         }
+
         public static IQueryable<TEntity> SearchTerm<TEntity>(this IQueryable<TEntity> query, string searchTerm, List<string> searchProps)
         {
             if (string.IsNullOrEmpty(searchTerm)) return query;

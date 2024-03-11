@@ -22,7 +22,7 @@ namespace Shopfloor.Master.Application.Validations.OperationLibraries
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.ProcessLibraryId)
+            RuleFor(p => p.ProcessId)
                 .NotNull()
                 .WithMessage("{PropertyName} must not Null.");
 

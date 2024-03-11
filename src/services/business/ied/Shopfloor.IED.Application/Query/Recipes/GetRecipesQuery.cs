@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.Recipes;
 using Shopfloor.IED.Application.Parameters.Recipes;
@@ -8,11 +7,9 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.Recipes
 {
-    public class GetRecipesQuery : IRequest<PagedResponse<IReadOnlyList<RecipeModel>>>, ICacheableMediatrQuery
+    public class GetRecipesQuery : IRequest<PagedResponse<IReadOnlyList<RecipeModel>>>
     {
-        public int? DyeingTBRequestId { get; set; }
-
-        public int? DyeingTBRVersionId { get; set; }
+        public int? DyeingTBRecipeId { get; set; }
 
         public string RecipeNo { get; set; }
 
@@ -23,6 +20,8 @@ namespace Shopfloor.IED.Application.Query.Recipes
         public string Style { get; set; }
 
         public string FabricCode { get; set; }
+
+        public string Description { get; set; }
 
         public string FabricName { get; set; }
 
@@ -57,9 +56,6 @@ namespace Shopfloor.IED.Application.Query.Recipes
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"Recipes";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

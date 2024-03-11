@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRTasks
         public async Task<Response<int>> Handle(DeleteDyeingTBRTaskCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRTask Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"DyeingTBRTask Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

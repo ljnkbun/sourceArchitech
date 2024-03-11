@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Articles
         public async Task<Response<Article>> Handle(GetArticleByWFXIdQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetArticleByWFXIdAsync(query.WFXArticleId);
-            if (entity == null) throw new ApiException($"Article Not Found (WFX Id:{query.WFXArticleId}).");
+            if (entity == null) return new($"Article Not Found (WFX Id:{query.WFXArticleId}).");
             return new Response<Article>(entity);
         }
     }

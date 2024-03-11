@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
+using Shopfloor.Core.Definations;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.RequestDivisionFiles;
 using Shopfloor.IED.Application.Parameters.RequestDivisionFiles;
-using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.RequestDivisionFiles
 {
-    public class GetRequestDivisionFilesQuery : IRequest<PagedResponse<IReadOnlyList<RequestDivisionFileModel>>>, ICacheableMediatrQuery
+    public class GetRequestDivisionFilesQuery : IRequest<PagedResponse<IReadOnlyList<RequestDivisionFileModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -25,9 +24,6 @@ namespace Shopfloor.IED.Application.Query.RequestDivisionFiles
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"RequestDivisionFiles";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetRequestDivisionFilesQueryHandler : IRequestHandler<GetRequestDivisionFilesQuery, PagedResponse<IReadOnlyList<RequestDivisionFileModel>>>
     {

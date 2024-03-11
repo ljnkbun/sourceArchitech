@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Shopfloor.IED.Application.Command.DCTemplate;
 using Shopfloor.IED.Application.Command.DCTemplates;
 using Shopfloor.IED.Application.Parameters.DCTemplates;
 using Shopfloor.IED.Application.Query.DCTemplates;
@@ -24,10 +23,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 

@@ -1,6 +1,5 @@
 using MediatR;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ImportArticles
@@ -20,7 +19,8 @@ namespace Shopfloor.Barcode.Application.Command.ImportArticles
 
         public async Task<Response<int>> Handle(DeleteImportArticleCommand command, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetImportArticleByIdAsync(command.Id) ?? throw new ApiException($"ImportArticle Not Found (Id:{command.Id}).");
+            var entity = await _repository.GetImportArticleByIdAsync(command.Id);
+            if (entity == null) return new($"ImportArticle Not Found (Id:{command.Id}).");
             var articleBarcodes = entity.ImportDetails.Select(y => y.ArticleBarcode);
             await _repository.DeleteImportArticleAsync(entity, articleBarcodes);
             return new Response<int>(entity.Id);

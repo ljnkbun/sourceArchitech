@@ -7,7 +7,6 @@ namespace Shopfloor.IED.Domain.Entities
     {
         public DyeingTBRecipe()
         {
-            DyeingTBRVersions = new HashSet<DyeingTBRVersion>();
             DyeingTBRTasks = new HashSet<DyeingTBRTask>();
         }
 
@@ -15,15 +14,17 @@ namespace Shopfloor.IED.Domain.Entities
 
         public string TBRecipeNo { get; set; }
 
+        public string TBRecipeName { get; set; }
+
         public int TemplateId { get; set; }
 
         public string TemplateName { get; set; }
 
         public string TCFNo { get; set; }
 
-        public int ApproveVersionId { get; set; }
+        public int ApproveVersionIndex { get; set; }
 
-        public DateTime ApproveDate { get; set; }
+        public DateTime? ApproveDate { get; set; }
 
         public string Comment { get; set; }
 
@@ -45,7 +46,7 @@ namespace Shopfloor.IED.Domain.Entities
 
         public virtual DyeingTBMaterialColor DyeingTBMaterialColor { get; set; }
 
-        public virtual ICollection<DyeingTBRVersion> DyeingTBRVersions { get; set; }
+        public virtual Recipe Recipe { get; set; }
 
         public virtual ICollection<DyeingTBRTask> DyeingTBRTasks { get; set; }
     }

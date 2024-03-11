@@ -1,6 +1,4 @@
 ﻿using MediatR;
-
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Material.Domain.Entities;
 using Shopfloor.Material.Domain.Interfaces;
 
@@ -23,7 +21,7 @@ namespace Shopfloor.Material.Application.Query.Buyers
         public async Task<Core.Models.Responses.Response<Buyer>> Handle(GetBuyerQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetBuyerByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"{typeof(Buyer).Name} Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"{nameof(Buyer)} Not Found (Id:{query.Id}).");
             return new Core.Models.Responses.Response<Buyer>(entity);
         }
     }

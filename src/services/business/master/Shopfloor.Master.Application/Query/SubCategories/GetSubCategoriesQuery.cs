@@ -53,8 +53,9 @@ namespace Shopfloor.Master.Application.Query.SubCategories
             validFilter.SetSearchProps(new string[] {
                 nameof(SubCategoryParameter.Code), nameof(SubCategoryParameter.Name) , nameof(SubCategoryParameter.SubCategoryGroupId) , nameof(SubCategoryParameter.ExciseTarrifNo)
                 , nameof(SubCategoryParameter.PackagingUnit) , nameof(SubCategoryParameter.ByPassPriceList) , nameof(SubCategoryParameter.DefaultInactiveIndent) 
-                , nameof(SubCategoryParameter.ProductGroupId) }.ToList());
-            return await _repository.GetModelPagedReponseAsync<SubCategoryParameter, SubCategoryModel>(validFilter);
+                , nameof(SubCategoryParameter.ProductGroupId)
+                , nameof(SubCategoryParameter.ProductGroupName) }.ToList());
+            return await _repository.GetModelPagedAsync<SubCategoryParameter, SubCategoryModel>(validFilter, request.ProductGroupName);
         }
     }
 }

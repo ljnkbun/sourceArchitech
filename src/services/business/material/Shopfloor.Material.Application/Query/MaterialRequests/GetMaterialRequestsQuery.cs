@@ -14,6 +14,7 @@ namespace Shopfloor.Material.Application.Query.MaterialRequests
     public class GetMaterialRequestsQuery : IRequest<PagedResponse<IReadOnlyList<MaterialRequestModel>>>, ICacheableMediatrQuery
     {
         public string RequestNo { get; set; }
+        public string HSCode { get; set; }
 
         public string ProductCatCode { get; set; }
 

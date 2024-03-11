@@ -6,6 +6,7 @@ using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Core.Repositories;
 using Shopfloor.IED.Domain.Entities;
+using Shopfloor.IED.Domain.Enums;
 using Shopfloor.IED.Domain.Interfaces;
 using Shopfloor.IED.Infrastructure.Contexts;
 
@@ -28,6 +29,7 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             var query = _dbContext.Set<DyeingTBMaterialColor>()
                 .Include(x => x.DyeingTBMaterial)
                 .ThenInclude(x => x.DyeingTBRequest)
+                .Where(x => x.DyeingTBMaterial.DyeingTBRequest.Status != TBRequestStatus.Draft)
                 .Filter(parameter);
 
             if (!string.IsNullOrEmpty(parameter.SearchTerm))
@@ -50,8 +52,9 @@ namespace Shopfloor.IED.Infrastructure.Repositories
             return response;
         }
 
-        public async Task<DyeingTBMaterialColor> GetWithIncludeByIdAsync(int id) => await _dbContext.Set<DyeingTBMaterialColor>()
-            .Include(x => x.DyeingTBRecipes)
+        public async Task<DyeingTBMaterialColor> GetWithParentByIdAsync(int id) => await _dbContext.Set<DyeingTBMaterialColor>()
+            .Include(x => x.DyeingTBMaterial)
+            .ThenInclude(x => x.DyeingTBRequest)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }

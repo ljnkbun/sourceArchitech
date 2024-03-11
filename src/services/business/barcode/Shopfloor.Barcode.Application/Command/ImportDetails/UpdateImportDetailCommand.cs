@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.ImportDetails
@@ -15,6 +14,7 @@ namespace Shopfloor.Barcode.Application.Command.ImportDetails
         public ItemStatus? Status { get; set; }
         public string ArticleName { get; set; }
         public string ArticleCode { get; set; }
+        public string PONo { get; set; }
         public decimal? Quantity { get; set; }
         public string UOM { get; set; }
         public string Unit { get; set; }
@@ -22,9 +22,12 @@ namespace Shopfloor.Barcode.Application.Command.ImportDetails
         public string OC { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
-        public int? NumberOfCone { get; set; }
+        public string Grade { get; set; }
+        public decimal? NumberOfCone { get; set; }
         public decimal? WeightPerCone { get; set; }
         public string Location { get; set; }
+        public string LotNo { get; set; }
+        public string Site { get; set; }
         public int LocationId { get; set; }
         public string Note { get; set; }
         public int ImportArticleId { get; set; }
@@ -45,7 +48,8 @@ namespace Shopfloor.Barcode.Application.Command.ImportDetails
 
         public async Task<Response<int>> Handle(UpdateImportDetailCommand command, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetByIdAsync(command.Id) ?? throw new ApiException($"ImportDetail Not Found.");
+            var entity = await _repository.GetByIdAsync(command.Id);
+            if (entity == null) return new($"ImportDetail Not Found.");
             _mapper.Map<UpdateImportDetailCommand, ImportDetail>(command, entity);
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);

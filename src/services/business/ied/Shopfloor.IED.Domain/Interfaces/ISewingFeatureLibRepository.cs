@@ -7,5 +7,6 @@ namespace Shopfloor.IED.Domain.Interfaces
     {
         Task<SewingFeatureLib> GetSewingFeatureLibByIdAsync(int id);
         Task UpdateSewingFeatureLibAsync(SewingFeatureLib entity, List<SewingFeatureLibBOL> insertItems, List<SewingFeatureLibBOL> deleteItems);
+        Task<SewingFeatureLib> AddSewingFeatureLibAsync(SewingFeatureLib entity);
     }
 }

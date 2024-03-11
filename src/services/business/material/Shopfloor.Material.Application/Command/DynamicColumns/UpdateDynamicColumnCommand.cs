@@ -3,6 +3,7 @@
 using MediatR;
 
 using Shopfloor.Core.Exceptions;
+using Shopfloor.Core.Extensions.Objects;
 using Shopfloor.Core.Models.Entities;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Material.Application.Models.DynamicColumnContents;
@@ -32,15 +33,7 @@ namespace Shopfloor.Material.Application.Command.DynamicColumns
 
         public bool IsActive { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
-
-        public DateTime? ModifiedDate { get; set; }
-
-        public Guid? CreatedUserId { get; set; }
-
-        public Guid? ModifiedUserId { get; set; }
-
-        public List<DynamicColumnContentModel> DynamicColumnContents { get; set; }
+        public ICollection<DynamicColumnContentModel> DynamicColumnContents { get; set; }
     }
 
     public class UpdateDynamicColumnCommandHandler : IRequestHandler<UpdateDynamicColumnCommand, Response<int>>
@@ -60,14 +53,16 @@ namespace Shopfloor.Material.Application.Command.DynamicColumns
         {
             var entity = await _repositoryDynamicColumn.GetWithIncludeByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"DynamicColumn Not Found.");
+                return new($"DynamicColumn Not Found.");
             var dataDynamicColumn = _mapper.Map<DynamicColumn>(command);
-            entity.Name = dataDynamicColumn.Name;
-            entity.Code = dataDynamicColumn.Code;
-            entity.FieldType = dataDynamicColumn.FieldType;
-            entity.IsRequired = dataDynamicColumn.IsRequired;
-            entity.IsContent = dataDynamicColumn.IsContent;
-            entity.CategoryCode = dataDynamicColumn.CategoryCode;
+            var ignores = new[]
+            {
+                nameof(DynamicColumn.Id),
+                nameof(DynamicColumn.CreatedDate),
+                nameof(DynamicColumn.CreatedUserId),
+                nameof(DynamicColumn.DynamicColumnContents),
+            };
+            command.TransferProperties(entity, ignores);
 
             #region DynamicColumnContents
 
@@ -87,7 +82,7 @@ namespace Shopfloor.Material.Application.Command.DynamicColumns
 
             entity.DynamicColumnContents = updateEntitiesDynamicColumnContents;
 
-            await _repositoryDynamicColumn.UpdateDynamicColumnAsync(entity, new BaseListCreateDeleteEntity<DynamicColumnContent>
+            await _repositoryDynamicColumn.UpdateDynamicColumnAsync(entity, new BaseUpdateEntity<DynamicColumnContent>
             {
                 LstDataAdd = addEntitiesDynamicColumnContents,
                 LstDataDelete = deleteEntitiesDynamicColumnContents

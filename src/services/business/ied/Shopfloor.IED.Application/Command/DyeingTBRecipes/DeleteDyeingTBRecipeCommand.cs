@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Command.DyeingTBRecipes
         public async Task<Response<int>> Handle(DeleteDyeingTBRecipeCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRecipe Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"DyeingTBRecipe Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

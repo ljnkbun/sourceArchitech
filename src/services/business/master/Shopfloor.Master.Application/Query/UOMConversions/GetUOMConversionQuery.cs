@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.UOMConversions
         public async Task<Response<UOMConversion>> Handle(GetUOMConversionQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"UOMConversion Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"UOMConversion Not Found (Id:{query.Id}).");
             return new Response<UOMConversion>(entity);
         }
     }

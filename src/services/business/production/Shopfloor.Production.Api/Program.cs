@@ -9,7 +9,6 @@ using Shopfloor.Production.Api.Services;
 using Shopfloor.Production.Application.Extensions;
 using Shopfloor.Production.Infrastructure.Contexts;
 using Shopfloor.Production.Infrastructure.Extensions;
-using Shopfloor.Production.Infrastructure.SeedDatas;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +38,16 @@ builder.Services.AddInfrastructure(configuration);
 builder.Services.AddApplication();
 builder.Services.AddHealthChecks();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(configurePolicy =>
+    {
+        configurePolicy.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers()
     .AddJsonOptions(opts => opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,6 +63,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthorization();
 
@@ -65,12 +75,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ProductionContext>();
     db.Database.Migrate();
-    if (configuration["IsSeedData"] == "True")
-    {
-        await SeedTestEntity.SeedTestEntityAsync(db);
-        Log.Information("Finished Seeding Default Data");
-    }
-    Log.Information("Application Starting");
+    
 }
 
 app.Run();

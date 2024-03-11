@@ -9,6 +9,7 @@ namespace Shopfloor.IED.Application.Parameters.Requests
         public string Description { get; set; }
         public RequestStatus? Status { get; set; }
         public string StatusComment { get; set; }
+        public decimal? ExpectedQty { get; set; }
         public int? RequestTypeId { get; set; }
         public bool? Deleted { get; set; }
 

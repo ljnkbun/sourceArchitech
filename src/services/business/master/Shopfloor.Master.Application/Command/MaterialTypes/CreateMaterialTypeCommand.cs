@@ -11,7 +11,6 @@ namespace Shopfloor.Master.Application.Command.MaterialTypes
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int CategoryId { get; set; }
         public ICollection<CreateCategoryMapMaterialTypeCommand> CategoryMapMaterialTypes { get; set; }
     }
     public class CreateMaterialTypeCommandHandler : IRequestHandler<CreateMaterialTypeCommand, Response<int>>
@@ -28,10 +27,6 @@ namespace Shopfloor.Master.Application.Command.MaterialTypes
         public async Task<Response<int>> Handle(CreateMaterialTypeCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<MaterialType>(request);
-            foreach (var item in entity.CategoryMapMaterialTypes)
-            {
-                item.CategoryId = entity.CategoryId;
-            }
             await _repository.AddAsync(entity);
             return new Response<int>(entity.Id);
         }

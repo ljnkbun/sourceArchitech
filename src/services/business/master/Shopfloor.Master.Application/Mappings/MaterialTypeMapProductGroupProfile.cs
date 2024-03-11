@@ -12,7 +12,9 @@ namespace Shopfloor.Master.Application.MaterialTypeMapProductGroups
         public MaterialTypeMapProductGroupProfile()
         {
             CreateMap<MaterialTypeMapProductGroup, MaterialTypeMapProductGroupModel>().ReverseMap();
+            CreateMap<MapProductGroupToMaterialTypeModel, MaterialTypeMapProductGroup>().ReverseMap();
             CreateMap<CreateMaterialTypeMapProductGroupCommand, MaterialTypeMapProductGroup>();
+            CreateMap<UpdateMaterialTypeMapProductGroupCommand, MaterialTypeMapProductGroup>();
             CreateMap<GetMaterialTypeMapProductGroupsQuery, MaterialTypeMapProductGroupParameter>();
         }
     }

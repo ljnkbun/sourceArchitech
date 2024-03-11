@@ -21,8 +21,8 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 ArticleCode = filter.ArticleCode,
                 ArticleName = filter.ArticleName,
                 GDNNumber = filter.GDNNumber,
-                FromSite= filter.FromSite,
-                ToSite=filter.ToSite,
+                FromSite = filter.FromSite,
+                ToSite = filter.ToSite,
                 SupplierName = filter.SupplierName,
                 OrderRefNum = filter.OrderRefNum,
                 ColorName = filter.ColorName,
@@ -33,30 +33,48 @@ namespace Shopfloor.Barcode.Api.Controllers.v1
                 OCNum = filter.OCNum,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-            })); ; ;
+            }));
         }
+
         [HttpGet("Multi{ids}")]
         public async Task<IActionResult> Get(string ids)
         {
             return Ok(await Mediator.Send(new GetMultiImportArticleQuery { Ids = ids }));
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await Mediator.Send(new GetImportArticleQuery { Id = id }));
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateImportArticleCommand command)
         {
             if (id != command.Id) return BadRequest();
             return Ok(await Mediator.Send(command));
         }
+
+        // PUT api/v1/<controller>/5
+        [HttpPut("Status")]
+        public async Task<IActionResult> Put(UpdateStatusImportArticleCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+          // PUT api/v1/<controller>/5
+        [HttpPut("Statuses")]
+        public async Task<IActionResult> Put(UpdateStatusImportArticlesCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateImportArticleCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
-       
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

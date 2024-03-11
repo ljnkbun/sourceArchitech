@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.MachineTypes
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"MachineType Not Found.");
+            if (entity == null) return new($"MachineType Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

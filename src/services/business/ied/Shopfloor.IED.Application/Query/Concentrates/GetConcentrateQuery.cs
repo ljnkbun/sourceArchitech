@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.Concentrates
         public async Task<Response<Concentrate>> Handle(GetConcentrateQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Concentrate Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Concentrate Not Found (Id:{query.Id}).");
             return new Response<Concentrate>(entity);
         }
     }

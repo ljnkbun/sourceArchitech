@@ -7,5 +7,6 @@ namespace Shopfloor.IED.Domain.Interfaces
     {
         Task<List<RequestDivision>> GetListAsync(int requestId);
         Task<RequestDivision> GetRequestDivisionByIdAsync(int id);
+        Task<bool> IsExistAsync(int id);
     }
 }

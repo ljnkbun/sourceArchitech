@@ -13,12 +13,9 @@ namespace Shopfloor.Master.Application.Command.ColorDefinitions
     }
     public class SyncColorDefinitionCommandHandler : IRequestHandler<SyncColorDefinitionCommand, Response<bool>>
     {
-        private readonly IMapper _mapper;
         private readonly IColorDefinitionRepository _repository;
-        public SyncColorDefinitionCommandHandler(IMapper mapper,
-            IColorDefinitionRepository repository)
+        public SyncColorDefinitionCommandHandler(IColorDefinitionRepository repository)
         {
-            _mapper = mapper;
             _repository = repository;
         }
         public async Task<Response<bool>> Handle(SyncColorDefinitionCommand command, CancellationToken cancellationToken)
@@ -27,8 +24,8 @@ namespace Shopfloor.Master.Application.Command.ColorDefinitions
             var newEntities = GetNewEntities(entities, command.Data);
             var updateEntities = GetUpdateEntities(entities, command.Data);
 
-            if(newEntities.Count> 0) { await _repository.AddRangeAsync(newEntities); }
-            if(updateEntities.Count> 0) { await _repository.UpdateRangeAsync(updateEntities); }
+            if (newEntities.Count > 0) { await _repository.AddRangeAsync(newEntities); }
+            if (updateEntities.Count > 0) { await _repository.UpdateRangeAsync(updateEntities); }
 
             return new Response<bool>(true);
         }

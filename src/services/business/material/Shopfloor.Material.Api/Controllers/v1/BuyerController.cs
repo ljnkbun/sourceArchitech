@@ -2,6 +2,7 @@
 
 using Shopfloor.Core.Models.Parameters;
 using Shopfloor.Material.Application.Command.Buyers;
+using Shopfloor.Material.Application.Command.MaterialRequests;
 using Shopfloor.Material.Application.Parameters.Buyers;
 using Shopfloor.Material.Application.Query.Buyers;
 
@@ -113,6 +114,12 @@ namespace Shopfloor.Material.Api.Controllers.v1
         {
             if (id != command.Id) return BadRequest();
             return Ok(await Mediator.Send(command));
+        }
+        
+        [HttpPut("SendExport/{id}")]
+        public async Task<IActionResult> SendExport(int id)
+        {
+            return Ok(await Mediator.Send(new SendExportBuyerCommand { Id = id }));
         }
 
         [HttpPut("SendApprove/{id}")]

@@ -24,7 +24,7 @@ namespace Shopfloor.IED.Application.Command.ProcessTemplates
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"ProcessTemplate Not Found.");
+            if (entity == null) return new($"ProcessTemplate Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

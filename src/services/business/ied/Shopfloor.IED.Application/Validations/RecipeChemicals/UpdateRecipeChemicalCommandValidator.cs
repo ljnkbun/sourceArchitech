@@ -27,6 +27,11 @@ namespace Shopfloor.IED.Application.Validations.RecipeChemicals
                 .NotNull()
                 .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
 
+            RuleFor(p => p.ChemicalSubcategory)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull()
+                .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
+
             RuleFor(p => p.RecipeTaskId)
                 .MustAsync(IsExistAsync)
                 .WithMessage("{PropertyName} not found.");

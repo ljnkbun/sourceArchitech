@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.WeavingRoutings
         {
             CreateMap<WeavingRouting, WeavingRoutingModel>().ReverseMap();
             CreateMap<CreateWeavingRoutingCommand, WeavingRouting>();
+            CreateMap<UpdateWeavingRoutingCommand, WeavingRouting>();
             CreateMap<GetWeavingRoutingsQuery, WeavingRoutingParameter>();
         }
     }

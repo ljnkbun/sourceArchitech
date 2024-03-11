@@ -5,5 +5,6 @@ namespace Shopfloor.IED.Domain.Interfaces
 {
     public interface IWeavingDetailStructureRepository : IGenericRepositoryAsync<WeavingDetailStructure>
     {
+        Task<List<WeavingDetailStructure>> GetAllByWeavingIEDId(int weavingId);
     }
 }

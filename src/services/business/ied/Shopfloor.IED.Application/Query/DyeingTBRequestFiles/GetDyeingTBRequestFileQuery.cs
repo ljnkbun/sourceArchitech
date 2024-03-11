@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRequestFiles
         public async Task<Response<Domain.Entities.DyeingTBRequestFile>> Handle(GetDyeingTBRequestFileQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRequestFile Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DyeingTBRequestFile Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DyeingTBRequestFile>(entity);
         }
     }

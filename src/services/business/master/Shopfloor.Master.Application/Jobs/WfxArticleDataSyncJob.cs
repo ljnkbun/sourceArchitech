@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,11 +6,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Shopfloor.Core.Extensions.Exceptions;
+using Shopfloor.EventBus.Models.Requests;
 using Shopfloor.EventBus.Models.Responses;
+using Shopfloor.EventBus.Services;
 using Shopfloor.Master.Application.Command.Articles;
 using Shopfloor.Master.Application.Models.Wfxs;
-using Shopfloor.Master.Application.Services.Wfxs;
 using Shopfloor.Master.Application.Settings;
+using System.Globalization;
 
 namespace Shopfloor.Master.Application.Jobs
 {
@@ -32,7 +33,7 @@ namespace Shopfloor.Master.Application.Jobs
 
         private readonly IMediator _mediator;
         private readonly ILogger<WfxArticleDataSyncJob> _logger;
-        private readonly IWfxArticleRequestService _wfxArticleRequestService;
+        private readonly IRequestClientService _requestClientService;
         private readonly WfxArticleApiSettings _settings;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public WfxArticleDataSyncJob(IServiceProvider serviceProvider,
@@ -41,7 +42,7 @@ namespace Shopfloor.Master.Application.Jobs
         {
             var scope = serviceProvider.CreateScope();
             _mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-            _wfxArticleRequestService = scope.ServiceProvider.GetRequiredService<IWfxArticleRequestService>();
+            _requestClientService = scope.ServiceProvider.GetRequiredService<IRequestClientService>();
             _logger = logger;
             _settings = setting.Value;
             _webHostEnvironment = webHostEnvironment;
@@ -113,26 +114,32 @@ namespace Shopfloor.Master.Application.Jobs
                     };
             if (createdFrom != null)
                 dataSearch.Add(nameof(cf.CreatedFrom), createdFrom.Value.ToString("yyyy-MM-dd"));
-            var dataWFX = await _wfxArticleRequestService.SearchArticle(dataSearch);
-            _logger.LogInformation($"Find {cf.Category} {dataWFX?.Count} data {cf.Category} {createdFrom}");
-            if (dataWFX != null && dataWFX.Count > 0)
+            var dataWFXService = await _requestClientService.GetResponseAsync<GetWfxArticleRequest, GetWfxArticleResponse>(new GetWfxArticleRequest
             {
-                await _mediator.Send(new SyncArticleCommand() { Data = dataWFX, Category = cf.Category });
-                cf.CreatedFrom = GetMaxCreatedDate(dataWFX);
-                cf.ModifiedFrom = GetMaxModifiedDate(dataWFX);
-            }
+                SearchDics = dataSearch
+            });
+            var dataWFX = dataWFXService?.Message?.Data;
+            _logger.LogInformation($"Find {cf.Category} {dataWFX?.Count} data {cf.Category} {createdFrom}");
+            var dataWFXModified = new List<WfxArticleDto>();
             if (modifiedFrom != null)
             {
                 if (dataSearch.ContainsKey(nameof(cf.CreatedFrom)))
                     dataSearch.Remove(nameof(cf.CreatedFrom));
                 dataSearch.Add(nameof(cf.ModifiedFrom), modifiedFrom.Value.ToString("yyyy-MM-dd"));
-                dataWFX = await _wfxArticleRequestService.SearchArticle(dataSearch);
-                _logger.LogInformation($"Find {cf.Category} {dataWFX?.Count} data {cf.Category} {modifiedFrom}");
-                if (dataWFX != null && dataWFX.Count > 0)
+                var dataWFXModifiedService = await _requestClientService.GetResponseAsync<GetWfxArticleRequest, GetWfxArticleResponse>(new GetWfxArticleRequest
                 {
-                    await _mediator.Send(new SyncArticleCommand() { Data = dataWFX, Category = cf.Category });
-                    cf.ModifiedFrom = GetMaxModifiedDate(dataWFX);
-                }
+                    SearchDics = dataSearch
+                });
+                dataWFXModified = dataWFXModifiedService?.Message?.Data;
+                _logger.LogInformation($"Find {cf.Category} {dataWFXModified?.Count} data {cf.Category} {modifiedFrom}");
+
+            }
+            dataWFX.AddRange(dataWFXModified.Where(x => !dataWFX.Any(y => y.ArticleID == x.ArticleID)));
+            if (dataWFX != null && dataWFX.Count > 0)
+            {
+                await _mediator.Send(new SyncArticleCommand() { Data = dataWFX, Category = cf.Category });
+                cf.CreatedFrom = GetMaxCreatedDate(dataWFX);
+                cf.ModifiedFrom = GetMaxModifiedDate(dataWFX);
             }
         }
 

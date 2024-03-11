@@ -13,12 +13,9 @@ namespace Shopfloor.Master.Application.Command.ColorCards
     }
     public class SyncColorCardCommandHandler : IRequestHandler<SyncColorCardCommand, Response<bool>>
     {
-        private readonly IMapper _mapper;
         private readonly IColorCardRepository _repository;
-        public SyncColorCardCommandHandler(IMapper mapper,
-            IColorCardRepository repository)
+        public SyncColorCardCommandHandler(IColorCardRepository repository)
         {
-            _mapper = mapper;
             _repository = repository;
         }
         public async Task<Response<bool>> Handle(SyncColorCardCommand command, CancellationToken cancellationToken)
@@ -27,8 +24,8 @@ namespace Shopfloor.Master.Application.Command.ColorCards
             var newEntities = GetNewEntities(entities, command.Data);
             var updateEntities = GetUpdateEntities(entities, command.Data);
 
-            if(newEntities.Count> 0) { await _repository.AddRangeAsync(newEntities); }
-            if(updateEntities.Count> 0) { await _repository.UpdateRangeAsync(updateEntities); }
+            if (newEntities.Count > 0) { await _repository.AddRangeAsync(newEntities); }
+            if (updateEntities.Count > 0) { await _repository.UpdateRangeAsync(updateEntities); }
 
             return new Response<bool>(true);
         }

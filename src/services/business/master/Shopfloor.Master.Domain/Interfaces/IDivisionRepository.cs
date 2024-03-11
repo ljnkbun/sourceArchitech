@@ -5,5 +5,6 @@ namespace Shopfloor.Master.Domain.Interfaces
 {
     public interface IDivisionRepository : IMasterRepositoryAsync<Division>
     {
+        Task<bool> IsExistAsync(int id);
     }
 }

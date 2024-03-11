@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.SewingOperationLibs
         public async Task<Response<SewingOperationLib>> Handle(GetSewingOperationLibQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetSewingOperationLibByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"SewingOperationLib Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"SewingOperationLib Not Found (Id:{query.Id}).");
             return new Response<SewingOperationLib>(entity);
         }
     }

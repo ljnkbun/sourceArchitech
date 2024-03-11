@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Query.ExportDetails
@@ -22,7 +21,7 @@ namespace Shopfloor.Barcode.Application.Query.ExportDetails
         {
             var entity = await _repository.GetByIdAsync(query.Id);
             return entity == null
-                ? throw new ApiException($"Recipe Unit Not Found (Id:{query.Id}).")
+                ? new($"Recipe Unit Not Found (Id:{query.Id}).")
                 : new Response<ExportDetail>(entity);
         }
     }

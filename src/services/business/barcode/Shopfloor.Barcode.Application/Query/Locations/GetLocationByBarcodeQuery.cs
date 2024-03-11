@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Query.Locations
@@ -20,8 +19,7 @@ namespace Shopfloor.Barcode.Application.Query.Locations
         public async Task<Response<Location>> Handle(GetLocationByBarcodeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByBarcodeAsync(query.Barcode);
-            if (entity == null) throw new ApiException($"Locations Not Found (Barcode:{query.Barcode}).");
-            return new Response<Location>(entity);
+            return entity == null ? new($"Locations Not Found (Barcode:{query.Barcode}).") : new Response<Location>(entity);
         }
     }
 }

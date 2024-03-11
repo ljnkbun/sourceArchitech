@@ -24,7 +24,7 @@ namespace Shopfloor.Material.Application.Query.Suppliers
         public async Task<Response<Supplier>> Handle(GetSupplierQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Supplier Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Supplier Not Found (Id:{query.Id}).");
             return new Response<Supplier>(entity);
         }
     }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.Requests;
 using Shopfloor.IED.Application.Parameters.Requests;
@@ -9,7 +8,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.Requests
 {
-    public class GetRequestsQuery : IRequest<PagedResponse<IReadOnlyList<RequestModel>>>, ICacheableMediatrQuery
+    public class GetRequestsQuery : IRequest<PagedResponse<IReadOnlyList<RequestModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -17,6 +16,7 @@ namespace Shopfloor.IED.Application.Query.Requests
         public string Description { get; set; }
         public RequestStatus? Status { get; set; }
         public string StatusComment { get; set; }
+        public decimal? ExpectedQty { get; set; }
         public int? RequestTypeId { get; set; }
         public bool? Deleted { get; set; }
         public string OrderBy { get; set; }
@@ -26,9 +26,6 @@ namespace Shopfloor.IED.Application.Query.Requests
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"Requests";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetRequestsQueryHandler : IRequestHandler<GetRequestsQuery, PagedResponse<IReadOnlyList<RequestModel>>>
     {

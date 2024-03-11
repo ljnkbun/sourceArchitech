@@ -26,7 +26,7 @@ namespace Shopfloor.Barcode.Application.Query.ImportDetails
         public string OC { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
-        public int? NumberOfCone { get; set; }
+        public decimal? NumberOfCone { get; set; }
         public decimal? WeightPerCone { get; set; }
         public string Location { get; set; }
         public string Note { get; set; }
@@ -50,7 +50,6 @@ namespace Shopfloor.Barcode.Application.Query.ImportDetails
         public async Task<PagedResponse<IReadOnlyList<ImportDetailModel>>> Handle(GetImportDetailsQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<ImportDetailParameter>(request);
-            validFilter.SetSearchProps(new string[] { nameof(ImportDetailParameter.ArticleName), nameof(ImportDetailParameter.ArticleCode) }.ToList());
             return await _repository.GetModelPagedReponseAsync<ImportDetailParameter, ImportDetailModel>(validFilter);
         }
     }

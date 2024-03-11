@@ -9,5 +9,7 @@ namespace Shopfloor.IED.Domain.Interfaces
         Task<bool> ApproveRequestsAsync(List<int> ids);
         Task UpdateRequestAsync(Request request, List<RequestDivision> insertRequestDivisions, List<RequestDivision> deleteRequestDivisions);
         Task<Request> AddRequestAsync(Request entity);
+        Task<int> SubmitRequestAsync(int id, string requestNo);
+        Task<Request> GetRequestFullRoutingByIdAsync(int id);
     }
 }

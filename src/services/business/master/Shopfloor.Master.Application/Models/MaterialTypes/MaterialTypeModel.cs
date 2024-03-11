@@ -1,4 +1,5 @@
 ﻿using Shopfloor.Core.Models.Entities;
+using Shopfloor.Master.Application.Models.CategoryMapMaterialTypes;
 
 namespace Shopfloor.Master.Application.Models.MaterialTypes
 {
@@ -6,9 +7,6 @@ namespace Shopfloor.Master.Application.Models.MaterialTypes
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public int? CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string CategoryCode { get; set; }
-
+        public ICollection<CategoryMapMaterialTypeModel> CategoryMapMaterialTypes { get; set; }
     }
 }

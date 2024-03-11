@@ -7,10 +7,11 @@ namespace Shopfloor.IED.Application.Validations.WeavingRappos
     {
         public CreateWeavingRappoCommandValidator()
         {
-            RuleFor(e => e.NumOfLine).Must(e => e >= 1).WithMessage("NumOfLine must greater than or equal 1.");
-            RuleFor(e => e.YarnOfBorder).Must(e => e >= 1).WithMessage("YarnOfBorder must greater than or equal 1.");
-            RuleFor(e => e.YarnOfBackground).Must(e => e >= 1).WithMessage("YarnOfBackground must greater than or equal 1.");
-            RuleFor(e => e.NumOfRappo).Must(e => e >= 1).WithMessage("NumOfRappo must greater than or equal 1.");
+            RuleFor(e => e.Line).Must(e => e >= 1).WithMessage("Line must greater than or equal 1.");
+            RuleFor(e => e.WarpPerMarginDentSplit).Must(e => e >= 1).WithMessage("WarpPerMarginDentSplit must greater than or equal 1.");
+            RuleFor(e => e.WarpPerContentDentSplit).Must(e => e >= 1).WithMessage("WarpPerContentDentSplit must greater than or equal 1.");
+            RuleFor(e => e.TotalRappo).Must(e => e >= 1).WithMessage("TotalRappo must greater than or equal 1.");
+            RuleFor(e => e.AdditionYarn).Must(e => e >= 0).WithMessage("AdditionYarn must greater than or equal 0.");
         }
     }
 }

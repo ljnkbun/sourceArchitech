@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.DyeingTBMaterials;
 using Shopfloor.IED.Application.Parameters.DyeingTBMaterials;
@@ -8,15 +7,17 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.DyeingTBMaterials
 {
-    public class GetDyeingTBMaterialsQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBMaterialModel>>>, ICacheableMediatrQuery
+    public class GetDyeingTBMaterialsQuery : IRequest<PagedResponse<IReadOnlyList<DyeingTBMaterialModel>>>
     {
         public int? DyeingTBRequestId { get; set; }
 
-        public string ArticleId { get; set; }
+        public int WFXArticleId { get; set; }
 
         public string ArticleCode { get; set; }
 
         public string ArticleName { get; set; }
+
+        public string FabricStyleRef { get; set; }
 
         public string MaterialType { get; set; }
 
@@ -35,9 +36,6 @@ namespace Shopfloor.IED.Application.Query.DyeingTBMaterials
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"DyeingTBMaterials";
-        public TimeSpan? SlidingExpiration { get; set; }
 
         #endregion Base Properties
     }

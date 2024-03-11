@@ -3,7 +3,7 @@
     public enum TMUType : byte
     {
         Bundle = 0,
-        Maunual = 1,
+        Manual = 1,
         Machine = 2
     }
 }

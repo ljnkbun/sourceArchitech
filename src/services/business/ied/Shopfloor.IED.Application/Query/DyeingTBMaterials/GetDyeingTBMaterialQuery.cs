@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBMaterials
         public async Task<Response<Domain.Entities.DyeingTBMaterial>> Handle(GetDyeingTBMaterialQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DyeingTBMaterial Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DyeingTBMaterial Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DyeingTBMaterial>(entity);
         }
     }

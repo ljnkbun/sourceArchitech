@@ -22,15 +22,14 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 ModifiedUserId = filter.ModifiedUserId,
                 WeavingIEDId = filter.WeavingIEDId,
                 StructureType = filter.StructureType,
-                CombString = filter.CombString,
-                SlotNumber = filter.SlotNumber,
+                LineNumber = filter.LineNumber,
+                Denting = filter.Denting,
+                DentSplit = filter.DentSplit,
                 Total = filter.Total,
                 Deleted = filter.Deleted,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

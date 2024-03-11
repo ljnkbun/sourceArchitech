@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
 using Shopfloor.Barcode.Infrastructure.Contexts;
@@ -10,34 +9,52 @@ namespace Shopfloor.Barcode.Infrastructure.Repositories
 {
     public class ExportArticleRepository : MasterRepositoryAsync<ExportArticle>, IExportArticleRepository
     {
-        private readonly DbSet<ExportArticle> _ExportArticles;
-        private readonly DbSet<ExportDetail> _ExportDetails;
+        private readonly DbSet<ExportArticle> _exportArticles;
+        private readonly DbSet<ExportDetail> _exportDetails;
+        private readonly DbSet<ArticleBarcode> _articleBarcodes;
         public ExportArticleRepository(BarcodeContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            _ExportArticles = _dbContext.Set<ExportArticle>();
-            _ExportDetails = _dbContext.Set<ExportDetail>();
+            _exportArticles = _dbContext.Set<ExportArticle>();
+            _exportDetails = _dbContext.Set<ExportDetail>();
+            _articleBarcodes = _dbContext.Set<ArticleBarcode>();
+        }
+
+        public async Task<ICollection<ExportArticle>> GetByIdsAsync(int[] ids)
+        {
+            return await _exportArticles.Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<List<ExportArticle>> GetExportArticleByExportIds(int[] ids)
+        {
+            return await _exportArticles.Where(x => ids.Contains(x.ExportId)).ToListAsync();
+
         }
 
         public async Task<ExportArticle> GetExportArticleByIdAsync(int id)
         {
-            return await _ExportArticles.Include(x => x.ExportDetails).FirstOrDefaultAsync(x => x.Id == id);
+            return await _exportArticles.Include(x => x.ExportDetails).FirstOrDefaultAsync(x => x.Id == id);
         }
-
-        public async Task UpdateExportArticleAsync(ExportArticle entity, IEnumerable<ExportDetail> deleteDetails)
+        public async Task UpdateExportArticleAsync(ExportArticle entity, IEnumerable<ExportDetail> addedDetails, IEnumerable<ExportDetail> modifiedDetails, IEnumerable<ExportDetail> deletedDetails)
         {
             var trans = await _dbContext.Database.BeginTransactionAsync();
             try
             {
-                _ExportDetails.RemoveRange(deleteDetails);
-                _ExportArticles.Update(entity);
+
+                var articleBarcodes = deletedDetails.Select(y => y.ArticleBarcode);
+                _exportDetails.RemoveRange(deletedDetails);
+                _articleBarcodes.RemoveRange(articleBarcodes);
+                _exportDetails.UpdateRange(modifiedDetails);
+                _exportDetails.AddRange(addedDetails);
+                _exportArticles.Update(entity);
                 await _dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await trans.RollbackAsync();
-                Log.Error(ex.Message, ex);
+                throw;
             }
         }
+
     }
 }

@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.WeavingRusticFabricSpecs
         {
             CreateMap<WeavingRusticFabricSpec, WeavingRusticFabricSpecModel>().ReverseMap();
             CreateMap<CreateWeavingRusticFabricSpecCommand, WeavingRusticFabricSpec>();
+            CreateMap<UpdateCreateWeavingRusticFabricSpec, WeavingRusticFabricSpec>();
             CreateMap<GetWeavingRusticFabricSpecsQuery, WeavingRusticFabricSpecParameter>();
         }
     }

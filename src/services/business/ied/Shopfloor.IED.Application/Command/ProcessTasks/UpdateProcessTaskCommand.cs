@@ -24,7 +24,7 @@ namespace Shopfloor.IED.Application.Command.ProcessTasks
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"ProcessTasks Not Found.");
+            if (entity == null) return new($"ProcessTasks Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

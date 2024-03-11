@@ -76,7 +76,9 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                 ReOrderLevel = articles.Data.ReOrderLevel,
                 MinimumOrderQty = articles.Data.MinimumOrderQty,
                 RequirementMultiple = articles.Data.RequirementMultiple,
-                IsActive = articles.Data.IsActive
+                IsActive = articles.Data.IsActive,
+                ServiceCode = articles.Data.ServiceCode,
+                ServiceName = articles.Data.ServiceName
             };
             Log.Information($"GetArticleByIdRequestConsumer: response={response}");
             await context.RespondAsync(response);

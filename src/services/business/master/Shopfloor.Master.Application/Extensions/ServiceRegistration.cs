@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shopfloor.Core.Behaviours;
 using Shopfloor.Master.Application.Jobs;
+using System.Reflection;
 
 namespace Shopfloor.Master.Application.Extensions
 {
@@ -22,6 +22,8 @@ namespace Shopfloor.Master.Application.Extensions
         {
             services.AddHostedService<WfxMasterDataSyncJob>();
             services.AddHostedService<WfxArticleDataSyncJob>();
+            services.AddHostedService<WfxBuyerSyncJob>();
+            services.AddHostedService<WfxSupplierSyncJob>(); 
         }
     }
 }

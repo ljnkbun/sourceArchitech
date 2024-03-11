@@ -13,8 +13,8 @@ namespace Shopfloor.Barcode.Domain.Entities
         public string Note { get; set; }
         public ExportTypes? GDIType { get; set; }
         public ExportStatus? Status { get; set; }
+        public WfxStatus? WfxStatus { get; set; }
         public virtual ICollection<ExportArticle> ExportArticles { get; set; }
-
     }
 
 }

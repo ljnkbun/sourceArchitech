@@ -7,9 +7,8 @@ namespace Shopfloor.Master.Application.Validations.ProductGroups
     public class CreateProductGroupCommandValidator : AbstractValidator<CreateProductGroupCommand>
     {
         private readonly IProductGroupRepository _productGroupRepository;
-        private readonly IMaterialTypeRepository _materialTypeRepository;
         private readonly ICategoryRepository _categoryRepository;
-        public CreateProductGroupCommandValidator(IProductGroupRepository productGroupRepository, ICategoryRepository categoryRepository, IMaterialTypeRepository materialTypeRepository)
+        public CreateProductGroupCommandValidator(IProductGroupRepository productGroupRepository, ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
             _productGroupRepository = productGroupRepository;
@@ -28,21 +27,11 @@ namespace Shopfloor.Master.Application.Validations.ProductGroups
             RuleFor(p => p.CategoryId)
             .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
             .MustAsync(IsExistCategory);
-
-            RuleFor(p => p.MaterialTypeId)
-            .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-            .MustAsync(IsExistMaterialType).WithMessage("{PropertyName} not exists.");
-            _materialTypeRepository = materialTypeRepository;
         }
 
         private async Task<bool> IsExistCategory(int id, CancellationToken cancellationToken)
         {
             return await _categoryRepository.GetByIdAsync(id) != null;
-        }
-
-        private async Task<bool> IsExistMaterialType(int id, CancellationToken cancellationToken)
-        {
-            return await _materialTypeRepository.GetByIdAsync(id) != null;
         }
 
         private async Task<bool> IsUniqueAsync(string code, CancellationToken cancellationToken)

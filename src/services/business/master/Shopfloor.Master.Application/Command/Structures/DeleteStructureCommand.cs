@@ -19,7 +19,7 @@ namespace Shopfloor.Master.Application.Command.Structures
         public async Task<Response<int>> Handle(DeleteStructureCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"Structure Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"Structure Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

@@ -13,7 +13,7 @@ namespace Shopfloor.Material.Domain.Interfaces
             where TParam : RequestParameter;
 
         Task<bool> UpdateDynamicColumnAsync(DynamicColumn datalUpdate,
-            BaseListCreateDeleteEntity<DynamicColumnContent> dataDynamicColumnContent);
+            BaseUpdateEntity<DynamicColumnContent> dataDynamicColumnContent);
 
         Task<DynamicColumn> GetWithIncludeByIdAsync(int id);
 

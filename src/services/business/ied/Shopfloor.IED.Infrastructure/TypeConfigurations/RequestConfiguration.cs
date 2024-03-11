@@ -12,6 +12,7 @@ namespace Shopfloor.IED.Infrastructure.TypeConfigurations
             base.Configure(builder);
             builder.Property(e => e.RequestNo).HasMaxLength(200);
             builder.Property(e => e.Deleted).HasDefaultValueSql("((0))");
+            builder.Property(e => e.ExpectedQty).HasColumnType("decimal(28,8)");
 
             builder.HasOne(e => e.RequestType)
                 .WithMany(e => e.Requests)

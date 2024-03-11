@@ -13,6 +13,7 @@ namespace Shopfloor.IED.Application.RequestDivisionFiles
         {
             CreateMap<RequestDivisionFile, RequestDivisionFileModel>().ReverseMap();
             CreateMap<CreateRequestDivisionFileCommand, RequestDivisionFile>();
+            CreateMap<UpdateRequestDivisionFileCommand, RequestDivisionFile>();
             CreateMap<GetRequestDivisionFilesQuery, RequestDivisionFileParameter>();
         }
     }

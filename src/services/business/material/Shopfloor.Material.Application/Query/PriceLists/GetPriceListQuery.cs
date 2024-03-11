@@ -23,7 +23,7 @@ namespace Shopfloor.Material.Application.Query.PriceLists
         public async Task<Response<Domain.Entities.PriceList>> Handle(GetPriceListQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetWithIncludeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"PriceList Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"PriceList Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.PriceList>(entity);
         }
     }

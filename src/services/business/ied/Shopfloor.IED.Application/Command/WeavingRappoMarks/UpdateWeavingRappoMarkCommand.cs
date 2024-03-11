@@ -10,6 +10,7 @@ namespace Shopfloor.IED.Application.Command.WeavingRappoMarks
         public int Id { get; set; }
         public int ColumnNo { get; set; }
         public int PatternIndex { get; set; }
+        public bool Type { get; set; }
     }
     public class UpdateWeavingRappoMarkCommandHandler : IRequestHandler<UpdateWeavingRappoMarkCommand, Response<int>>
     {
@@ -22,11 +23,11 @@ namespace Shopfloor.IED.Application.Command.WeavingRappoMarks
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"WeavingRappoMark Not Found.");
+            if (entity == null) return new($"WeavingRappoMark Not Found.");
 
             entity.ColumnNo = command.ColumnNo;
             entity.PatternIndex = command.PatternIndex;
-
+            entity.Type = command.Type;
             await _repository.UpdateAsync(entity);
             return new Response<int>(entity.Id);
         }

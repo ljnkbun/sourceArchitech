@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.MaterialTypes
         public async Task<Response<MaterialType>> Handle(GetMaterialTypeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"MaterialType Not Found (Id: {query.Id}).");
+            if (entity == null) return new($"MaterialType Not Found (Id: {query.Id}).");
             return new Response<MaterialType>(entity);
         }
     }

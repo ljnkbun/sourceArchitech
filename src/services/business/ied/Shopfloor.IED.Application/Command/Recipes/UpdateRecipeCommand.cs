@@ -9,15 +9,15 @@ namespace Shopfloor.IED.Application.Command.Recipes
     {
         public int Id { get; set; }
 
-        public int DyeingTBRequestId { get; set; }
-
-        public int DyeingTBRVersionId { get; set; }
+        public int DyeingTBRecipeId { get; set; }
 
         public DateTime JobDate { get; set; }
 
         public string TCFNO { get; set; }
 
         public string Style { get; set; }
+
+        public string Description { get; set; }
 
         public string FabricCode { get; set; }
 
@@ -59,14 +59,13 @@ namespace Shopfloor.IED.Application.Command.Recipes
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Recipe Not Found.");
+            if (entity == null) return new($"Recipe Not Found.");
 
-            entity.DyeingTBRequestId = command.DyeingTBRequestId;
-            entity.DyeingTBRVersionId = command.DyeingTBRVersionId;
+            entity.DyeingTBRecipeId = command.DyeingTBRecipeId;
             entity.JobDate = command.JobDate;
-            entity.DyeingTBRequestId = command.DyeingTBRequestId;
             entity.TCFNO = command.TCFNO;
             entity.Style = command.Style;
+            entity.Description = command.Description;
             entity.FabricCode = command.FabricCode;
             entity.FabricName = command.FabricName;
             entity.Color = command.Color;

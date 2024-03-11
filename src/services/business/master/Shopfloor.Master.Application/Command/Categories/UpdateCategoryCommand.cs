@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Categories
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Category Not Found.");
+            if (entity == null) return new($"Category Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

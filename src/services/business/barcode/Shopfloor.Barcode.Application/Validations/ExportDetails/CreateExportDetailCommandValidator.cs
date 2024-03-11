@@ -1,24 +1,19 @@
 ﻿using FluentValidation;
 using Shopfloor.Barcode.Application.Command.ExportDetails;
-using Shopfloor.Barcode.Domain.Interfaces;
 
 namespace Shopfloor.Barcode.Application.Validations.ExportDetails
 {
     public class CreateExportDetailCommandValidator : AbstractValidator<CreateExportDetailCommand>
     {
-        private readonly IExportDetailRepository _subItemRepository;
 
-        public CreateExportDetailCommandValidator(IExportDetailRepository subItemRepository)
+        public CreateExportDetailCommandValidator()
         {
-            _subItemRepository = subItemRepository;
-
-            RuleFor(p => p.Code)
+            RuleFor(p => p.ArticleCode)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.")
-                .MustAsync(IsUniqueAsync).WithMessage("{PropertyName} must Unique.");
+                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
-            RuleFor(p => p.Name)
+            RuleFor(p => p.ArticleName)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
@@ -27,10 +22,14 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            RuleFor(p => p.Color)
+            RuleFor(p => p.LocationId)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
+
+            RuleFor(p => p.ColorCode)
                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
-            RuleFor(p => p.Size)
+            RuleFor(p => p.SizeCode)
                 .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
             RuleFor(p => p.Shade)
@@ -39,15 +38,13 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
             RuleFor(p => p.OC)
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.LotNo)
+            RuleFor(p => p.Location)
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
             RuleFor(p => p.UOM)
                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
 
             RuleFor(p => p.Status)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
                 .IsInEnum().WithMessage("Value is not part of the enum.");
 
             RuleFor(p => p.Note)
@@ -55,9 +52,5 @@ namespace Shopfloor.Barcode.Application.Validations.ExportDetails
 
         }
 
-        private async Task<bool> IsUniqueAsync(string code, CancellationToken cancellationToken)
-        {
-            return await _subItemRepository.IsUniqueAsync(code);
-        }
     }
 }

@@ -1,13 +1,19 @@
+using Shopfloor.Barcode.Application.Models.ImportDetails;
+using Shopfloor.Barcode.Application.Models.WfxPOArticles;
+using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Core.Models.Entities;
 
 namespace Shopfloor.Barcode.Application.Models.ImportArticles
 {
-    public class ImportArticleModel:BaseModel
+    public class ImportArticleModel : BaseModel
     {
         public string ArticleCode { get; set; }
         public string ArticleName { get; set; }
         public string GDNNumber { get; set; }
+        public string GDNType { get; set; }
+        public string Warehouse { get; set; }
         public string FromSite { get; set; }
+        public string PONo { get; set; }
         public string ToSite { get; set; }
         public string SupplierName { get; set; }
         public string OrderRefNum { get; set; }
@@ -16,7 +22,9 @@ namespace Shopfloor.Barcode.Application.Models.ImportArticles
         public string SizeCode { get; set; }
         public string UOM { get; set; }
         public decimal? Units { get; set; }
+        public ItemStatus? Status { get; set; }
         public string OCNum { get; set; }
-
+        public ICollection<ImportDetailModel> ImportDetailModels { get; set; }
+        public ICollection<WfxPOArticleChildModel> WfxPOArticleChildModels { get; set; }
     }
 }

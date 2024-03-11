@@ -81,7 +81,9 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                 MYear = context.Message.MYear,
                 Category = context.Message.Category,
                 MaterialType = context.Message.MaterialType,
-                ModelNo = context.Message.ModelNo
+                ModelNo = context.Message.ModelNo,
+                ServiceCode = context.Message.ServiceCode,
+                ServiceName = context.Message.ServiceName,
             });
             if (articles?.Data == null) await context.RespondAsync(null);
             var response = new GetArticlesResponse
@@ -136,6 +138,8 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                     ProductGroup = x.ProductGroup,
                     ProductSubCategory = x.ProductSubCategory,
                     WFXArticleId = x.WFXArticleId,
+                    ServiceCode = x.ServiceCode,
+                    ServiceName = x.ServiceName,
                 }).ToList()
             };
             Log.Information($"GetArticlesRequestConsumer: response={response}");

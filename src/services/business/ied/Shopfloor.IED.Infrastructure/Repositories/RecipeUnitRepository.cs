@@ -6,7 +6,7 @@ using Shopfloor.IED.Infrastructure.Contexts;
 
 namespace Shopfloor.IED.Infrastructure.Repositories
 {
-    public class RecipeUnitRepository : MasterRepositoryAsync<RecipeUnit>, IRecipeUnitRepository
+    public class RecipeUnitRepository : NameRepositoryAsync<RecipeUnit>, IRecipeUnitRepository
     {
         public RecipeUnitRepository(IEDContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {

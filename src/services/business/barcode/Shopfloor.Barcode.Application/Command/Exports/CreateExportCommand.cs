@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shopfloor.Barcode.Application.Command.ExportArticles;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
@@ -14,6 +15,8 @@ namespace Shopfloor.Barcode.Application.Command.Exports
         public string Name { get; set; }
         public string Note { get; set; }
         public ExportStatus? Status { get; set; }
+        public ExportTypes? GDIType { get; set; }
+        public EntityState? EntityState { get; set; }
         public virtual ICollection<CreateExportArticleCommand> ExportArticles { get; set; }
     }
 

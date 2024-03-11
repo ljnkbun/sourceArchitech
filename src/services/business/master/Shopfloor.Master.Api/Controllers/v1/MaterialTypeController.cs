@@ -24,7 +24,6 @@ namespace Shopfloor.Master.Api.Controllers.v1
                 Name = filter.Name,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                CategoryId = filter.CategoryId,
                 IsActive = filter.IsActive,
                 BypassCache = filter.BypassCache,
                 SlidingExpiration = filter.SlidingExpiration

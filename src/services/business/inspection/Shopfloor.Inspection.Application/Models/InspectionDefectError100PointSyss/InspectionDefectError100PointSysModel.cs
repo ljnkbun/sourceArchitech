@@ -1,0 +1,13 @@
+using Shopfloor.Core.Models.Entities;
+using Shopfloor.Inspection.Domain.Enums;
+
+namespace Shopfloor.Inspection.Application.Models.InspectionDefectError100PointSyss
+{
+    public class InspectionDefectError100PointSysModel : BaseModel
+    {
+        public int? InspectionDefectCapturing4PointSysId { get; set; }
+		public ErrorType? ErrorType { get; set; }
+		public decimal From { get; set; }
+		public decimal? To { get; set; }
+    }
+}

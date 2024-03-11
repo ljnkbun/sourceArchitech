@@ -13,6 +13,7 @@ namespace Shopfloor.Master.Application.CategoryMapMaterialTypes
         {
             CreateMap<CategoryMapMaterialType, CategoryMapMaterialTypeModel>().ReverseMap();
             CreateMap<CreateCategoryMapMaterialTypeCommand, CategoryMapMaterialType>();
+            CreateMap<UpdateCategoryMapMaterialTypeCommand, CategoryMapMaterialType>();
             CreateMap<GetCategoryMapMaterialTypesQuery, CategoryMapMaterialTypeParameter>();
         }
     }

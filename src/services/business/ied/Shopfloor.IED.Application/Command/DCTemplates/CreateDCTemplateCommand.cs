@@ -10,7 +10,7 @@ namespace Shopfloor.IED.Application.Command.DCTemplates
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<CreateDCTemplateTaskCommand> DCTemplateTasks { get; set; }
+        public ICollection<CreateDCTemplateTaskCommand> DCTemplateTasks { get; set; }
     }
 
     public class CreateDCTemplateCommandHandler : IRequestHandler<CreateDCTemplateCommand, Response<int>>

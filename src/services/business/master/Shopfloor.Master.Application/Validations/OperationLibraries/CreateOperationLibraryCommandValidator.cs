@@ -7,10 +7,10 @@ namespace Shopfloor.Master.Application.Validations.OperationLibraries
     public class CreateOperationLibraryCommandValidator : AbstractValidator<CreateOperationLibraryCommand>
     {
         private readonly IOperationLibraryRepository _operationLibraryRepository;
-        private readonly IProcessLibraryRepository _processLibraryRepository;
-        public CreateOperationLibraryCommandValidator(IOperationLibraryRepository operationLibraryRepository, IProcessLibraryRepository processLibraryRepository)
+        private readonly IProcessRepository _ProcessRepository;
+        public CreateOperationLibraryCommandValidator(IOperationLibraryRepository operationLibraryRepository, IProcessRepository ProcessRepository)
         {
-            _processLibraryRepository = processLibraryRepository;
+            _ProcessRepository = ProcessRepository;
 
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
@@ -23,15 +23,15 @@ namespace Shopfloor.Master.Application.Validations.OperationLibraries
                 .NotNull()
                 .MaximumLength(500).WithMessage("{PropertyName} must not exceed 500 characters.");
 
-            RuleFor(p => p.ProcessLibraryId)
+            RuleFor(p => p.ProcessId)
                 .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
-                .MustAsync(IsExistProcessLibrary);
+                .MustAsync(IsExistProcess);
 
             _operationLibraryRepository = operationLibraryRepository;
         }
-        private async Task<bool> IsExistProcessLibrary(int id, CancellationToken cancellationToken)
+        private async Task<bool> IsExistProcess(int id, CancellationToken cancellationToken)
         {
-            return await _processLibraryRepository.GetByIdAsync(id) != null;
+            return await _ProcessRepository.GetByIdAsync(id) != null;
         }
 
         private async Task<bool> IsUniqueAsync(string code, CancellationToken cancellationToken)

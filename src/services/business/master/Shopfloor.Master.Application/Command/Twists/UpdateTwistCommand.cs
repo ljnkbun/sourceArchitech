@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Twists
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Twist Not Found.");
+            if (entity == null) return new($"Twist Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

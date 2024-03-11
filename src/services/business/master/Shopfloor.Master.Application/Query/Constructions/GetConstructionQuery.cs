@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Constructions
         public async Task<Response<Construction>> Handle(GetConstructionQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Construction Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Construction Not Found (Id:{query.Id}).");
             return new Response<Construction>(entity);
         }
     }

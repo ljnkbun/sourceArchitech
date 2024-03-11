@@ -32,7 +32,7 @@ namespace Shopfloor.Master.Api.Consumers.Requests
                 Id = operationLibRes.Data.Id,
                 Code = operationLibRes.Data.Code,
                 Name = operationLibRes.Data.Name,
-                ProcessLibraryId = operationLibRes.Data.ProcessLibraryId,
+                ProcessId = operationLibRes.Data.ProcessId,
                 IsActive = operationLibRes.Data.IsActive
             };
             Log.Information($"GetGetOperationLibraryByIdRequestConsumer: response={response}");

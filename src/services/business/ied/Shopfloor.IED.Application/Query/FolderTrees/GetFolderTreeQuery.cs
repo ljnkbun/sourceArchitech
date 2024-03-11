@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.FolderTrees
         public async Task<Response<FolderTree>> Handle(GetFolderTreeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetFolderTreeByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Folder Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Folder Not Found (Id:{query.Id}).");
             return new Response<FolderTree>(entity);
         }
     }

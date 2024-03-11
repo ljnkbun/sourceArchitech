@@ -20,7 +20,7 @@ namespace Shopfloor.Master.Application.Query.Grades
         public async Task<Response<Grade>> Handle(GetGradeQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"Grade Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"Grade Not Found (Id:{query.Id}).");
             return new Response<Grade>(entity);
         }
     }

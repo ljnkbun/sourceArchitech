@@ -24,13 +24,12 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 DivisionId = filter.DivisionId,
                 DivisionCode = filter.DivisionCode,
                 DivisionName = filter.DivisionName,
+                Remark = filter.Remark,
                 LineNumber = filter.LineNumber,
-                Status = filter.Status,
+                ExpectedDate = filter.ExpectedDate,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

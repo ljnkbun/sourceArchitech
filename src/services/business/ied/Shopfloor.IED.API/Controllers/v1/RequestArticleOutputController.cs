@@ -2,7 +2,6 @@
 using Shopfloor.IED.Application.Command.RequestArticleOutputs;
 using Shopfloor.IED.Application.Parameters.RequestArticleOutputs;
 using Shopfloor.IED.Application.Query.RequestArticleOutputs;
-using Shopfloor.IED.Domain.Entities;
 
 namespace Shopfloor.IED.Api.Controllers.v1
 {
@@ -22,15 +21,15 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 RequestDivisionProcessId = filter.RequestDivisionProcessId,
-                ArticleId = filter.ArticleId,
+                WFXArticleId = filter.WFXArticleId,
                 ArticleCode = filter.ArticleCode,
                 ArticleName = filter.ArticleName,
                 Color = filter.Color,
+                BaseColorList = filter.BaseColorList,
+                Status = filter.Status,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 
@@ -61,6 +60,34 @@ namespace Shopfloor.IED.Api.Controllers.v1
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await Mediator.Send(new DeleteRequestArticleOutputCommand { Id = id }));
+        }
+
+        // POST api/v1/<controller>/Submit
+        [HttpPut("Submit")]
+        public async Task<IActionResult> Submit(SubmitRequestArticleOutputCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // POST api/v1/<controller>/Approve
+        [HttpPut("Approve")]
+        public async Task<IActionResult> Approve(ApproveRequestArticleOutputCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // POST api/v1/<controller>/Reject
+        [HttpPut("Reject")]
+        public async Task<IActionResult> Reject(RejectRequestArticleOutputCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        // PUT api/v1/<controller>/Analyze
+        [HttpPut("Analyze")]
+        public async Task<IActionResult> Analyze(AnalyzeRequestArticleOutputCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
     }
 }

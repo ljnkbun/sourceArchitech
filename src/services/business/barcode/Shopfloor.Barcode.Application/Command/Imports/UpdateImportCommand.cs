@@ -1,13 +1,11 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Shopfloor.Barcode.Application.Command.ImportArticles;
 using Shopfloor.Barcode.Application.Command.ImportDetails;
 using Shopfloor.Barcode.Domain.Constants;
 using Shopfloor.Barcode.Domain.Entities;
 using Shopfloor.Barcode.Domain.Interfaces;
-using Shopfloor.Core.Exceptions;
 using Shopfloor.Core.Models.Responses;
 
 namespace Shopfloor.Barcode.Application.Command.Imports
@@ -29,20 +27,19 @@ namespace Shopfloor.Barcode.Application.Command.Imports
 
         private readonly IImportRepository _repositoryImport;
         private readonly IImportDetailRepository _repositoryImportDetail;
-        private readonly ILocationRepository _locationRepository;
-        public UpdateImportCommandHandler(IMapper mapper, ILogger<UpdateImportCommand> logger,
-            IImportRepository repositoryImport, IImportDetailRepository repositoryImportDetail, ILocationRepository locationRepository)
+        public UpdateImportCommandHandler(IMapper mapper,
+            IImportRepository repositoryImport, IImportDetailRepository repositoryImportDetail)
         {
             _repositoryImport = repositoryImport;
             _mapper = mapper;
             _repositoryImportDetail = repositoryImportDetail;
-            _locationRepository = locationRepository;
         }
 
         public async Task<Response<int>> Handle(UpdateImportCommand request,
             CancellationToken cancellationToken)
         {
-            var entity = await _repositoryImport.GetImportByIdAsync(request.Id) ?? throw new ApiException($"Import Not Found.(Id:{request.Id})");
+            var entity = await _repositoryImport.GetImportByIdAsync(request.Id);
+            if (entity == null) return new($"Import Not Found.(Id:{request.Id})");
             entity.Status = request.Status;
             entity.Name = request.Name;
             entity.Note = request.Note;
@@ -58,6 +55,7 @@ namespace Shopfloor.Barcode.Application.Command.Imports
                 .Select(x => _mapper.Map<UpdateImportArticleCommand, ImportArticle>(newArticleModifieds.First(c => c.Id == x.Id), x));
             var newArticleDeleteds = request.ImportArticles.Where(x => x.EntityState == EntityState.Deleted).Select(x => _mapper.Map<ImportArticle>(x));
             var dbArticleDeleteds = dbArticles.Where(x => newArticleDeleteds.Any(c => c.Id == x.Id));
+            var newArticleAddeds = request.ImportArticles.Where(x => x.EntityState == EntityState.Added).Select(x => _mapper.Map<ImportArticle>(x)).ToList();
 
             // Detail
             var newDetailModifieds = newDetails.Where(x => x.EntityState == EntityState.Modified);
@@ -68,15 +66,19 @@ namespace Shopfloor.Barcode.Application.Command.Imports
             var newDetailDeleteds = newDetails.Where(x => x.EntityState == EntityState.Deleted).Select(x => _mapper.Map<ImportDetail>(x));
             var dbDetailDeleteds = dbDetails.Where(x => newDetailDeleteds.Any(c => c.Id == x.Id));
 
-            var newDetailAddeds = newDetails.Where(x => x.EntityState == EntityState.Added && request.Type == ImportType.ImportPO).Select(x => _mapper.Map<ImportDetail>(x)).ToList();
+            var newDetailAddeds = newDetails.Where(x => x.EntityState == EntityState.Added && request.Type == ImportType.ImportPO && x.ImportArticleId > 0).Select(x => _mapper.Map<ImportDetail>(x)).ToList();
             if (newDetailAddeds.Any())
             {
-                var barcodes = await _repositoryImportDetail.GenBarCode(newDetailAddeds.FirstOrDefault()?.UOM, newDetailAddeds);
-                if (!barcodes.Any()) throw new ApiException($"Error Generate Barcode");
-            }
+                await _repositoryImportDetail.GenBarCode(newDetailAddeds.FirstOrDefault()?.UOM, newDetailAddeds);
 
-           
-            await _repositoryImport.UpdateImportAsync(entity, dbArticleModifieds, dbArticleDeleteds, newDetailAddeds, dbDetailModifieds, dbDetailDeleteds);
+            }
+            var detailAddeds = newArticleAddeds.SelectMany(x => x.ImportDetails).ToList();
+            if (detailAddeds.Any())
+            {
+                await _repositoryImportDetail.GenBarCode(detailAddeds.FirstOrDefault()?.UOM, newArticleAddeds);
+
+            }
+            await _repositoryImport.UpdateImportAsync(entity, newArticleAddeds, dbArticleModifieds, dbArticleDeleteds, newDetailAddeds, dbDetailModifieds, dbDetailDeleteds);
             return new Response<int>(entity.Id);
         }
     }

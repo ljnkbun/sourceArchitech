@@ -5,6 +5,11 @@ namespace Shopfloor.Material.Domain.Entities
 {
     public class DynamicColumn : BaseEntity
     {
+        public DynamicColumn()
+        {
+            DynamicColumnContents = new HashSet<DynamicColumnContent>();
+            MaterialRequestDynamicColumns = new HashSet<MaterialRequestDynamicColumn>();
+        }
         public string Code { get; set; }
 
         public string Name { get; set; }
@@ -19,8 +24,8 @@ namespace Shopfloor.Material.Domain.Entities
 
         public int DisplayIndex { get; set; }
 
-        public List<DynamicColumnContent> DynamicColumnContents { get; set; }
+        public virtual ICollection<DynamicColumnContent> DynamicColumnContents { get; set; }
 
-        public List<MaterialRequestDynamicColumn> MaterialRequestDynamicColumns { get; set; }
+        public virtual ICollection<MaterialRequestDynamicColumn> MaterialRequestDynamicColumns { get; set; }
     }
 }

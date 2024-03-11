@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shopfloor.Core.Behaviours;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.IED.Application.Models.SewingMacroLibs;
 using Shopfloor.IED.Application.Parameters.SewingMacroLibs;
@@ -9,7 +8,7 @@ using Shopfloor.IED.Domain.Interfaces;
 
 namespace Shopfloor.IED.Application.Query.SewingMacroLibs
 {
-    public class GetSewingMacroLibsQuery : IRequest<PagedResponse<IReadOnlyList<SewingMacroLibModel>>>, ICacheableMediatrQuery
+    public class GetSewingMacroLibsQuery : IRequest<PagedResponse<IReadOnlyList<SewingMacroLibModel>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -22,6 +21,7 @@ namespace Shopfloor.IED.Application.Query.SewingMacroLibs
         public decimal? MachineTMU { get; set; }
         public decimal? TotalBasicMinutes { get; set; }
         public decimal? NoneMachineTime { get; set; }
+        public int? SewingComponentGroupId { get; set; }
         public bool? Deleted { get; set; }
         public string OrderBy { get; set; }
         public string SearchTerm { get; set; }
@@ -30,9 +30,6 @@ namespace Shopfloor.IED.Application.Query.SewingMacroLibs
         public Guid? CreatedUserId { get; set; }
         public Guid? ModifiedUserId { get; set; }
         public bool? IsActive { get; set; }
-        public bool BypassCache { get; set; }
-        public string CacheKey => $"SewingMacroLibs";
-        public TimeSpan? SlidingExpiration { get; set; }
     }
     public class GetSewingMacroLibsQueryHandler : IRequestHandler<GetSewingMacroLibsQuery, PagedResponse<IReadOnlyList<SewingMacroLibModel>>>
     {

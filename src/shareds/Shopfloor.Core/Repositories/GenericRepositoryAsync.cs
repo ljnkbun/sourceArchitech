@@ -92,6 +92,23 @@ namespace Shopfloor.Core.Repositories
             return response;
         }
 
+        public virtual async Task<PagedResponse<IReadOnlyList<TModel>>> GetModelSingleQueryPagedReponseAsync<TParam, TModel>(TParam parameter)
+            where TModel : class
+            where TParam : RequestParameter
+        {
+            var response = new PagedResponse<IReadOnlyList<TModel>>(parameter.PageNumber, parameter.PageSize);
+            var query = _dbContext.Set<T>().Filter(parameter);
+            response.TotalCount = await query.CountAsync();
+            response.Data = await query.AsNoTracking()
+                    .OrderBy(parameter.OrderBy)
+                    .SearchTerm(parameter.SearchTerm, parameter.GetSearchProps())
+                    .Paged(parameter.PageSize, parameter.PageNumber)
+                    .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+                    .AsSingleQuery()
+                    .ToListAsync();
+            return response;
+        }
+
         public virtual async Task UpdateRangeAsync(List<T> entities)
         {
             foreach (var entity in entities)

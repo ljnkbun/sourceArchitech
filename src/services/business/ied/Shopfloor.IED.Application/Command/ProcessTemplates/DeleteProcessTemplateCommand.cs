@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.ProcessTemplates
         public async Task<Response<int>> Handle(DeleteProcessTemplateCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"ProcessTemplate Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"ProcessTemplate Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

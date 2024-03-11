@@ -22,7 +22,7 @@ namespace Shopfloor.IED.Application.Query.DyeingTBRChemicals
         public async Task<Response<Domain.Entities.DyeingTBRChemical>> Handle(GetDyeingTBRChemicalQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"DyeingTBRChemical Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"DyeingTBRChemical Not Found (Id:{query.Id}).");
             return new Response<Domain.Entities.DyeingTBRChemical>(entity);
         }
     }

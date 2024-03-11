@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 
 using MediatR;
-
-using Microsoft.Extensions.Logging;
-
-using Shopfloor.Core.Exceptions;
+using Shopfloor.Core.Extensions.Objects;
 using Shopfloor.Core.Models.Entities;
 using Shopfloor.Core.Models.Responses;
 using Shopfloor.Material.Application.Models.SupplierProductCategory;
@@ -141,14 +138,11 @@ namespace Shopfloor.Material.Application.Command.Suppliers
     {
         private readonly ISupplierRepository _repository;
 
-        private readonly ILogger<UpdateSupplierCommand> _logger;
-
         private readonly IMapper _mapper;
 
-        public UpdateSupplierCommandHandler(ISupplierRepository repository, ILogger<UpdateSupplierCommand> logger, IMapper mapper)
+        public UpdateSupplierCommandHandler(ISupplierRepository repository, IMapper mapper)
         {
             _repository = repository;
-            _logger = logger;
             _mapper = mapper;
         }
 
@@ -157,84 +151,36 @@ namespace Shopfloor.Material.Application.Command.Suppliers
             var entity =
                 await _repository.GetWithIncludeByIdAsync(command.Id);
             if (entity == null)
-                throw new ApiException($"Supplier Not Found.");
-            var dataSupplier = _mapper.Map<Supplier>(command);
-            entity.PicName = dataSupplier.PicName;
-            entity.BillAddress = dataSupplier.BillAddress;
-            entity.BankAddressDetails = dataSupplier.BankAddressDetails;
-            entity.Address = dataSupplier.Address;
-            entity.CountryOfOrigin = dataSupplier.CountryOfOrigin;
-            entity.City = dataSupplier.City;
-            entity.PortOfLoading = dataSupplier.PortOfLoading;
-            entity.State = dataSupplier.State;
-            entity.ZipCode = dataSupplier.ZipCode;
-            entity.AccountGroupCode = dataSupplier.AccountGroupCode;
-            entity.AccountGroupName = dataSupplier.AccountGroupName;
-            entity.BankAccountNumber = dataSupplier.BankAccountNumber;
-            entity.CatalogPath = dataSupplier.CatalogPath;
-            entity.CurrencyCode = dataSupplier.CurrencyCode;
-            entity.CurrencyName = dataSupplier.CurrencyName;
-            entity.CompanyWebsite = dataSupplier.CompanyWebsite;
-            entity.ContactFirstName = dataSupplier.ContactFirstName;
-            entity.ContactLastName = dataSupplier.ContactLastName;
-            entity.DeliveryTerms = dataSupplier.DeliveryTerms;
-            entity.Email = dataSupplier.Email;
-            entity.PaymentTerms = dataSupplier.PaymentTerms;
-            entity.GroupName = dataSupplier.GroupName;
-            entity.Remakes = dataSupplier.Remakes;
-            entity.ShipmentTerms = dataSupplier.ShipmentTerms;
-            entity.Name = dataSupplier.Name;
-            entity.Address = dataSupplier.Address;
-            entity.ShipAddress = dataSupplier.ShipAddress;
-            entity.ShortName = dataSupplier.ShortName;
-            entity.BillAddress = dataSupplier.BillAddress;
-            entity.Telephone = dataSupplier.Telephone;
-            entity.VATNumber = dataSupplier.VATNumber;
-            entity.ZipCode = dataSupplier.ZipCode;
-            entity.CountryCode = dataSupplier.CountryCode;
-            entity.CountryName = dataSupplier.CountryName;
-            entity.CompanyId = dataSupplier.CompanyId;
-            entity.CustomHouse = dataSupplier.CustomHouse;
-            entity.Pan = dataSupplier.Pan;
-            entity.Tin = dataSupplier.Tin;
-            entity.SupplierTypeCode = dataSupplier.SupplierTypeCode;
-            entity.SupplierTypeName = dataSupplier.SupplierTypeName;
-            entity.IsRetailer = dataSupplier.IsRetailer;
-            entity.IsWholesaler = dataSupplier.IsWholesaler;
-            entity.IsManufacture = dataSupplier.IsManufacture;
-            entity.IsTransporter = dataSupplier.IsTransporter;
-            entity.IsBuying = dataSupplier.IsBuying;
-            entity.IsServiceProvider = dataSupplier.IsServiceProvider;
-            entity.IsBrand = dataSupplier.IsBrand;
-            entity.IsComposition = dataSupplier.IsComposition;
-            entity.IsOther = dataSupplier.IsOther;
-            entity.SegmentOther = dataSupplier.SegmentOther;
-            entity.SwiftCode = dataSupplier.SwiftCode;
-            entity.MaximumOutAmount = dataSupplier.MaximumOutAmount;
-            entity.CategoryCode = dataSupplier.CategoryCode;
-            entity.CategoryName = dataSupplier.CategoryName;
+                return new($"Supplier Not Found.");
 
-            #region Product Category
-
-            // lay ra Entities can add them
-            var addEntitiesProductCategory =
-                dataSupplier.SupplierProductCategories.Where(x => x.Id == 0).ToList();
-
-            // lấy ra Entities cần update
-            var updateEntitiesProductCategory =
-                dataSupplier.SupplierProductCategories.Where(x => x.Id != 0).ToList();
-            var deleteEntitiesProductCategory =
-                entity.SupplierProductCategories
-                    .Where(x => !updateEntitiesProductCategory.Any() || updateEntitiesProductCategory.Any(y => y.Id != x.Id))
-                    .ToList();
-
-            #endregion Product Category
-
-            entity.SupplierProductCategories = updateEntitiesProductCategory;
-            await _repository.UpdateSupplierAsync(entity, new BaseListCreateDeleteEntity<SupplierProductCategory>
+            var ignores = new[]
             {
-                LstDataAdd = addEntitiesProductCategory,
-                LstDataDelete = deleteEntitiesProductCategory
+                nameof(Supplier.Id),
+                nameof(Supplier.CreatedDate),
+                nameof(Supplier.CreatedUserId),
+                nameof(Supplier.SupplierProductCategories),
+            };
+            command.TransferProperties(entity, ignores);
+            var dbSupplierProductCategories = entity.SupplierProductCategories;
+            entity.SupplierProductCategories = null;
+
+            #region SupplierProductCategories
+
+            var dbSupplierProductCategoryModifieds = dbSupplierProductCategories.Where(x => command.SupplierProductCategories.Any(y => y.Id == x.Id)).Select(x => _mapper.Map(command.SupplierProductCategories.First(c => c.Id == x.Id), x));
+
+            var newSupplierProductCategoryAddeds = command.SupplierProductCategories.Where(x => x.Id == 0)
+                .Select(x => _mapper.Map<SupplierProductCategory>(x));
+
+            var dbSupplierProductCategoryDeletes =
+                dbSupplierProductCategories.Where(x => dbSupplierProductCategoryModifieds.All(y => y.Id != x.Id));
+
+            #endregion SupplierProductCategories
+
+            await _repository.UpdateSupplierAsync(entity, new BaseUpdateEntity<SupplierProductCategory>
+            {
+                LstDataUpdate = dbSupplierProductCategoryModifieds,
+                LstDataAdd = newSupplierProductCategoryAddeds,
+                LstDataDelete = dbSupplierProductCategoryDeletes
             });
 
             return new Response<int>(command.Id);

@@ -21,14 +21,12 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 RequestArticleOutputId = filter.RequestArticleOutputId,
-                ArticleId = filter.ArticleId,
+                WFXArticleId = filter.WFXArticleId,
                 ArticleCode = filter.ArticleCode,
                 ArticleName = filter.ArticleName,
                 OrderBy = filter.OrderBy,
                 SearchTerm = filter.SearchTerm,
-                IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
-                SlidingExpiration = filter.SlidingExpiration
+                IsActive = filter.IsActive
             }));
         }
 

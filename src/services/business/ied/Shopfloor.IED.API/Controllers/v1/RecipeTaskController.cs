@@ -15,9 +15,16 @@ namespace Shopfloor.IED.Api.Controllers.v1
             return Ok(await Mediator.Send(new GetRecipeTasksQuery()
             {
                 RecipeId = filter.RecipeId,
-                DyeingOpreation = filter.DyeingOpreation,
-                MachineType = filter.MachineType,
-                Minutes = filter.Minutes,
+                DyeingProcessId = filter.DyeingProcessId,
+                DyeingProcessName = filter.DyeingProcessName,
+                DyeingOperationName = filter.DyeingOperationName,
+                DyeingOperationId = filter.DyeingOperationId,
+                DyeingProcessCode = filter.DyeingProcessCode,
+                DyeingOperationCode = filter.DyeingOperationCode,
+                MachineCode = filter.MachineCode,
+                MachineName = filter.MachineName,
+                Ratio = filter.Ratio,
+                Time = filter.Time,
                 Temperature = filter.Temperature,
                 PageSize = filter.PageSize,
                 PageNumber = filter.PageNumber,
@@ -26,10 +33,8 @@ namespace Shopfloor.IED.Api.Controllers.v1
                 CreatedUserId = filter.CreatedUserId,
                 ModifiedUserId = filter.ModifiedUserId,
                 IsActive = filter.IsActive,
-                BypassCache = filter.BypassCache,
                 SearchTerm = filter.SearchTerm,
-                OrderBy = filter.OrderBy,
-                SlidingExpiration = filter.SlidingExpiration
+                OrderBy = filter.OrderBy
             }));
         }
 

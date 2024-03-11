@@ -23,7 +23,7 @@ namespace Shopfloor.Master.Application.Command.Grades
         {
             var entity = await _repository.GetByIdAsync(command.Id);
 
-            if (entity == null) throw new ApiException($"Grade Not Found.");
+            if (entity == null) return new($"Grade Not Found.");
 
             entity.Code = command.Code;
             entity.Name = command.Name;

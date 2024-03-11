@@ -2,7 +2,7 @@
 {
     public class GetArticlesRequest : BaseRequest
     {
-        public int WFXArticleId { get; set; }
+        public int? WFXArticleId { get; set; }
         public string Category { get; set; }
         public string MaterialType { get; set; }
         public string ArticleCode { get; set; }
@@ -47,6 +47,8 @@
         public decimal? ReOrderLevel { get; set; }
         public decimal? MinimumOrderQty { get; set; }
         public decimal? RequirementMultiple { get; set; }
-        public bool UseForIED { get; set; }
+        public bool? UseForIED { get; set; }
+        public string ServiceCode { get; set; }
+        public string ServiceName { get; set; }
     }
 }

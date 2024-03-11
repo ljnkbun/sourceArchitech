@@ -102,6 +102,12 @@ namespace Shopfloor.Material.Api.Controllers.v1
         {
             return Ok(await Mediator.Send(command));
         }
+        
+        [HttpPut("SendExport/{id}")]
+        public async Task<IActionResult> SendExport(int id)
+        {
+            return Ok(await Mediator.Send(new SendExportSupplierCommand { Id = id }));
+        }
 
         // PUT api/v1/<controller>/5
         [HttpPut("{id}")]

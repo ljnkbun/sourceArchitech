@@ -31,6 +31,7 @@ namespace Shopfloor.Barcode.Infrastructure.Contexts
                         entry.Entity.ModifiedDate = _dateTime.Now;
                         entry.Entity.ModifiedUserId = _authenticatedUser.UserId;
                         break;
+
                     case EntityState.Modified:
                         entry.Entity.ModifiedDate = _dateTime.Now;
                         entry.Entity.ModifiedUserId = _authenticatedUser.UserId;
@@ -44,8 +45,6 @@ namespace Shopfloor.Barcode.Infrastructure.Contexts
         public virtual DbSet<ArticleBarcode> ArticleBarcodes { get; set; }
         public virtual DbSet<ArticleBarcodeHistory> ArticleBarcodeHistories { get; set; }
         public virtual DbSet<BarcodeLocation> BarcodeLocations { get; set; }
-        public virtual DbSet<Article> Articles { get; set; }
-        public virtual DbSet<ImportTransferToSiteSync> ImportTransferToSiteSyncs { get; set; }
         public virtual DbSet<Import> Imports { get; set; }
         public virtual DbSet<ImportArticle> ImportArticles { get; set; }
         public virtual DbSet<ImportDetail> ImportDetails { get; set; }
@@ -54,29 +53,35 @@ namespace Shopfloor.Barcode.Infrastructure.Contexts
         public virtual DbSet<ExportArticle> ExportArticles { get; set; }
         public virtual DbSet<ExportDetail> ExportDetails { get; set; }
 
-
         public virtual DbSet<WfxPOArticle> WfxPOArticles { get; set; }
+        public virtual DbSet<WfxPOArticleHistory> WfxPOArticleHistories { get; set; }
+        public virtual DbSet<WfxGDI> WfxGDIs { get; set; }
+        public virtual DbSet<WfxGDIHistory> WfxGDIHistories { get; set; }
+        public virtual DbSet<WfxGDN> WfxGDNs { get; set; }
+        public virtual DbSet<WfxGDNHistory> WfxGDNHistories { get; set; }
+        public virtual DbSet<AppVersion> AppVersions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.ApplyConfiguration(new LocationConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleBarcodeConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleBarcodeHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new BarcodeLocationConfiguration());
-            modelBuilder.ApplyConfiguration(new ArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ImportArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ImportConfiguaration());
             modelBuilder.ApplyConfiguration(new ImportDetailConfiguration());
-            modelBuilder.ApplyConfiguration(new ImportTransferToSiteSyncConfiguration());
-
 
             modelBuilder.ApplyConfiguration(new ExportConfiguration());
             modelBuilder.ApplyConfiguration(new ExportArticleConfiguration());
             modelBuilder.ApplyConfiguration(new ExportDetailConfiguration());
 
-
             modelBuilder.ApplyConfiguration(new WfxPOArticleConfiguration());
+            modelBuilder.ApplyConfiguration(new WfxPOArticleHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new WfxGDIConfiguration());
+            modelBuilder.ApplyConfiguration(new WfxGDIHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new WfxGDNConfiguration());
+            modelBuilder.ApplyConfiguration(new WfxGDNHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new AppVersionConfiguration());
         }
     }
 }

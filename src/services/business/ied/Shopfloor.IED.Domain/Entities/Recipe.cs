@@ -7,11 +7,10 @@ namespace Shopfloor.IED.Domain.Entities
         public Recipe()
         {
             RecipeTasks = new HashSet<RecipeTask>();
+            DyeingIEDs = new HashSet<DyeingIED>();
         }
 
-        public int DyeingTBRequestId { get; set; }
-
-        public int DyeingTBRVersionId { get; set; }
+        public int DyeingTBRecipeId { get; set; }
 
         public string RecipeNo { get; set; }
 
@@ -45,7 +44,13 @@ namespace Shopfloor.IED.Domain.Entities
 
         public string Manager { get; set; }
 
+        public string Description { get; set; }
+
         public bool Deleted { get; set; }
+
+        public virtual DyeingTBRecipe DyeingTBRecipe { get; set; }
+
+        public virtual ICollection<DyeingIED> DyeingIEDs { get; set; }
 
         public virtual ICollection<RecipeTask> RecipeTasks { get; set; }
     }

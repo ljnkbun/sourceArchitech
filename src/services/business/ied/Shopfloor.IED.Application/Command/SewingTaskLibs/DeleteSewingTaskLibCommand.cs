@@ -19,7 +19,7 @@ namespace Shopfloor.IED.Application.Command.SewingTaskLibs
         public async Task<Response<int>> Handle(DeleteSewingTaskLibCommand command, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(command.Id);
-            if (entity == null) throw new ApiException($"SewingTaskLib Not Found (Id:{command.Id}).");
+            if (entity == null) return new($"SewingTaskLib Not Found (Id:{command.Id}).");
             await _repository.DeleteAsync(entity);
             return new Response<int>(entity.Id);
         }

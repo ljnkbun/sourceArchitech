@@ -20,7 +20,7 @@ namespace Shopfloor.IED.Application.Query.WeavingYarns
         public async Task<Response<WeavingYarn>> Handle(GetWeavingYarnQuery query, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(query.Id);
-            if (entity == null) throw new ApiException($"WeavingYarn Not Found (Id:{query.Id}).");
+            if (entity == null) return new($"WeavingYarn Not Found (Id:{query.Id}).");
             return new Response<WeavingYarn>(entity);
         }
     }
